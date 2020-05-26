@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+}
+
+group 'com.s0n1.capturer'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile "com.github.tulskiy:jkeymaster:1.2"
+}
