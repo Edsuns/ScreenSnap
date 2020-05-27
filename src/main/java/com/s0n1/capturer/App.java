@@ -2,6 +2,7 @@ package com.s0n1.capturer;
 
 import com.s0n1.capturer.tools.GlobalHotKey;
 import com.s0n1.capturer.ui.ShotJFrame;
+import com.s0n1.capturer.util.DeviceUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,14 +14,14 @@ import java.awt.event.WindowEvent;
  * Created by Edsuns@qq.com on 2020-05-25
  */
 public class App {
-    private JFrame frame;
+    private JFrame homeFrame;
 
     public static void main(String[] args) {
         System.out.println("App started.");
         EventQueue.invokeLater(() -> {
             try {
                 App window = new App();
-//                window.frame.setVisible(true);
+                window.homeFrame.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -41,38 +42,38 @@ public class App {
 //            }
 //        }
 
-        int width = Toolkit.getDefaultToolkit().getScreenSize().width;
-        int height = Toolkit.getDefaultToolkit().getScreenSize().height;
-        System.out.println(width + " " + height);
-
+//        int width = Toolkit.getDefaultToolkit().getScreenSize().width;
+//        int height = Toolkit.getDefaultToolkit().getScreenSize().height;
+//        System.out.println(width + " " + height);
+        System.out.println("isWindows: " + DeviceUtil.isWindows());
     }
 
     public App() {
-        System.out.println("App construct.");
-        init();
-    }
+        System.out.println("App construction started.");
 
-    private void init() {
-//            ShotJFrame jFrame = new ShotJFrame();
-//            jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//            jFrame.addWindowListener(new WindowAdapter() {
-//                @Override
-//                public void windowClosing(WindowEvent e) {
-//                    System.out.println("closing");
-//                }
-//            });
-//            jFrame.showShot();
+        // 初始化取色界面
+        ShotJFrame shotJFrame = new ShotJFrame();
+        shotJFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-//        GlobalHotKey globalHotKey = new GlobalHotKey();
-//        JFrame jFrame = new JFrame();
-//        jFrame.addWindowListener(new WindowAdapter() {
-//            @Override
-//            public void windowClosing(WindowEvent e) {
-//                System.out.println("closing");
-//                globalHotKey.stopHotKey();
-//            }
-//        });
-//        jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        jFrame.setVisible(true);
+        // 启动快捷键注册模块
+        GlobalHotKey globalHotKey = new GlobalHotKey();
+        // 设置快捷键回调
+        globalHotKey.setHotKeyListener(() -> {
+            // 开始屏幕取色
+            homeFrame.setExtendedState(JFrame.ICONIFIED);
+            shotJFrame.startShot();
+        });
+
+        // 初始化主界面
+        homeFrame = new JFrame();
+        homeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        homeFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.out.println("closing");
+                globalHotKey.stopHotKey();
+            }
+        });
+        homeFrame.setSize(600, 400);
     }
 }

@@ -12,7 +12,8 @@ public final class ColorUtil {
 
     /**
      * 根据当前颜色模式显示颜色值
-     * @param c 源颜色
+     *
+     * @param c    源颜色
      * @param mode 颜色类型
      * @return 符合mode的颜色字符串
      */

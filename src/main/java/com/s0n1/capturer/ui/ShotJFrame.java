@@ -1,6 +1,6 @@
 package com.s0n1.capturer.ui;
 
-import com.s0n1.capturer.util.ScreenUtil;
+import com.s0n1.capturer.util.DeviceUtil;
 import com.s0n1.capturer.widget.FullScreenJFrame;
 
 import javax.swing.*;
@@ -14,6 +14,7 @@ import java.awt.event.MouseMotionAdapter;
  */
 public class ShotJFrame extends FullScreenJFrame {
     private Robot robot;
+    private ColorPanel colorPanel;
     private JLabel shotLabel;
 
     public ShotJFrame() {
@@ -23,6 +24,9 @@ public class ShotJFrame extends FullScreenJFrame {
         } catch (AWTException e) {
             e.printStackTrace();
         }
+
+        colorPanel = new ColorPanel();
+        add(colorPanel);
 
         // 初始化显示截图的Label
         shotLabel = new JLabel();
@@ -36,23 +40,45 @@ public class ShotJFrame extends FullScreenJFrame {
                 if (buttonKey == MouseEvent.BUTTON1) {
                     System.out.println("Left clicked");
                     pickColor();
-                    setVisible(false);
-                    System.exit(0);
                 } else if (buttonKey == MouseEvent.BUTTON3) {
                     System.out.println("Right clicked");
+                    stopShot();
                 }
             }
         });
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                refreshColorWindow(e.getX(), e.getY());
+                refreshColorPanel(e.getX(), e.getY());
             }
         });
     }
 
-    public void refreshColorWindow(final int x, final int y) {
-        System.out.println("refresh | x:"+ x + ", y:"+y);
+    public void refreshColorPanel(final int mouseX, final int mouseY) {
+        int panelX = mouseX - ColorPanel.Width - ColorPanel.Margin;
+        int panelY = mouseY - ColorPanel.Height - ColorPanel.Margin;
+        int position = getPositionInScreen(mouseX, mouseY);
+        switch (position) {
+            case LEFT & TOP:
+                panelX = mouseX + ColorPanel.Margin;
+                panelY = mouseY + ColorPanel.Margin;
+                break;
+            case TOP:
+            case RIGHT & TOP:
+                panelY = mouseY + ColorPanel.Margin;
+                break;
+            case LEFT:
+            case LEFT & BOTTOM:
+                panelX = mouseX + ColorPanel.Margin;
+                break;
+            case RIGHT:
+            case BOTTOM:
+            case RIGHT & BOTTOM:
+            default:
+                break;
+        }
+        colorPanel.setLocation(panelX, panelY);
+        colorPanel.setBackground(robot.getPixelColor(mouseX, mouseY));
     }
 
     public void pickColor() {
@@ -62,20 +88,50 @@ public class ShotJFrame extends FullScreenJFrame {
         if (mPickColorListener != null) {
             mPickColorListener.onColorPicked(robot.getPixelColor(x, y));
         }
-        System.out.println(robot.getPixelColor(x, y) + " x:"+ x + ", y:"+y);
+        System.out.println(robot.getPixelColor(x, y) + " x:" + x + ", y:" + y);
+        setVisible(false);
     }
+
+    private int screenWidth;
+    private int screenHeight;
 
     /**
      * 显示Frame和截图
      */
-    public void showShot() {
-        DisplayMode displayMode = ScreenUtil.getDisplay();
-        int screenWidth = displayMode.getWidth();
-        int screenHeight = displayMode.getHeight();
+    public void startShot() {
+        DisplayMode displayMode = DeviceUtil.getDisplay();
+        screenWidth = displayMode.getWidth();
+        screenHeight = displayMode.getHeight();
 
         Image shot = robot.createScreenCapture(new Rectangle(screenWidth, screenHeight));
         shotLabel.setIcon(new ImageIcon(shot));
         setVisible(true);
+    }
+
+    public void stopShot() {
+        shotLabel.setIcon(null);
+        setVisible(false);
+    }
+
+    private static final int LEFT = 584;
+    private static final int RIGHT = 577;
+    private static final int TOP = 521;
+    private static final int BOTTOM = 73;
+
+    private int getPositionInScreen(final int x, final int y) {
+        int leftOrRight = 585;
+        int topOrBottom = 585;
+        if (x < ColorPanel.Width + ColorPanel.Margin) {// Left
+            leftOrRight = LEFT;
+        } else if (x > screenWidth - ColorPanel.Width - ColorPanel.Margin) {// Right
+            leftOrRight = RIGHT;
+        }
+        if (y < ColorPanel.Height + ColorPanel.Margin) {// Top
+            topOrBottom = TOP;
+        } else if (y > screenHeight - ColorPanel.Height - ColorPanel.Margin) {// Bottom
+            topOrBottom = BOTTOM;
+        }
+        return leftOrRight & topOrBottom;
     }
 
     private PickColorListener mPickColorListener;
@@ -84,7 +140,7 @@ public class ShotJFrame extends FullScreenJFrame {
         mPickColorListener = l;
     }
 
-    public interface PickColorListener{
+    public interface PickColorListener {
         void onColorPicked(Color color);
     }
 }

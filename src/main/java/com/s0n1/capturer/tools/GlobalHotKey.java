@@ -58,9 +58,22 @@ public class GlobalHotKey implements HotKeyListener {
         switch (hotKey.keyStroke.getKeyCode()) {
             case KeyEvent.VK_S:
                 System.out.println("-----hotKey-----");
+                if (mHotKeyListener != null) {
+                    mHotKeyListener.onPickColorHotKey();
+                }
                 break;
             default:
                 System.out.println("HotKey");
         }
+    }
+
+    private HotKeyListener mHotKeyListener;
+
+    public void setHotKeyListener(HotKeyListener l) {
+        mHotKeyListener = l;
+    }
+
+    public interface HotKeyListener {
+        void onPickColorHotKey();
     }
 }
