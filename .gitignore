@@ -3,3 +3,5 @@ build
 *.iml
 .gradle
 /.idea
+/META-INF/
+/out/

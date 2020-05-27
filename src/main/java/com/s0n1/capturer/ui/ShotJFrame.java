@@ -99,9 +99,15 @@ public class ShotJFrame extends FullScreenJFrame {
      * 显示Frame和截图
      */
     public void startShot() {
-        DisplayMode displayMode = DeviceUtil.getDisplay();
-        screenWidth = displayMode.getWidth();
-        screenHeight = displayMode.getHeight();
+        if (DeviceUtil.isOldVersionJava) {
+            DisplayMode displayMode = DeviceUtil.getDisplay();
+            screenWidth = displayMode.getWidth();
+            screenHeight = displayMode.getHeight();
+        } else {
+            Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+            screenWidth = dimension.width;
+            screenHeight = dimension.height;
+        }
 
         Image shot = robot.createScreenCapture(new Rectangle(screenWidth, screenHeight));
         shotLabel.setIcon(new ImageIcon(shot));

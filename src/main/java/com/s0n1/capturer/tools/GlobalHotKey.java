@@ -12,7 +12,7 @@ import java.awt.event.KeyEvent;
  */
 public class GlobalHotKey implements HotKeyListener {
     private Provider hotKeyProvider;
-    private String shotHotKey = "control alt S";
+    private String shotHotKey = "control alt X";
 
     public GlobalHotKey() {
         initHotKey();
@@ -55,15 +55,8 @@ public class GlobalHotKey implements HotKeyListener {
 
     @Override
     public void onHotKey(HotKey hotKey) {
-        switch (hotKey.keyStroke.getKeyCode()) {
-            case KeyEvent.VK_S:
-                System.out.println("-----hotKey-----");
-                if (mHotKeyListener != null) {
-                    mHotKeyListener.onPickColorHotKey();
-                }
-                break;
-            default:
-                System.out.println("HotKey");
+        if (hotKey.keyStroke.getKeyCode() == KeyEvent.VK_X && mHotKeyListener != null) {
+            mHotKeyListener.onPickColorHotKey();
         }
     }
 

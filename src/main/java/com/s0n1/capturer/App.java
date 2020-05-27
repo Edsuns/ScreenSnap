@@ -45,7 +45,8 @@ public class App {
 //        int width = Toolkit.getDefaultToolkit().getScreenSize().width;
 //        int height = Toolkit.getDefaultToolkit().getScreenSize().height;
 //        System.out.println(width + " " + height);
-        System.out.println("isWindows: " + DeviceUtil.isWindows());
+        System.out.println("isWindows: " + DeviceUtil.isWindows);
+        System.out.println("OldVersionJava: " + DeviceUtil.isOldVersionJava);
     }
 
     public App() {
@@ -57,12 +58,8 @@ public class App {
 
         // 启动快捷键注册模块
         GlobalHotKey globalHotKey = new GlobalHotKey();
-        // 设置快捷键回调
-        globalHotKey.setHotKeyListener(() -> {
-            // 开始屏幕取色
-            homeFrame.setExtendedState(JFrame.ICONIFIED);
-            shotJFrame.startShot();
-        });
+        // 设置取色快捷键回调
+        globalHotKey.setHotKeyListener(shotJFrame::startShot);
 
         // 初始化主界面
         homeFrame = new JFrame();

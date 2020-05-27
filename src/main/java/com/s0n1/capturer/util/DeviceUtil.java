@@ -7,10 +7,9 @@ import java.awt.*;
  */
 public final class DeviceUtil {
     private static String OS_NAME = System.getProperty("os.name").toLowerCase();
-
-    public static boolean isWindows() {
-        return OS_NAME.contains("windows");
-    }
+    private static String JAVA_VERSION = System.getProperty("java.version");
+    public static boolean isOldVersionJava = Float.parseFloat(JAVA_VERSION.substring(0, 3)) < 1.9;
+    public static boolean isWindows = OS_NAME.contains("windows");
 
     public static DisplayMode getDisplay() {
         return GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode();
