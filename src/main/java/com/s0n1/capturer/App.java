@@ -2,6 +2,7 @@ package com.s0n1.capturer;
 
 import com.s0n1.capturer.tools.GlobalHotKey;
 import com.s0n1.capturer.ui.ShotJFrame;
+import com.s0n1.capturer.util.ColorUtil;
 import com.s0n1.capturer.util.DeviceUtil;
 
 import javax.swing.*;
@@ -55,6 +56,9 @@ public class App {
         // 初始化取色界面
         ShotJFrame shotJFrame = new ShotJFrame();
         shotJFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        shotJFrame.setPickColorListener(color -> {
+            System.out.println("HEX: " + ColorUtil.getColorText(color, ColorUtil.ColorMode.HEX));
+        });
 
         // 启动快捷键注册模块
         GlobalHotKey globalHotKey = new GlobalHotKey();
@@ -69,6 +73,7 @@ public class App {
             public void windowClosing(WindowEvent e) {
                 System.out.println("closing");
                 globalHotKey.stopHotKey();
+                System.out.println("closed");
             }
         });
         homeFrame.setSize(600, 400);

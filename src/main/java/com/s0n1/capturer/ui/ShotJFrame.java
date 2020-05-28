@@ -88,8 +88,8 @@ public class ShotJFrame extends FullScreenJFrame {
         if (mPickColorListener != null) {
             mPickColorListener.onColorPicked(robot.getPixelColor(x, y));
         }
-        System.out.println(robot.getPixelColor(x, y) + " x:" + x + ", y:" + y);
         setVisible(false);
+        System.out.println("Pick >> x: " + x + ", y: " + y);
     }
 
     private int screenWidth;
@@ -119,14 +119,14 @@ public class ShotJFrame extends FullScreenJFrame {
         setVisible(false);
     }
 
-    private static final int LEFT = 584;
-    private static final int RIGHT = 577;
-    private static final int TOP = 521;
-    private static final int BOTTOM = 73;
+    private static final int LEFT = 0b0111;
+    private static final int RIGHT = 0b1011;
+    private static final int TOP = 0b1101;
+    private static final int BOTTOM = 0b1110;
 
     private int getPositionInScreen(final int x, final int y) {
-        int leftOrRight = 585;
-        int topOrBottom = 585;
+        int leftOrRight = 0b1111;
+        int topOrBottom = 0b1111;
         if (x < ColorPanel.Width + ColorPanel.Margin) {// Left
             leftOrRight = LEFT;
         } else if (x > screenWidth - ColorPanel.Width - ColorPanel.Margin) {// Right
