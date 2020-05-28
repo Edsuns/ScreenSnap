@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group 'com.s0n1.capturer'
+group 'com.s0n1.screensnap'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
@@ -12,6 +12,11 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+//    testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    // For GlobalHotKey
     compile "com.github.tulskiy:jkeymaster:1.2"
+    compile "org.slf4j:slf4j-api:1.7.30"
+    compile "org.slf4j:slf4j-nop:1.7.30"
+
 }

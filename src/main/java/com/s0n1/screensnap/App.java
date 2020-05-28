@@ -1,9 +1,9 @@
-package com.s0n1.capturer;
+package com.s0n1.screensnap;
 
-import com.s0n1.capturer.tools.GlobalHotKey;
-import com.s0n1.capturer.ui.ShotJFrame;
-import com.s0n1.capturer.util.ColorUtil;
-import com.s0n1.capturer.util.DeviceUtil;
+import com.s0n1.screensnap.tools.GlobalHotKey;
+import com.s0n1.screensnap.ui.ShotJFrame;
+import com.s0n1.screensnap.util.ColorUtil;
+import com.s0n1.screensnap.util.DeviceUtil;
 
 import javax.swing.*;
 import java.awt.*;

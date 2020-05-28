@@ -1,7 +1,7 @@
-package com.s0n1.capturer.ui;
+package com.s0n1.screensnap.ui;
 
-import com.s0n1.capturer.util.DeviceUtil;
-import com.s0n1.capturer.widget.FullScreenJFrame;
+import com.s0n1.screensnap.util.DeviceUtil;
+import com.s0n1.screensnap.widget.FullScreenJFrame;
 
 import javax.swing.*;
 import java.awt.*;

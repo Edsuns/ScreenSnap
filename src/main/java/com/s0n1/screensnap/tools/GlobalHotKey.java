@@ -1,4 +1,4 @@
-package com.s0n1.capturer.tools;
+package com.s0n1.screensnap.tools;
 
 import com.tulskiy.keymaster.common.HotKey;
 import com.tulskiy.keymaster.common.HotKeyListener;

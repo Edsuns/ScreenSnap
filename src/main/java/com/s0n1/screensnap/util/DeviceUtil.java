@@ -1,4 +1,4 @@
-package com.s0n1.capturer.util;
+package com.s0n1.screensnap.util;
 
 import java.awt.*;
 
