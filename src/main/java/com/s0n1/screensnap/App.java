@@ -27,11 +27,11 @@ public class App {
                 e.printStackTrace();
             }
         });
-//        DisplayMode displayMode = ScreenUtil.getDisplay();
+//        DisplayMode displayMode = DeviceUtil.getDisplay();
 //        Rectangle rectangle = new Rectangle(displayMode.getWidth(), displayMode.getHeight());
 //        BufferedImage screenShot = null;
 //        try {
-//            screenShot = ScreenUtil.createScreenShot(rectangle);
+//            screenShot = new Robot().createScreenCapture(rectangle);
 //        } catch (AWTException e) {
 //            e.printStackTrace();
 //        }
@@ -47,16 +47,25 @@ public class App {
 //        int height = Toolkit.getDefaultToolkit().getScreenSize().height;
 //        System.out.println(width + " " + height);
         System.out.println("isWindows: " + DeviceUtil.isWindows);
-        System.out.println("OldVersionJava: " + DeviceUtil.isOldVersionJava);
+        System.out.println("isOldVersionJava: " + DeviceUtil.isOldVersionJava);
     }
 
     public App() {
         System.out.println("App construction started.");
+        // 设置系统默认样式
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+                | UnsupportedLookAndFeelException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         // 初始化取色界面
         ShotJFrame shotJFrame = new ShotJFrame();
         shotJFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         shotJFrame.setPickColorListener(color -> {
+            System.out.println("RGB: " + ColorUtil.getColorText(color, ColorUtil.ColorMode.RGB));
             System.out.println("HEX: " + ColorUtil.getColorText(color, ColorUtil.ColorMode.HEX));
         });
 
