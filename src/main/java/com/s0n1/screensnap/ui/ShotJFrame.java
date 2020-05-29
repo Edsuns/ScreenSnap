@@ -9,13 +9,16 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
+import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_HEIGHT;
+import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_WIDTH;
+
 /**
  * Created by Edsuns@qq.com on 2020-05-26
  */
 public class ShotJFrame extends FullScreenJFrame {
     private Robot robot;
-    private ColorPanel colorPanel;
-    private JLabel shotLabel;
+    private final ColorPanel colorPanel;
+    private final JLabel shotLabel;
 
     public ShotJFrame() {
         // 初始化robot
@@ -92,18 +95,12 @@ public class ShotJFrame extends FullScreenJFrame {
         System.out.println("Point x: " + x + ", y: " + y);
     }
 
-    private int screenWidth;
-    private int screenHeight;
-
     /**
      * 显示Frame和截图
      */
     public void startShot() {
-        DisplayMode displayMode = DeviceUtil.getDisplay();
-        screenWidth = displayMode.getWidth();
-        screenHeight = displayMode.getHeight();
-
-        Image shot = robot.createScreenCapture(new Rectangle(screenWidth, screenHeight));
+        DeviceUtil.updateDisplayMode();
+        Image shot = robot.createScreenCapture(new Rectangle(SCREEN_WIDTH, SCREEN_HEIGHT));
         shotLabel.setIcon(new ImageIcon(shot));
         setVisible(true);
     }
@@ -123,12 +120,12 @@ public class ShotJFrame extends FullScreenJFrame {
         int topOrBottom = 0b1111;
         if (x < ColorPanel.Width + ColorPanel.Margin) {// Left
             leftOrRight = LEFT;
-        } else if (x > screenWidth - ColorPanel.Width - ColorPanel.Margin) {// Right
+        } else if (x > SCREEN_WIDTH - ColorPanel.Width - ColorPanel.Margin) {// Right
             leftOrRight = RIGHT;
         }
         if (y < ColorPanel.Height + ColorPanel.Margin) {// Top
             topOrBottom = TOP;
-        } else if (y > screenHeight - ColorPanel.Height - ColorPanel.Margin) {// Bottom
+        } else if (y > SCREEN_HEIGHT - ColorPanel.Height - ColorPanel.Margin) {// Bottom
             topOrBottom = BOTTOM;
         }
         return leftOrRight & topOrBottom;

@@ -12,5 +12,7 @@ public class FullScreenJFrame extends JFrame {
         setUndecorated(true);
         setAlwaysOnTop(true);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
+        // 不显示任务栏图标
+        setType(Type.UTILITY);
     }
 }
