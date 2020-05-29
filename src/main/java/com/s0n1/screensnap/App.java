@@ -52,12 +52,20 @@ public class App {
 
     public App() {
         System.out.println("App construction started.");
+
+        // 开始检查DPI缩放是否开启
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        boolean hasDPIScale = !DeviceUtil.isOldVersionJava && screenSize.height != DeviceUtil.getDisplay().getHeight();
+        if (hasDPIScale) {
+            // 有DPI缩放抛出异常 修复截图模糊问题
+            throw new RuntimeException("Need disable DPI Scale by VM option: -Dsun.java2d.uiScale=1");
+        }
+
         // 设置系统默认样式
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
                 | UnsupportedLookAndFeelException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
