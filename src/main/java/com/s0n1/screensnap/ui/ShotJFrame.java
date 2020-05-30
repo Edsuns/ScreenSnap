@@ -102,6 +102,8 @@ public class ShotJFrame extends FullScreenJFrame {
      * 显示Frame和截图
      */
     public void startShot() {
+        if (isVisible()) return;
+
         DeviceUtil.updateDisplayMode();
         BufferedImage shot = robot.createScreenCapture(new Rectangle(SCREEN_WIDTH, SCREEN_HEIGHT));
         shotLabel.setIcon(new ImageIcon(shot));
