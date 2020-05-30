@@ -40,6 +40,7 @@ public class HotkeyDialog extends JDialog {
         add(hotkeyText);
 
         JButton applyBtn = new JButton("Apply");
+        applyBtn.setFocusable(false);
         applyBtn.setBounds(marginLeft + 160, marginTop, 80, 30);
         applyBtn.addActionListener(e -> {
             String hotkey = hotkeyText.getText();
@@ -55,6 +56,7 @@ public class HotkeyDialog extends JDialog {
         add(applyBtn);
 
         JLabel tipsLabel = new JLabel();
+        tipsLabel.setFocusable(false);
         tipsLabel.setBounds(marginLeft, marginTop + 30 + 10, 220, 60);
         // 必须在setBounds后
         AppUtil.setTextAuto(tipsLabel, "Type global hotkey");
