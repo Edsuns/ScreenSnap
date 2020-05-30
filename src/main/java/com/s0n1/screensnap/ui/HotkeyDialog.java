@@ -1,0 +1,82 @@
+package com.s0n1.screensnap.ui;
+
+import com.s0n1.screensnap.tools.GlobalHotKey;
+import com.s0n1.screensnap.tools.Settings;
+import com.s0n1.screensnap.util.AppUtil;
+
+import javax.swing.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_HEIGHT;
+import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_WIDTH;
+
+public class HotkeyDialog extends JDialog {
+    private final JTextField hotkeyText;
+    public static final List<Integer> MODIFIERS = Arrays.asList(KeyEvent.VK_ALT, KeyEvent.VK_CONTROL, KeyEvent.VK_SHIFT, KeyEvent.VK_META);
+
+    public HotkeyDialog(JFrame parent) {
+        super(parent, "Change Hotkey", true);
+        setBounds((SCREEN_WIDTH - 300) / 2, (SCREEN_HEIGHT - 200) / 2, 300, 200);
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        setLayout(null);
+
+        int marginTop = 30;
+        int marginLeft = 20;
+
+        // 内容 宽240
+        hotkeyText = new JTextField();
+        hotkeyText.setBounds(marginLeft, marginTop, 140, 30);
+        hotkeyText.setText(Settings.getHotkey());
+        hotkeyText.setEditable(false);
+        hotkeyText.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                parseKey(e);
+            }
+        });
+        add(hotkeyText);
+
+        JButton applyBtn = new JButton("Apply");
+        applyBtn.setBounds(marginLeft + 160, marginTop, 80, 30);
+        applyBtn.addActionListener(e -> {
+            String hotkey = hotkeyText.getText();
+            if (hotkey == null || hotkey.isEmpty()) return;
+
+            if (mHotkeyChangeListener != null) {
+                mHotkeyChangeListener.onHotkeyChange(hotkey);
+            }
+            Settings.setHotkey(hotkey);
+            GlobalHotKey.getInstance().setupHotKey();
+            dispose();
+        });
+        add(applyBtn);
+
+        JLabel tipsLabel = new JLabel();
+        tipsLabel.setBounds(marginLeft, marginTop + 30 + 10, 220, 60);
+        // 必须在setBounds后
+        AppUtil.setTextAuto(tipsLabel, "Type global hotkey");
+        add(tipsLabel);
+    }
+
+    private void parseKey(KeyEvent event) {
+        String newHotKey = KeyStroke.getKeyStrokeForEvent(event).toString();
+        // 如果超过两个键（注意pressed的空格要在前面）
+        boolean isMultiKey = !MODIFIERS.contains(event.getKeyCode()) && newHotKey.contains(" pressed");
+        if (isMultiKey) {
+            hotkeyText.setText(newHotKey.replaceAll(" pressed", ""));
+        }
+    }
+
+    HotkeyChangeListener mHotkeyChangeListener;
+
+    public interface HotkeyChangeListener {
+        void onHotkeyChange(String newHotkey);
+    }
+
+    public void setHotkeyChangeListener(HotkeyChangeListener listener) {
+        mHotkeyChangeListener = listener;
+    }
+}

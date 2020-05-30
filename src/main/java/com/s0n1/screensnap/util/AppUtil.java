@@ -1,11 +1,12 @@
 package com.s0n1.screensnap.util;
 
+import javax.swing.*;
 import java.awt.*;
 
 /**
  * Created by Edsuns@qq.com on 2020-05-26
  */
-public final class ColorUtil {
+public final class AppUtil {
     public enum ColorMode {
         RGB, HTML, HEX, HSB
     }// 颜色模式
@@ -41,5 +42,29 @@ public final class ColorUtil {
                 break;
         }
         return s;
+    }
+
+    public static void setTextAuto(JLabel jLabel, String longString) {
+        StringBuilder builder = new StringBuilder("<html>");
+        char[] chars = longString.toCharArray();
+        FontMetrics fontMetrics = jLabel.getFontMetrics(jLabel.getFont());
+        int start = 0;
+        int len = 0;
+        while (start + len < longString.length()) {
+            while (true) {
+                len++;
+                if (start + len > longString.length()) break;
+                if (fontMetrics.charsWidth(chars, start, len)
+                        > jLabel.getWidth()) {
+                    break;
+                }
+            }
+            builder.append(chars, start, len - 1).append("<br/>");
+            start = start + len - 1;
+            len = 0;
+        }
+        builder.append(chars, start, longString.length() - start);
+        builder.append("</html>");
+        jLabel.setText(builder.toString());
     }
 }

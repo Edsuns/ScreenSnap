@@ -18,6 +18,6 @@ public class UiRes {
     // 显示缩放(DPI缩放)比例
     public static final float DPI_SCALE_RATE = Toolkit.getDefaultToolkit().getScreenResolution() / 96f;
 
-    public static final int WINDOW_WIDTH = (int) (400 * DPI_SCALE_RATE);
-    public static final int WINDOW_HEIGHT = (int) (400 * DPI_SCALE_RATE);
+    public static final int WINDOW_WIDTH = 420;
+    public static final int WINDOW_HEIGHT = 220;
 }

@@ -5,25 +5,31 @@ import com.tulskiy.keymaster.common.HotKeyListener;
 import com.tulskiy.keymaster.common.Provider;
 
 import javax.swing.*;
-import java.awt.event.KeyEvent;
 
 /**
  * Created by Edsuns@qq.com on 2020-05-26
  */
 public class GlobalHotKey implements HotKeyListener {
     private Provider hotKeyProvider;
-    private String shotHotKey = "control alt X";
 
-    public GlobalHotKey() {
-        initHotKey();
+    private static GlobalHotKey instance;
+
+    public static void newInstance() {
+        if (instance != null) {
+            instance.stopHotKey();
+        }
+        instance = new GlobalHotKey();
+        instance.setupHotKey();
     }
 
-    public void setShotHotKey(String shotHotKey) {
-        this.shotHotKey = shotHotKey;
-        initHotKey();
+    public static GlobalHotKey getInstance() {
+        return instance;
     }
 
-    private void initHotKey() {
+    private GlobalHotKey() {
+    }
+
+    public void setupHotKey() {
         final GlobalHotKey instance = this;
         new Thread(() -> {
             try {
@@ -31,7 +37,7 @@ public class GlobalHotKey implements HotKeyListener {
                     hotKeyProvider = Provider.getCurrentProvider(false);
                 }
                 hotKeyProvider.reset();
-                hotKeyProvider.register(KeyStroke.getKeyStroke(shotHotKey), instance);
+                hotKeyProvider.register(KeyStroke.getKeyStroke(Settings.getHotkey()), instance);
             } catch (Exception e) {
                 hotKeyProvider = null;
                 e.printStackTrace();
@@ -55,7 +61,7 @@ public class GlobalHotKey implements HotKeyListener {
 
     @Override
     public void onHotKey(HotKey hotKey) {
-        if (hotKey.keyStroke.getKeyCode() == KeyEvent.VK_X && mHotKeyListener != null) {
+        if (mHotKeyListener != null) {
             mHotKeyListener.onPickColorHotKey();
         }
     }

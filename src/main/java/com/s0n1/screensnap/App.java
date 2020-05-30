@@ -1,9 +1,11 @@
 package com.s0n1.screensnap;
 
 import com.s0n1.screensnap.tools.GlobalHotKey;
+import com.s0n1.screensnap.tools.Settings;
 import com.s0n1.screensnap.ui.HomeJFrame;
+import com.s0n1.screensnap.ui.HotkeyDialog;
 import com.s0n1.screensnap.ui.ShotJFrame;
-import com.s0n1.screensnap.util.ColorUtil;
+import com.s0n1.screensnap.util.AppUtil;
 import com.s0n1.screensnap.util.DeviceUtil;
 
 import javax.swing.*;
@@ -20,8 +22,6 @@ import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_WIDTH;
  * Created by Edsuns@qq.com on 2020-05-25
  */
 public class App {
-    // 实例化快捷键注册模块
-    GlobalHotKey globalHotKey = new GlobalHotKey();
     private HomeJFrame homeFrame;
 
     public static void main(String[] args) {
@@ -40,7 +40,7 @@ public class App {
         });
     }
 
-    public App() {
+    private App() {
         System.out.println("App construction started.");
 
         // 开始检查DPI缩放是否开启
@@ -51,6 +51,7 @@ public class App {
             throw new RuntimeException("Need disable DPI Scale by VM option: -Dsun.java2d.uiScale=1");
         }
         init();
+        instance = this;
     }
 
     private void init() {
@@ -67,23 +68,30 @@ public class App {
         shotJFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         shotJFrame.setPickColorListener(color -> {
             System.out.println("-----COLOR-----");
-            System.out.println("RGB: " + ColorUtil.getColorText(color, ColorUtil.ColorMode.RGB));
-            System.out.println("HEX: " + ColorUtil.getColorText(color, ColorUtil.ColorMode.HEX));
+            System.out.println("RGB: " + AppUtil.getColorText(color, AppUtil.ColorMode.RGB));
+            System.out.println("HEX: " + AppUtil.getColorText(color, AppUtil.ColorMode.HEX));
         });
 
+        // 设置热键的对话框
+        HotkeyDialog dialog = new HotkeyDialog(homeFrame);
+
+        Settings.loadSettings();
+        // 实例化快捷键注册模块
+        GlobalHotKey.newInstance();
         // 设置取色快捷键回调
-        globalHotKey.setHotKeyListener(shotJFrame::startShot);
+        GlobalHotKey.getInstance().setHotKeyListener(() -> {
+            dialog.dispose();
+            shotJFrame.startShot();
+        });
 
         // 初始化主界面
-        homeFrame = new HomeJFrame();
+        homeFrame = new HomeJFrame(dialog);
         homeFrame.setTitle(APP_NAME);
         homeFrame.setIconImage(APP_ICON);
-        homeFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        homeFrame.setTrayItemListener(() -> onAppClose(false));
         homeFrame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                onAppClose(true);
+                onAppClose(Settings.isRunInBg());
             }
         });
         // 在屏幕中间显示
@@ -91,13 +99,19 @@ public class App {
                 (SCREEN_HEIGHT - WINDOW_HEIGHT) / 2, WINDOW_WIDTH, WINDOW_HEIGHT);
     }
 
-    private void onAppClose(boolean backgroundRun) {
+    public void onAppClose(boolean backgroundRun) {
         if (backgroundRun) {
             homeFrame.setVisible(false);
         } else {
-            globalHotKey.stopHotKey();
+            GlobalHotKey.getInstance().stopHotKey();
             System.out.println("App closed.");
             System.exit(0);
         }
+    }
+
+    private static App instance;
+
+    public static App getInstance() {
+        return instance;
     }
 }

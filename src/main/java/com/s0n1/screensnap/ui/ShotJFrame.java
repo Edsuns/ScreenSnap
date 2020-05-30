@@ -1,6 +1,8 @@
 package com.s0n1.screensnap.ui;
 
+import com.google.zxing.Result;
 import com.s0n1.screensnap.util.DeviceUtil;
+import com.s0n1.screensnap.util.QrCodeUtil;
 import com.s0n1.screensnap.widget.FullScreenJFrame;
 
 import javax.swing.*;
@@ -8,6 +10,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.image.BufferedImage;
 
 import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_HEIGHT;
 import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_WIDTH;
@@ -100,9 +103,15 @@ public class ShotJFrame extends FullScreenJFrame {
      */
     public void startShot() {
         DeviceUtil.updateDisplayMode();
-        Image shot = robot.createScreenCapture(new Rectangle(SCREEN_WIDTH, SCREEN_HEIGHT));
+        BufferedImage shot = robot.createScreenCapture(new Rectangle(SCREEN_WIDTH, SCREEN_HEIGHT));
         shotLabel.setIcon(new ImageIcon(shot));
         setVisible(true);
+
+        Result result = QrCodeUtil.parseQrCode(shot);
+        if (result != null) {
+            System.out.println("resultFormat: " + result.getBarcodeFormat());
+            System.out.println("resultText: " + result.getText());
+        }
     }
 
     public void stopShot() {
