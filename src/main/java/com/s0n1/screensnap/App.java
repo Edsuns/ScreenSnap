@@ -106,6 +106,7 @@ public class App {
             homeFrame.setVisible(false);
         } else {
             GlobalHotKey.getInstance().stopHotKey();
+            homeFrame.disableTrayIcon();
             System.out.println("App closed.");
             System.exit(0);
         }

@@ -20,10 +20,11 @@ public class HotkeyDialog extends JDialog {
         super(parent, "Change Hotkey", true);
         setBounds((SCREEN_WIDTH - 300) / 2, (SCREEN_HEIGHT - 200) / 2, 300, 200);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        setResizable(false);
         setLayout(null);
 
-        int marginTop = 30;
-        int marginLeft = 20;
+        final int marginTop = 30;
+        final int marginLeft = 30;
 
         // 内容 宽240
         hotkeyText = new JTextField();

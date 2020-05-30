@@ -1,4 +1,5 @@
 build
+*.txt
 *.iml
 .gradle
 /.idea
