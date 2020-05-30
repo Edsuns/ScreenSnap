@@ -12,6 +12,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileLock;
 
 import static com.s0n1.screensnap.ui.UiRes.*;
 import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_HEIGHT;
@@ -25,11 +28,6 @@ public class App {
     private HomeJFrame homeFrame;
 
     public static void main(String[] args) {
-        System.out.println("App started.");
-        System.out.println("isWindows: " + DeviceUtil.isWindows);
-        System.out.println("isOldVersionJava: " + DeviceUtil.isOldVersionJava);
-        System.out.println("DPI Scale: " + DPI_SCALE_RATE);
-
         EventQueue.invokeLater(() -> {
             try {
                 App window = new App();
@@ -41,20 +39,33 @@ public class App {
     }
 
     private App() {
-        System.out.println("App construction started.");
+        try {// 让程序只能单次运行
+            FileLock lock = new FileOutputStream("./SingleRunLock").getChannel().tryLock();
+            if (lock == null) {
+                System.out.println("App is already running...");
+                System.exit(1);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("App started.");
+        System.out.println("isWindows: " + DeviceUtil.isWindows);
+        System.out.println("isOldVersionJava: " + DeviceUtil.isOldVersionJava);
+        System.out.println("DPI Scale: " + DPI_SCALE_RATE);
 
         // 开始检查DPI缩放是否开启
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         boolean hasDPIScale = !DeviceUtil.isOldVersionJava && screenSize.height != DeviceUtil.displayMode.getHeight();
         if (hasDPIScale) {
-            // 有DPI缩放抛出异常；必须关闭DPI缩放，自己适配高DPI以修复截图模糊问题
-            throw new RuntimeException("Need disable DPI Scale by VM option: -Dsun.java2d.uiScale=1");
+            // 有DPI缩放抛出错误；必须关闭DPI缩放自己适配高DPI,修复截图模糊问题
+            throw new Error("Need disable DPI Scale by VM option: -Dsun.java2d.uiScale=1");
         }
         init();
-        instance = this;
     }
 
     private void init() {
+        instance = this;
         // 设置系统默认样式
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
