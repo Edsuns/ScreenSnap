@@ -44,6 +44,13 @@ public final class AppUtil {
         return s;
     }
 
+    /**
+     * 文本自动换行
+     * 必须在setBounds后使用
+     *
+     * @param jLabel     目标
+     * @param longString 文本内容
+     */
     public static void setTextAuto(JLabel jLabel, String longString) {
         StringBuilder builder = new StringBuilder("<html>");
         char[] chars = longString.toCharArray();

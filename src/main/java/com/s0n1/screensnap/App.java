@@ -74,6 +74,7 @@ public class App {
 
         // 设置热键的对话框
         HotkeyDialog dialog = new HotkeyDialog(homeFrame);
+        dialog.setIconImage(APP_ICON);
 
         Settings.loadSettings();
         // 实例化快捷键注册模块
@@ -101,6 +102,7 @@ public class App {
 
     public void onAppClose(boolean backgroundRun) {
         if (backgroundRun) {
+            homeFrame.enableRunInBg();
             homeFrame.setVisible(false);
         } else {
             GlobalHotKey.getInstance().stopHotKey();

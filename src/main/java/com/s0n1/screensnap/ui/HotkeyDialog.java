@@ -2,7 +2,6 @@ package com.s0n1.screensnap.ui;
 
 import com.s0n1.screensnap.tools.GlobalHotKey;
 import com.s0n1.screensnap.tools.Settings;
-import com.s0n1.screensnap.util.AppUtil;
 
 import javax.swing.*;
 import java.awt.event.KeyAdapter;
@@ -29,7 +28,6 @@ public class HotkeyDialog extends JDialog {
         // 内容 宽240
         hotkeyText = new JTextField();
         hotkeyText.setBounds(marginLeft, marginTop, 140, 30);
-        hotkeyText.setText(Settings.getHotkey());
         hotkeyText.setEditable(false);
         hotkeyText.addKeyListener(new KeyAdapter() {
             @Override
@@ -57,9 +55,9 @@ public class HotkeyDialog extends JDialog {
 
         JLabel tipsLabel = new JLabel();
         tipsLabel.setFocusable(false);
-        tipsLabel.setBounds(marginLeft, marginTop + 30 + 10, 220, 60);
-        // 必须在setBounds后
-        AppUtil.setTextAuto(tipsLabel, "Type global hotkey");
+        tipsLabel.setBounds(marginLeft, marginTop + 30 + 10, 240, 60);
+        tipsLabel.setText("Type new global hotkey.");
+        tipsLabel.setHorizontalAlignment(SwingConstants.CENTER);
         add(tipsLabel);
     }
 
@@ -70,6 +68,14 @@ public class HotkeyDialog extends JDialog {
         if (isMultiKey) {
             hotkeyText.setText(newHotKey.replaceAll(" pressed", ""));
         }
+    }
+
+    @Override
+    public void setVisible(boolean b) {
+        if (b) {// 必须在super前
+            hotkeyText.setText(Settings.getHotkey());
+        }
+        super.setVisible(b);
     }
 
     HotkeyChangeListener mHotkeyChangeListener;

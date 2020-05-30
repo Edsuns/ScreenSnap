@@ -22,11 +22,9 @@ public class HomeJFrame extends JFrame {
     public HomeJFrame(HotkeyDialog hotkeyDialog) {
         dialog = hotkeyDialog;
         setDefaultCloseOperation(Settings.isRunInBg() ? JFrame.DO_NOTHING_ON_CLOSE : JFrame.EXIT_ON_CLOSE);
-        setType(Type.UTILITY);
         setResizable(false);
         setLayout(null);
         initSettings();
-        initTrayIcon();
     }
 
     private void initSettings() {
@@ -53,7 +51,7 @@ public class HomeJFrame extends JFrame {
         settingsPanel.add(hotKeyText);
         dialog.setHotkeyChangeListener(hotKeyText::setText);
 
-        JButton editHotKeyBtn = new JButton("Edit");
+        JButton editHotKeyBtn = new JButton("Change");
         editHotKeyBtn.setBounds(240, 0, 80, 30);
         editHotKeyBtn.addActionListener(e -> dialog.setVisible(true));
         settingsPanel.add(editHotKeyBtn);
@@ -64,7 +62,7 @@ public class HomeJFrame extends JFrame {
         backgroundCheck.setSelected(Settings.isRunInBg());
         backgroundCheck.addItemListener(e -> {
             boolean runInBg = e.getStateChange() == ItemEvent.SELECTED;
-            HomeJFrame.this.setDefaultCloseOperation(runInBg ? JFrame.DO_NOTHING_ON_CLOSE : JFrame.EXIT_ON_CLOSE);
+            if (!runInBg) disableTrayIcon();
             Settings.setRunInBg(runInBg);
             System.out.println("RunInBg: " + runInBg);
         });
@@ -76,17 +74,31 @@ public class HomeJFrame extends JFrame {
         settingsPanel.add(exitBtn);
     }
 
-    private void initTrayIcon() {
-        if (!SystemTray.isSupported()) return;
+    private TrayIcon trayIcon;
 
+    public void disableTrayIcon() {
+        if (!SystemTray.isSupported()) return;
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        SystemTray tray = SystemTray.getSystemTray();
+        tray.remove(trayIcon);
+        trayIcon = null;
+    }
+
+    public void enableRunInBg() {
+        if (!SystemTray.isSupported()) return;
+        // 防止重复创建
+        if (trayIcon != null) return;
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        // 开始创建任务栏小图标
         // 创建弹出菜单
         PopupMenu popup = new PopupMenu();
         //退出程序选项
-        MenuItem exitItem = new MenuItem("退出程序");
+        MenuItem exitItem = new MenuItem("Exit");
         exitItem.addActionListener(e -> App.getInstance().onAppClose(false));
         popup.add(exitItem);
 
-        TrayIcon trayIcon = new TrayIcon(APP_ICON, "ScreenSnap", popup);// 创建trayIcon
+        trayIcon = new TrayIcon(APP_ICON, "ScreenSnap", popup);// 创建trayIcon
         trayIcon.setImageAutoSize(true);
         trayIcon.addMouseListener(new MouseAdapter() {
             @Override
