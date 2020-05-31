@@ -161,6 +161,8 @@ public class ShotJFrame extends FullScreenJFrame {
      */
     public void startShot() {
         if (isVisible()) return;
+        // Windows自带的Console能在print处暂停程序运行, 导致界面卡住. 提前print, 要暂停也是在全屏前暂停
+        System.out.println("Start Screenshot.");
 
         Point mousePoint = MouseInfo.getPointerInfo().getLocation();
         refreshColorPanel(mousePoint.x, mousePoint.y);
