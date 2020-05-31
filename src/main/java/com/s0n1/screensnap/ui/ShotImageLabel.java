@@ -63,5 +63,6 @@ public class ShotImageLabel extends JLabel {
         y = 0;
         w = 0;
         h = 0;
+        repaint();
     }
 }

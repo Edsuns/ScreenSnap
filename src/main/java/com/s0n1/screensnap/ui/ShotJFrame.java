@@ -63,6 +63,8 @@ public class ShotJFrame extends FullScreenJFrame {
                 setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
                 xStart = e.getX();
                 yStart = e.getY();
+                recW = 0;
+                recH = 0;
                 shotLabel.drawCross(xStart, yStart);
             }
 
@@ -74,7 +76,7 @@ public class ShotJFrame extends FullScreenJFrame {
                 shotLabel.reset();
                 setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
-                if (recW < 2 || recH < 2 || mPickColorListener == null) return;
+                if (recW < 1 || recH < 1 || mPickColorListener == null) return;
                 int buttonKey = e.getButton();
                 if (buttonKey == MouseEvent.BUTTON1) {
                     System.out.println("Left Released");
@@ -99,8 +101,8 @@ public class ShotJFrame extends FullScreenJFrame {
                     int minY = Math.min(yStart, yEnd);
                     recX = minX;
                     recY = minY;
-                    recW = maxX - minX;
-                    recH = maxY - minY;
+                    recW = Math.max(1, maxX - minX);
+                    recH = Math.max(1, maxY - minY);
                     shotLabel.drawRectangle(recX, recY, recW, recH);
                 }
             }
@@ -159,6 +161,9 @@ public class ShotJFrame extends FullScreenJFrame {
      */
     public void startShot() {
         if (isVisible()) return;
+
+        Point mousePoint = MouseInfo.getPointerInfo().getLocation();
+        refreshColorPanel(mousePoint.x, mousePoint.y);
 
         DeviceUtil.updateDisplayMode();
         shotImage = robot.createScreenCapture(new Rectangle(SCREEN_WIDTH, SCREEN_HEIGHT));
