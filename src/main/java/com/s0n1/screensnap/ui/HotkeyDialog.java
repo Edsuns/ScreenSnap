@@ -12,13 +12,16 @@ import java.util.List;
 import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_HEIGHT;
 import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_WIDTH;
 
+/**
+ * Created by Edsuns@qq.com on 2020-05-30
+ */
 public class HotkeyDialog extends JDialog {
     private final JTextField hotkeyText;
     public static final List<Integer> MODIFIERS = Arrays.asList(KeyEvent.VK_ALT, KeyEvent.VK_CONTROL, KeyEvent.VK_SHIFT, KeyEvent.VK_META);
 
     public HotkeyDialog(JFrame parent) {
         super(parent, "Change Hotkey", true);
-        setBounds((SCREEN_WIDTH - 300) / 2, (SCREEN_HEIGHT - 200) / 2, 300, 200);
+        setBounds((SCREEN_WIDTH - 300) / 2, (SCREEN_HEIGHT - 200) / 2, 300, 170);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setResizable(false);
         setLayout(null);
@@ -56,7 +59,7 @@ public class HotkeyDialog extends JDialog {
 
         JLabel tipsLabel = new JLabel();
         tipsLabel.setFocusable(false);
-        tipsLabel.setBounds(marginLeft, marginTop + 30 + 10, 240, 60);
+        tipsLabel.setBounds(marginLeft, marginTop + 30 + 20, 240, 30);
         tipsLabel.setText("Type new global hotkey.");
         tipsLabel.setHorizontalAlignment(SwingConstants.CENTER);
         add(tipsLabel);

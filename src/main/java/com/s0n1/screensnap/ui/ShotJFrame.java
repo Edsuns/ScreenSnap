@@ -1,15 +1,12 @@
 package com.s0n1.screensnap.ui;
 
-import com.google.zxing.Result;
 import com.s0n1.screensnap.util.DeviceUtil;
-import com.s0n1.screensnap.util.QrCodeUtil;
 import com.s0n1.screensnap.widget.FullScreenJFrame;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 
 import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_HEIGHT;
@@ -21,7 +18,12 @@ import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_WIDTH;
 public class ShotJFrame extends FullScreenJFrame {
     private Robot robot;
     private final ColorPanel colorPanel;
-    private final JLabel shotLabel;
+    private final ShotImageLabel shotLabel;
+
+    private BufferedImage shotImage;
+    private int xStart, yStart, xEnd, yEnd;// 鼠标起始及结束位置
+    private int recX, recY, recH, recW;// 图像选区
+    boolean pressed;
 
     public ShotJFrame() {
         // 初始化robot
@@ -35,11 +37,11 @@ public class ShotJFrame extends FullScreenJFrame {
         add(colorPanel);
 
         // 初始化显示截图的Label
-        shotLabel = new JLabel();
+        shotLabel = new ShotImageLabel();
         add(shotLabel);
 
         // 添加事件监听器
-        addMouseListener(new MouseAdapter() {
+        shotLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int buttonKey = e.getButton();
@@ -51,11 +53,65 @@ public class ShotJFrame extends FullScreenJFrame {
                     stopShot();
                 }
             }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                System.out.println("Pressed");
+                // 初始化选区功能
+                pressed = true;
+                colorPanel.setVisible(false);
+                setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+                xStart = e.getX();
+                yStart = e.getY();
+                shotLabel.drawCross(xStart, yStart);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                // 重置选区功能
+                pressed = false;
+                colorPanel.setVisible(true);
+                shotLabel.reset();
+                setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+
+                if (recW < 2 || recH < 2 || mPickColorListener == null) return;
+                int buttonKey = e.getButton();
+                if (buttonKey == MouseEvent.BUTTON1) {
+                    System.out.println("Left Released");
+                    mPickColorListener.onLeftCapture(shotImage.getSubimage(recX, recY, recW, recH));
+                    stopShot();
+                } else if (buttonKey == MouseEvent.BUTTON3) {
+                    System.out.println("Right Released");
+                    mPickColorListener.onRightCapture(shotImage.getSubimage(recX, recY, recW, recH));
+                    stopShot();
+                }
+            }
         });
-        addMouseMotionListener(new MouseMotionAdapter() {
+        shotLabel.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                if (pressed) {
+                    xEnd = e.getX();
+                    yEnd = e.getY();
+                    int maxX = Math.max(xStart, xEnd);
+                    int maxY = Math.max(yStart, yEnd);
+                    int minX = Math.min(xStart, xEnd);
+                    int minY = Math.min(yStart, yEnd);
+                    recX = minX;
+                    recY = minY;
+                    recW = maxX - minX;
+                    recH = maxY - minY;
+                    shotLabel.drawRectangle(recX, recY, recW, recH);
+                }
+            }
+
             @Override
             public void mouseMoved(MouseEvent e) {
-                refreshColorPanel(e.getX(), e.getY());
+                if (pressed) {
+                    shotLabel.drawCross(e.getX(), e.getY());
+                } else {
+                    refreshColorPanel(e.getX(), e.getY());
+                }
             }
         });
     }
@@ -105,15 +161,9 @@ public class ShotJFrame extends FullScreenJFrame {
         if (isVisible()) return;
 
         DeviceUtil.updateDisplayMode();
-        BufferedImage shot = robot.createScreenCapture(new Rectangle(SCREEN_WIDTH, SCREEN_HEIGHT));
-        shotLabel.setIcon(new ImageIcon(shot));
+        shotImage = robot.createScreenCapture(new Rectangle(SCREEN_WIDTH, SCREEN_HEIGHT));
+        shotLabel.setIcon(new ImageIcon(shotImage));
         setVisible(true);
-
-        Result result = QrCodeUtil.parseQrCode(shot);
-        if (result != null) {
-            System.out.println("resultFormat: " + result.getBarcodeFormat());
-            System.out.println("resultText: " + result.getText());
-        }
     }
 
     public void stopShot() {
@@ -150,5 +200,9 @@ public class ShotJFrame extends FullScreenJFrame {
 
     public interface PickColorListener {
         void onColorPicked(Color color);
+
+        void onRightCapture(BufferedImage image);
+
+        void onLeftCapture(BufferedImage image);
     }
 }

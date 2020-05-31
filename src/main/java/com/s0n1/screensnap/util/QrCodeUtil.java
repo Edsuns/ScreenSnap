@@ -8,6 +8,9 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Created by Edsuns@qq.com on 2020-05-29
+ */
 public final class QrCodeUtil {
 
     public static Result parseQrCode(BufferedImage image) {

@@ -1,5 +1,6 @@
 package com.s0n1.screensnap;
 
+import com.google.zxing.Result;
 import com.s0n1.screensnap.tools.GlobalHotKey;
 import com.s0n1.screensnap.tools.Settings;
 import com.s0n1.screensnap.ui.HomeJFrame;
@@ -7,11 +8,14 @@ import com.s0n1.screensnap.ui.HotkeyDialog;
 import com.s0n1.screensnap.ui.ShotJFrame;
 import com.s0n1.screensnap.util.AppUtil;
 import com.s0n1.screensnap.util.DeviceUtil;
+import com.s0n1.screensnap.util.QrCodeUtil;
+import com.s0n1.screensnap.widget.Application;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileLock;
@@ -24,14 +28,14 @@ import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_WIDTH;
  * Main Entrance
  * Created by Edsuns@qq.com on 2020-05-25
  */
-public class App {
+public class App extends Application {
     private HomeJFrame homeFrame;
 
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
-                App window = new App();
-                window.homeFrame.setVisible(true);
+                App app = new App();
+                app.homeFrame.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -58,14 +62,13 @@ public class App {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         boolean hasDPIScale = !DeviceUtil.isOldVersionJava && screenSize.height != DeviceUtil.displayMode.getHeight();
         if (hasDPIScale) {
-            // 有DPI缩放抛出错误；必须关闭DPI缩放自己适配高DPI,修复截图模糊问题
+            // 有DPI缩放抛出错误. 必须关闭DPI缩放自己适配高DPI. 修复截图模糊问题
             throw new Error("Need disable DPI Scale by VM option: -Dsun.java2d.uiScale=1");
         }
         init();
     }
 
     private void init() {
-        instance = this;
         // 设置系统默认样式
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -77,10 +80,28 @@ public class App {
         // 初始化取色界面
         ShotJFrame shotJFrame = new ShotJFrame();
         shotJFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        shotJFrame.setPickColorListener(color -> {
-            System.out.println("-----COLOR-----");
-            System.out.println("RGB: " + AppUtil.getColorText(color, AppUtil.ColorMode.RGB));
-            System.out.println("HEX: " + AppUtil.getColorText(color, AppUtil.ColorMode.HEX));
+        shotJFrame.setPickColorListener(new ShotJFrame.PickColorListener() {
+            @Override
+            public void onColorPicked(Color color) {
+                System.out.println("-----COLOR-----");
+                System.out.println("RGB: " + AppUtil.getColorText(color, AppUtil.ColorMode.RGB));
+                System.out.println("HEX: " + AppUtil.getColorText(color, AppUtil.ColorMode.HEX));
+            }
+
+            @Override
+            public void onRightCapture(BufferedImage image) {
+                System.out.println("onRightCapture");
+                Result result = QrCodeUtil.parseQrCode(image);
+                if (result != null) {
+                    System.out.println("resultFormat: " + result.getBarcodeFormat());
+                    System.out.println("resultText: " + result.getText());
+                }
+            }
+
+            @Override
+            public void onLeftCapture(BufferedImage image) {
+                System.out.println("onLeftCapture");
+            }
         });
 
         // 设置热键的对话框
@@ -111,8 +132,9 @@ public class App {
                 (SCREEN_HEIGHT - WINDOW_HEIGHT) / 2, WINDOW_WIDTH, WINDOW_HEIGHT);
     }
 
-    public void onAppClose(boolean backgroundRun) {
-        if (backgroundRun) {
+    @Override
+    public void onAppClose(boolean runInBg) {
+        if (runInBg) {
             homeFrame.enableRunInBg();
             homeFrame.setVisible(false);
         } else {
@@ -121,11 +143,5 @@ public class App {
             System.out.println("App closed.");
             System.exit(0);
         }
-    }
-
-    private static App instance;
-
-    public static App getInstance() {
-        return instance;
     }
 }

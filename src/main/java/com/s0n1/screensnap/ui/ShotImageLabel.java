@@ -1,0 +1,67 @@
+package com.s0n1.screensnap.ui;
+
+import javax.swing.*;
+import java.awt.*;
+
+import static com.s0n1.screensnap.ui.UiRes.COLOR_CAPTURE_DARK;
+import static com.s0n1.screensnap.ui.UiRes.COLOR_CAPTURE_LIGHT;
+
+/**
+ * Created by Edsuns@qq.com on 2020-05-31
+ */
+public class ShotImageLabel extends JLabel {
+    int lineX = -1, lineY = -1;
+    int x, y, h, w;
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        // 选区内框
+        g.setColor(COLOR_CAPTURE_LIGHT);
+        g.fillRect(x - 1, y - 1, 1, h + 2);
+        g.fillRect(x + w, y - 1, 1, h + 2);
+        g.fillRect(x, y - 1, w, 1);
+        g.fillRect(x, y + h, w, 1);
+        // 右下角文字背景
+        g.fillRect(x + w - 100, y + h - 30, 100, 30);
+
+        // 选区外框
+        g.setColor(COLOR_CAPTURE_DARK);
+        g.fillRect(x - 2, y - 2, 1, h + 4);
+        g.fillRect(x + w + 1, y - 2, 1, h + 4);
+        g.fillRect(x - 1, y - 2, w + 2, 1);
+        g.fillRect(x - 1, y + h + 1, w + 2, 1);
+        // 右下角文字
+        String area = w + " x " + h;
+        g.drawString(area, x + w - 90, y + h - 10);
+
+        // 十字瞄准线，弃用
+//        if (lineX != -1 || lineY != -1) {
+//            g.drawLine(lineX, 0, lineX, getHeight());
+//            g.drawLine(0, lineY, getWidth(), lineY);
+//        }
+    }
+
+    public void drawRectangle(int x, int y, int width, int height) {
+        this.x = x;
+        this.y = y;
+        h = height;
+        w = width;
+        repaint();
+    }
+
+    public void drawCross(int x, int y) {
+        lineX = x;
+        lineY = y;
+        repaint();
+    }
+
+    public void reset() {
+        lineX = -1;
+        lineY = -1;
+        x = 0;
+        y = 0;
+        w = 0;
+        h = 0;
+    }
+}

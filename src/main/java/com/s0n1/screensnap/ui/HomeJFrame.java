@@ -1,7 +1,7 @@
 package com.s0n1.screensnap.ui;
 
-import com.s0n1.screensnap.App;
 import com.s0n1.screensnap.tools.Settings;
+import com.s0n1.screensnap.widget.Application;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import static com.s0n1.screensnap.ui.UiRes.APP_ICON;
+import static com.s0n1.screensnap.ui.UiRes.APP_NAME;
 
 /**
  * Created by Edsuns@qq.com on 2020-05-29
@@ -70,7 +71,7 @@ public class HomeJFrame extends JFrame {
 
         JButton exitBtn = new JButton("Exit");
         exitBtn.setBounds(240, 50, 80, 30);
-        exitBtn.addActionListener(e -> App.getInstance().onAppClose(false));
+        exitBtn.addActionListener(e -> Application.getInstance().onAppClose(false));
         settingsPanel.add(exitBtn);
     }
 
@@ -95,10 +96,10 @@ public class HomeJFrame extends JFrame {
         PopupMenu popup = new PopupMenu();
         //退出程序选项
         MenuItem exitItem = new MenuItem("Exit");
-        exitItem.addActionListener(e -> App.getInstance().onAppClose(false));
+        exitItem.addActionListener(e -> Application.getInstance().onAppClose(false));
         popup.add(exitItem);
 
-        trayIcon = new TrayIcon(APP_ICON, "ScreenSnap", popup);// 创建trayIcon
+        trayIcon = new TrayIcon(APP_ICON, APP_NAME, popup);// 创建trayIcon
         trayIcon.setImageAutoSize(true);
         trayIcon.addMouseListener(new MouseAdapter() {
             @Override
