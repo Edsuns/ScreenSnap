@@ -1,69 +1,72 @@
 package com.s0n1.screensnap.tools;
 
 import javax.swing.*;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Properties;
 
+/**
+ * Created by Edsuns@qq.com on 2020-05-30
+ */
 public final class Settings {
+    // Default settings
+    private static String hotkey = "shift ctrl X";
     private static boolean runInBg = true;
-    private static String hotkey = "control alt X";
 
-    public static void loadSettings() {
+    private static final String FILE_PATH_CONF = "config.properties";
+    private static final String KEY_HOTKEY = "Hotkey";
+    private static final String KEY_RUN_IN_BG = "RunInBackground";
+
+    public static void load() {
         try {
-            File file = new File("./Settings.txt");
-            if (!file.exists()) return;
-            BufferedReader reader = new BufferedReader(new FileReader(file));
-            String[] lines = new String[2];
-            Object[] object = reader.lines().toArray();
-            if (object.length >= 2) {
-                lines[0] = String.valueOf(object[0]);
-                lines[1] = String.valueOf(object[1]);
-            }
+            FileInputStream inputStream = new FileInputStream(FILE_PATH_CONF);
+            Properties properties = new Properties();
+            properties.load(inputStream);
 
-            String hotkeyFromLocal = lines[0];
-            KeyStroke keyStroke = KeyStroke.getKeyStroke(hotkeyFromLocal);
-            if (keyStroke != null) {
-                hotkey = hotkeyFromLocal;
+            // Hotkey
+            String hotkeyRead = properties.getProperty(KEY_HOTKEY);
+            if (KeyStroke.getKeyStroke(hotkeyRead) != null) {
+                hotkey = hotkeyRead;
             }
-            runInBg = "1".equals(lines[1]);
-            reader.close();
+            // Run in background
+            runInBg = "1".equals(properties.getProperty(KEY_RUN_IN_BG));
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
-    public static void saveSettings() {
-        File file = new File("./Settings.txt");
-        if (!file.exists()) {
-            try {
-                if (!file.createNewFile()) {
-                    System.out.println("Failed to create new file!");
-                    return;
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    public static void save() {
         try {
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
-            bufferedWriter.write(hotkey);
-            bufferedWriter.newLine();
-            bufferedWriter.write(runInBg ? "1" : "0");
-            bufferedWriter.flush();
-            bufferedWriter.close();
+            File file = new File(FILE_PATH_CONF);
+            if (!file.exists() && !file.createNewFile()) {
+                throw new IOException("Fail to create new file: " + FILE_PATH_CONF);
+            }
+            FileInputStream inputStream = new FileInputStream(file);
+            FileOutputStream outputStream = new FileOutputStream(file);
+            Properties properties = new Properties();
+            properties.load(inputStream);
+            // Hotkey
+            properties.setProperty(KEY_HOTKEY, hotkey);
+            // Run in background
+            properties.setProperty(KEY_RUN_IN_BG, runInBg ? "1" : "0");
+            // Save to file
+            properties.store(outputStream, null);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
     public static void setRunInBg(boolean runInBg) {
         Settings.runInBg = runInBg;
-        saveSettings();
+        save();
     }
 
     public static void setHotkey(String hotkey) {
         Settings.hotkey = hotkey;
         GlobalHotKey.getInstance().setupHotKey();
-        saveSettings();
+        save();
     }
 
     public static boolean isRunInBg() {

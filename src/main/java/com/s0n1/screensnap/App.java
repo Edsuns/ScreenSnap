@@ -12,6 +12,7 @@ import com.s0n1.screensnap.util.QrCodeUtil;
 import com.s0n1.screensnap.widget.Application;
 
 import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -19,6 +20,7 @@ import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileLock;
+import java.util.Enumeration;
 
 import static com.s0n1.screensnap.ui.UiRes.*;
 import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_HEIGHT;
@@ -62,7 +64,7 @@ public class App extends Application {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         boolean hasDPIScale = !DeviceUtil.isOldVersionJava && screenSize.height != DeviceUtil.displayMode.getHeight();
         if (hasDPIScale) {
-            // 有DPI缩放抛出错误. 必须关闭DPI缩放自己适配高DPI. 修复截图模糊问题
+            // DPI缩放会导致截图模糊，要求关闭DPI缩放，自己适配高DPI
             throw new Error("Need disable DPI Scale by VM option: -Dsun.java2d.uiScale=1");
         }
         init();
@@ -75,6 +77,21 @@ public class App extends Application {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
                 | UnsupportedLookAndFeelException e) {
             e.printStackTrace();
+        }
+        if (!DeviceUtil.isOldVersionJava) {
+            // 缩放字体大小，要在设置样式后
+            Enumeration<Object> keys = UIManager.getDefaults().keys();
+            while (keys.hasMoreElements()) {
+                Object key = keys.nextElement();
+                Object value = UIManager.get(key);
+                if (value instanceof FontUIResource) {
+                    UIManager.put(key, new FontUIResource((
+                            (FontUIResource) value).getFamily(),
+                            ((FontUIResource) value).getStyle(),
+                            (int) (((FontUIResource) value).getSize() * DPI_SCALE_RATE)
+                    ));
+                }
+            }
         }
 
         // 初始化取色界面
@@ -108,7 +125,7 @@ public class App extends Application {
         HotkeyDialog dialog = new HotkeyDialog(homeFrame);
         dialog.setIconImage(APP_ICON);
 
-        Settings.loadSettings();
+        Settings.load();
         // 实例化快捷键注册模块
         GlobalHotKey.newInstance();
         // 设置取色快捷键回调

@@ -7,6 +7,11 @@ version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
+// Avoid encoding issue
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
 repositories {
     jcenter()
 }
@@ -19,5 +24,6 @@ dependencies {
     compile "org.slf4j:slf4j-api:1.7.30"
     compile "org.slf4j:slf4j-nop:1.7.30"
 
+    // QRCode parser
     compile "com.google.zxing:javase:3.4.0"
 }
