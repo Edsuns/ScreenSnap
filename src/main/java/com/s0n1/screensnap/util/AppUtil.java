@@ -2,6 +2,9 @@ package com.s0n1.screensnap.util;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 
 /**
  * Created by Edsuns@qq.com on 2020-05-26
@@ -25,7 +28,7 @@ public final class AppUtil {
         String s = "";
         switch (mode) {
             case RGB:
-                s = String.format("%d, %d, %d", c.getRed(), c.getGreen(), c.getBlue());
+                s = String.format("%d,%d,%d", c.getRed(), c.getGreen(), c.getBlue());
                 break;
             case HTML:
                 s = String.format("#%02x%02x%02x", c.getRed(), c.getGreen(), c.getBlue());
@@ -42,6 +45,14 @@ public final class AppUtil {
                 break;
         }
         return s;
+    }
+
+    public static void copy(String text) {
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        // 封装文本内容
+        Transferable trans = new StringSelection(text);
+        // 把文本内容设置到系统剪贴板
+        clipboard.setContents(trans, null);
     }
 
     /**

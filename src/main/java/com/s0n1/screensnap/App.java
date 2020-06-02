@@ -3,10 +3,10 @@ package com.s0n1.screensnap;
 import com.google.zxing.Result;
 import com.s0n1.screensnap.tools.GlobalHotKey;
 import com.s0n1.screensnap.tools.Settings;
+import com.s0n1.screensnap.ui.CopyColorJFrame;
 import com.s0n1.screensnap.ui.HomeJFrame;
 import com.s0n1.screensnap.ui.HotkeyDialog;
 import com.s0n1.screensnap.ui.ShotJFrame;
-import com.s0n1.screensnap.util.AppUtil;
 import com.s0n1.screensnap.util.DeviceUtil;
 import com.s0n1.screensnap.util.QrCodeUtil;
 import com.s0n1.screensnap.widget.Application;
@@ -70,6 +70,10 @@ public class App extends Application {
         init();
     }
 
+    private ShotJFrame shotJFrame;
+    private HotkeyDialog hotkeyDialog;
+    private CopyColorJFrame colorJFrame;
+
     private void init() {
         // 设置系统默认样式
         try {
@@ -95,14 +99,11 @@ public class App extends Application {
         }
 
         // 初始化取色界面
-        ShotJFrame shotJFrame = new ShotJFrame();
-        shotJFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        shotJFrame = new ShotJFrame();
         shotJFrame.setPickColorListener(new ShotJFrame.PickColorListener() {
             @Override
             public void onColorPicked(Color color) {
-                System.out.println("-----COLOR-----");
-                System.out.println("RGB: " + AppUtil.getColorText(color, AppUtil.ColorMode.RGB));
-                System.out.println("HEX: " + AppUtil.getColorText(color, AppUtil.ColorMode.HEX));
+                colorJFrame.showCopy(color);
             }
 
             @Override
@@ -122,20 +123,23 @@ public class App extends Application {
         });
 
         // 设置热键的对话框
-        HotkeyDialog dialog = new HotkeyDialog(homeFrame);
-        dialog.setIconImage(APP_ICON);
+        hotkeyDialog = new HotkeyDialog(homeFrame);
+        hotkeyDialog.setTitle(CHANGE_HOTKEY);
+        hotkeyDialog.setIconImage(APP_ICON);
 
         Settings.load();
         // 实例化快捷键注册模块
         GlobalHotKey.newInstance();
         // 设置取色快捷键回调
-        GlobalHotKey.getInstance().setHotKeyListener(() -> {
-            dialog.dispose();
-            shotJFrame.startShot();
-        });
+        GlobalHotKey.getInstance().setHotKeyListener(this::showShot);
+
+        colorJFrame = new CopyColorJFrame();
+        colorJFrame.setIconImage(APP_ICON);
+        colorJFrame.setTitle(COLOR_PICKER);
+        colorJFrame.setPickAnotherCallback(this::showShot);
 
         // 初始化主界面
-        homeFrame = new HomeJFrame(dialog);
+        homeFrame = new HomeJFrame(hotkeyDialog);
         homeFrame.setTitle(APP_NAME);
         homeFrame.setIconImage(APP_ICON);
         homeFrame.addWindowListener(new WindowAdapter() {
@@ -147,6 +151,12 @@ public class App extends Application {
         // 在屏幕中间显示
         homeFrame.setBounds((SCREEN_WIDTH - WINDOW_WIDTH) / 2,
                 (SCREEN_HEIGHT - WINDOW_HEIGHT) / 2, WINDOW_WIDTH, WINDOW_HEIGHT);
+    }
+
+    private void showShot() {
+        hotkeyDialog.dispose();
+        colorJFrame.setVisible(false);
+        shotJFrame.startShot();
     }
 
     @Override

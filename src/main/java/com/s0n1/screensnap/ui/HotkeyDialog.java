@@ -20,7 +20,7 @@ public class HotkeyDialog extends JDialog {
     public static final List<Integer> MODIFIERS = Arrays.asList(KeyEvent.VK_ALT, KeyEvent.VK_CONTROL, KeyEvent.VK_SHIFT, KeyEvent.VK_META);
 
     public HotkeyDialog(JFrame parent) {
-        super(parent, "Change Hotkey", true);
+        super(parent, true);
         setBounds((SCREEN_WIDTH - 300) / 2, (SCREEN_HEIGHT - 200) / 2, 300, 170);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setResizable(false);
