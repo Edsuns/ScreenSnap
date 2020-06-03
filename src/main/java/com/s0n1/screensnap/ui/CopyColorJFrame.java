@@ -31,6 +31,7 @@ public class CopyColorJFrame extends JFrame {
         colorLabel = new JLabel();
         colorLabel.setBounds(10, 15, 100, 100);
         colorLabel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        colorLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         // 重要，设置背景颜色必须先将它设置为不透明的
         colorLabel.setOpaque(true);
         colorLabel.addMouseListener(new MouseAdapter() {

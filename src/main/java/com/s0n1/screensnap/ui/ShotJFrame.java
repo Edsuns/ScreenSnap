@@ -5,6 +5,8 @@ import com.s0n1.screensnap.widget.FullScreenJFrame;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -113,6 +115,32 @@ public class ShotJFrame extends FullScreenJFrame {
                     shotLabel.drawCross(e.getX(), e.getY());
                 } else {
                     refreshColorPanel(e.getX(), e.getY());
+                }
+            }
+        });
+
+        // 必要，不然监听不到键盘事件
+        colorPanel.setFocusable(false);
+        shotLabel.setFocusable(false);
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                Point mousePoint = MouseInfo.getPointerInfo().getLocation();
+                int x = mousePoint.x;
+                int y = mousePoint.y;
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_UP:
+                        robot.mouseMove(x, y - 1);
+                        break;
+                    case KeyEvent.VK_DOWN:
+                        robot.mouseMove(x, y + 1);
+                        break;
+                    case KeyEvent.VK_LEFT:
+                        robot.mouseMove(x - 1, y);
+                        break;
+                    case KeyEvent.VK_RIGHT:
+                        robot.mouseMove(x + 1, y);
+                        break;
                 }
             }
         });
