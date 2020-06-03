@@ -47,6 +47,7 @@ public class HomeJFrame extends JFrame {
 
         JTextField hotKeyText = new JTextField();
         hotKeyText.setBounds(80, 0, 140, 30);
+        hotKeyText.setHorizontalAlignment(SwingConstants.CENTER);
         hotKeyText.setText(Settings.getHotkey());
         hotKeyText.setEditable(false);
         settingsPanel.add(hotKeyText);

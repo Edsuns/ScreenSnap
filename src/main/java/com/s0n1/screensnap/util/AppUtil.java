@@ -31,7 +31,7 @@ public final class AppUtil {
                 s = String.format("%d,%d,%d", c.getRed(), c.getGreen(), c.getBlue());
                 break;
             case HTML:
-                s = String.format("#%02x%02x%02x", c.getRed(), c.getGreen(), c.getBlue());
+                s = String.format("#%02X%02X%02X", c.getRed(), c.getGreen(), c.getBlue());
                 break;
             case HEX:
                 s = String.format("0x%02X%02X%02X", c.getBlue(), c.getGreen(), c.getRed());

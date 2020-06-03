@@ -23,7 +23,7 @@ public final class QrCodeUtil {
 
             return new MultiFormatReader().decode(binaryBitmap, hints);
         } catch (NotFoundException e) {
-            System.out.println("There isn't any QRCode.");
+            System.out.println("Can't find any QRCode.");
         }
         return null;
     }

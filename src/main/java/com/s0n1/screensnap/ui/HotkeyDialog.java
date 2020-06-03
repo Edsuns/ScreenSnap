@@ -32,6 +32,7 @@ public class HotkeyDialog extends JDialog {
         // 内容 宽240
         hotkeyText = new JTextField();
         hotkeyText.setBounds(marginLeft, marginTop, 140, 30);
+        hotkeyText.setHorizontalAlignment(SwingConstants.CENTER);
         hotkeyText.setEditable(false);
         hotkeyText.addKeyListener(new KeyAdapter() {
             @Override

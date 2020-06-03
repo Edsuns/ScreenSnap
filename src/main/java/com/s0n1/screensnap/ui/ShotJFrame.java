@@ -119,7 +119,7 @@ public class ShotJFrame extends FullScreenJFrame {
     }
 
     public void refreshColorPanel(final int mouseX, final int mouseY) {
-        int panelX = mouseX - ColorPanel.Width - ColorPanel.Margin;
+        int panelX = mouseX - ColorPanel.Width;
         int panelY = mouseY - ColorPanel.Height - ColorPanel.Margin;
         int position = getPositionInScreen(mouseX, mouseY);
         switch (position) {
@@ -129,6 +129,7 @@ public class ShotJFrame extends FullScreenJFrame {
                 break;
             case TOP:
             case RIGHT & TOP:
+                panelX = mouseX - ColorPanel.Width - ColorPanel.Margin;
                 panelY = mouseY + ColorPanel.Margin;
                 break;
             case LEFT:
@@ -142,7 +143,7 @@ public class ShotJFrame extends FullScreenJFrame {
                 break;
         }
         colorPanel.setLocation(panelX, panelY);
-        colorPanel.setBackground(robot.getPixelColor(mouseX, mouseY));
+        colorPanel.updateColor(robot, mouseX, mouseY);
     }
 
     public void pickColor() {
@@ -184,18 +185,8 @@ public class ShotJFrame extends FullScreenJFrame {
     private static final int BOTTOM = 0b1110;
 
     private int getPositionInScreen(final int x, final int y) {
-        int leftOrRight = 0b1111;
-        int topOrBottom = 0b1111;
-        if (x < ColorPanel.Width + ColorPanel.Margin) {// Left
-            leftOrRight = LEFT;
-        } else if (x > SCREEN_WIDTH - ColorPanel.Width - ColorPanel.Margin) {// Right
-            leftOrRight = RIGHT;
-        }
-        if (y < ColorPanel.Height + ColorPanel.Margin) {// Top
-            topOrBottom = TOP;
-        } else if (y > SCREEN_HEIGHT - ColorPanel.Height - ColorPanel.Margin) {// Bottom
-            topOrBottom = BOTTOM;
-        }
+        int leftOrRight = x < ColorPanel.Width ? LEFT : RIGHT;
+        int topOrBottom = y < ColorPanel.Height + ColorPanel.Margin ? TOP : BOTTOM;
         return leftOrRight & topOrBottom;
     }
 

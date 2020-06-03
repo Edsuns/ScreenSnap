@@ -11,6 +11,9 @@ import static com.s0n1.screensnap.ui.UiRes.COPY_ICON;
 import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_HEIGHT;
 import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_WIDTH;
 
+/**
+ * Created by Edsuns@qq.com on 2020-06-02
+ */
 public class CopyColorJFrame extends JFrame {
     private final JLabel colorLabel;
     private final JTextField hexColorText;
@@ -27,6 +30,7 @@ public class CopyColorJFrame extends JFrame {
 
         colorLabel = new JLabel();
         colorLabel.setBounds(10, 15, 100, 100);
+        colorLabel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         // 重要，设置背景颜色必须先将它设置为不透明的
         colorLabel.setOpaque(true);
         colorLabel.addMouseListener(new MouseAdapter() {

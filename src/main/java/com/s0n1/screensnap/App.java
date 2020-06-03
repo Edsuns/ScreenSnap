@@ -7,6 +7,7 @@ import com.s0n1.screensnap.ui.CopyColorJFrame;
 import com.s0n1.screensnap.ui.HomeJFrame;
 import com.s0n1.screensnap.ui.HotkeyDialog;
 import com.s0n1.screensnap.ui.ShotJFrame;
+import com.s0n1.screensnap.util.AppUtil;
 import com.s0n1.screensnap.util.DeviceUtil;
 import com.s0n1.screensnap.util.QrCodeUtil;
 import com.s0n1.screensnap.widget.Application;
@@ -113,6 +114,7 @@ public class App extends Application {
                 if (result != null) {
                     System.out.println("resultFormat: " + result.getBarcodeFormat());
                     System.out.println("resultText: " + result.getText());
+                    AppUtil.copy(result.getText());
                 }
             }
 
