@@ -109,11 +109,11 @@ public class App extends Application {
                 System.out.println("onRightCapture");
                 Result result = QrCodeUtil.parseQrCode(image);
                 if (result == null) {
-                    Toast.getInstance().show("No QRCode", Toast.DELAY_DEFAULT);
+                    Toast.getInstance().show(NO_QRCODE, Toast.DELAY_DEFAULT);
                 } else {
                     String format = result.getBarcodeFormat().toString();
                     AppUtil.copy(result.getText());
-                    Toast.getInstance().show(format + " Copied", Toast.DELAY_DEFAULT);
+                    Toast.getInstance().show(format + COPIED, Toast.DELAY_DEFAULT);
                 }
             }
 

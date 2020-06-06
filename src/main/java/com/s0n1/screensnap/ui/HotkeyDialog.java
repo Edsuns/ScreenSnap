@@ -9,6 +9,8 @@ import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.s0n1.screensnap.ui.UiRes.APPLY;
+import static com.s0n1.screensnap.ui.UiRes.TIPS_SET_HOTKEY;
 import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_HEIGHT;
 import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_WIDTH;
 
@@ -42,7 +44,7 @@ public class HotkeyDialog extends JDialog {
         });
         add(hotkeyText);
 
-        JButton applyBtn = new JButton("Apply");
+        JButton applyBtn = new JButton(APPLY);
         applyBtn.setFocusable(false);
         applyBtn.setBounds(marginLeft + 160, marginTop, 80, 30);
         applyBtn.addActionListener(e -> {
@@ -61,7 +63,7 @@ public class HotkeyDialog extends JDialog {
         JLabel tipsLabel = new JLabel();
         tipsLabel.setFocusable(false);
         tipsLabel.setBounds(marginLeft, marginTop + 30 + 20, 240, 30);
-        tipsLabel.setText("Type new global hotkey.");
+        tipsLabel.setText(TIPS_SET_HOTKEY);
         tipsLabel.setHorizontalAlignment(SwingConstants.CENTER);
         add(tipsLabel);
     }

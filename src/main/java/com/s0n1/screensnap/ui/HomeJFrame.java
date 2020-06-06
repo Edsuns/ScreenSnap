@@ -10,8 +10,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import static com.s0n1.screensnap.ui.UiRes.APP_ICON;
-import static com.s0n1.screensnap.ui.UiRes.APP_NAME;
+import static com.s0n1.screensnap.ui.UiRes.*;
 
 /**
  * Created by Edsuns@qq.com on 2020-05-29
@@ -29,19 +28,20 @@ public class HomeJFrame extends JFrame {
     }
 
     private void initSettings() {
+        // 边框Panel
         JPanel contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(50, 50, 5, 5));
         contentPane.setLayout(new GridLayout());
         setContentPane(contentPane);
 
-        // 顶部
+        // 设置Panel
         JPanel settingsPanel = new JPanel();
         settingsPanel.setLayout(null);
         contentPane.add(settingsPanel);
 
-        // settingsPanel内容 宽320 高80
+        // settingsPanel内容 宽350 高125
         // 热键设置
-        JLabel hotKeyLabel = new JLabel("Hotkey: ");
+        JLabel hotKeyLabel = new JLabel(HOTKEY);
         hotKeyLabel.setBounds(0, 0, 72, 30);
         settingsPanel.add(hotKeyLabel);
 
@@ -53,13 +53,13 @@ public class HomeJFrame extends JFrame {
         settingsPanel.add(hotKeyText);
         dialog.setHotkeyChangeListener(hotKeyText::setText);
 
-        JButton editHotKeyBtn = new JButton("Change");
+        JButton editHotKeyBtn = new JButton(CHANGE);
         editHotKeyBtn.setBounds(240, 0, 80, 30);
         editHotKeyBtn.addActionListener(e -> dialog.setVisible(true));
         settingsPanel.add(editHotKeyBtn);
 
         // 后台运行设置
-        JCheckBox backgroundCheck = new JCheckBox("Run in background");
+        JCheckBox backgroundCheck = new JCheckBox(RUN_IN_BG);
         backgroundCheck.setBounds(0, 50, 220, 30);
         backgroundCheck.setSelected(Settings.isRunInBg());
         backgroundCheck.addItemListener(e -> {
@@ -70,10 +70,17 @@ public class HomeJFrame extends JFrame {
         });
         settingsPanel.add(backgroundCheck);
 
-        JButton exitBtn = new JButton("Exit");
+        JButton exitBtn = new JButton(EXIT);
         exitBtn.setBounds(240, 50, 80, 30);
         exitBtn.addActionListener(e -> Application.getInstance().onAppClose(false));
         settingsPanel.add(exitBtn);
+
+        // About链接
+        JLabel aboutLabel = new UrlLabel(ABOUT, ABOUT_URL);
+        aboutLabel.setToolTipText(ABOUT_URL);
+        aboutLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        aboutLabel.setBounds(310, 105, 40, 20);
+        settingsPanel.add(aboutLabel);
     }
 
     private TrayIcon trayIcon;
@@ -96,7 +103,7 @@ public class HomeJFrame extends JFrame {
         // 创建弹出菜单
         PopupMenu popup = new PopupMenu();
         //退出程序选项
-        MenuItem exitItem = new MenuItem("Exit");
+        MenuItem exitItem = new MenuItem(EXIT);
         exitItem.addActionListener(e -> Application.getInstance().onAppClose(false));
         popup.add(exitItem);
 

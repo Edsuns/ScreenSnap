@@ -12,6 +12,16 @@ public class UiRes {
     public final static String APP_NAME = "ScreenSnap";
     public final static String CHANGE_HOTKEY = "Change Hotkey";
     public final static String COLOR_PICKER = "Color Picker";
+    public final static String ABOUT = "About";
+    public final static String ABOUT_URL = "https://github.com/Edsuns/ScreenSnap";
+    public final static String EXIT = "Exit";
+    public final static String CHANGE = "Change";
+    public final static String RUN_IN_BG = "Run in background";
+    public final static String HOTKEY = "Hotkey: ";
+    public final static String APPLY = "Apply";
+    public final static String TIPS_SET_HOTKEY = "Type new global hotkey.";
+    public final static String NO_QRCODE = "No QRCode";
+    public final static String COPIED = " Copied";
 
     // 程序图标
     public static final Image APP_ICON = Toolkit.getDefaultToolkit()
@@ -27,5 +37,5 @@ public class UiRes {
     public static final Color COLOR_GRAY_LIGHT = new Color(0xCCC7C7);
 
     public static final int WINDOW_WIDTH = 420;
-    public static final int WINDOW_HEIGHT = 210;
+    public static final int WINDOW_HEIGHT = 220;
 }
