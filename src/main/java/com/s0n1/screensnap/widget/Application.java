@@ -7,7 +7,9 @@ public abstract class Application {
     private static Application instance;
 
     public Application() {
-        instance = this;
+        if (instance == null) {
+            instance = this;
+        }
     }
 
     public static Application getInstance() {

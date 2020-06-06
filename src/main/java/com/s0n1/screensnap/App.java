@@ -3,10 +3,7 @@ package com.s0n1.screensnap;
 import com.google.zxing.Result;
 import com.s0n1.screensnap.tools.GlobalHotKey;
 import com.s0n1.screensnap.tools.Settings;
-import com.s0n1.screensnap.ui.CopyColorJFrame;
-import com.s0n1.screensnap.ui.HomeJFrame;
-import com.s0n1.screensnap.ui.HotkeyDialog;
-import com.s0n1.screensnap.ui.ShotJFrame;
+import com.s0n1.screensnap.ui.*;
 import com.s0n1.screensnap.util.AppUtil;
 import com.s0n1.screensnap.util.DeviceUtil;
 import com.s0n1.screensnap.util.QrCodeUtil;
@@ -112,9 +109,9 @@ public class App extends Application {
                 System.out.println("onRightCapture");
                 Result result = QrCodeUtil.parseQrCode(image);
                 if (result != null) {
-                    System.out.println("resultFormat: " + result.getBarcodeFormat());
-                    System.out.println("resultText: " + result.getText());
+                    String format = result.getBarcodeFormat().toString();
                     AppUtil.copy(result.getText());
+                    Toast.getInstance().show(format + " has been copied", Toast.DELAY_DEFAULT);
                 }
             }
 
@@ -130,9 +127,7 @@ public class App extends Application {
         hotkeyDialog.setIconImage(APP_ICON);
 
         Settings.load();
-        // 实例化快捷键注册模块
-        GlobalHotKey.newInstance();
-        // 设置取色快捷键回调
+        // 设置快捷键回调
         GlobalHotKey.getInstance().setHotKeyListener(this::showShot);
 
         colorJFrame = new CopyColorJFrame();
@@ -158,6 +153,7 @@ public class App extends Application {
     private void showShot() {
         hotkeyDialog.dispose();
         colorJFrame.setVisible(false);
+        Toast.getInstance().setVisible(false);
         shotJFrame.startShot();
     }
 

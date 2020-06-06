@@ -65,7 +65,7 @@ public final class Settings {
 
     public static void setHotkey(String hotkey) {
         Settings.hotkey = hotkey;
-        GlobalHotKey.getInstance().setupHotKey();
+        GlobalHotKey.getInstance().loadHotKey();
         save();
     }
 

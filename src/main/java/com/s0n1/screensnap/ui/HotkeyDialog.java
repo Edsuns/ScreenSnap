@@ -53,7 +53,7 @@ public class HotkeyDialog extends JDialog {
                 mHotkeyChangeListener.onHotkeyChange(hotkey);
             }
             Settings.setHotkey(hotkey);
-            GlobalHotKey.getInstance().setupHotKey();
+            GlobalHotKey.getInstance().loadHotKey();
             dispose();
         });
         add(applyBtn);

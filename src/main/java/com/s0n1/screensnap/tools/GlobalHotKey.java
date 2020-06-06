@@ -14,22 +14,18 @@ public class GlobalHotKey implements HotKeyListener {
 
     private static GlobalHotKey instance;
 
-    public static void newInstance() {
-        if (instance != null) {
-            instance.stopHotKey();
-        }
-        instance = new GlobalHotKey();
-        instance.setupHotKey();
-    }
-
-    public static GlobalHotKey getInstance() {
-        return instance;
-    }
-
     private GlobalHotKey() {
     }
 
-    public void setupHotKey() {
+    public static GlobalHotKey getInstance() {
+        if (instance == null) {
+            instance = new GlobalHotKey();
+            instance.loadHotKey();
+        }
+        return instance;
+    }
+
+    public void loadHotKey() {
         final GlobalHotKey instance = this;
         new Thread(() -> {
             try {

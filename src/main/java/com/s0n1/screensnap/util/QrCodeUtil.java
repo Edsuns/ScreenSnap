@@ -3,6 +3,7 @@ package com.s0n1.screensnap.util;
 import com.google.zxing.*;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
+import com.s0n1.screensnap.ui.Toast;
 
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
@@ -23,7 +24,7 @@ public final class QrCodeUtil {
 
             return new MultiFormatReader().decode(binaryBitmap, hints);
         } catch (NotFoundException e) {
-            System.out.println("Can't find any QRCode.");
+            Toast.getInstance().show("Can't find any QRCode.", Toast.DELAY_DEFAULT);
         }
         return null;
     }
