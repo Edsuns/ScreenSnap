@@ -10,12 +10,14 @@ import static com.s0n1.screensnap.ui.UiRes.COLOR_CAPTURE_LIGHT;
  * Created by Edsuns@qq.com on 2020-05-31
  */
 public class ShotImageLabel extends JLabel {
-    int lineX = -1, lineY = -1;
-    int x, y, h, w;
+    private int lineX = -1, lineY = -1;
+    private int x, y, w, h;
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        if (w < 1 || h < 1) return;
         // 选区内框
         g.setColor(COLOR_CAPTURE_LIGHT);
         g.fillRect(x - 1, y - 1, 1, h + 2);

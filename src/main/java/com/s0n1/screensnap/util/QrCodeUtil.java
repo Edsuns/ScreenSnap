@@ -3,7 +3,6 @@ package com.s0n1.screensnap.util;
 import com.google.zxing.*;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
-import com.s0n1.screensnap.ui.Toast;
 
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
@@ -14,7 +13,17 @@ import java.util.Map;
  */
 public final class QrCodeUtil {
 
+    /**
+     * 解析二维码等
+     *
+     * @param image 源
+     * @return null即没有二维码
+     */
     public static Result parseQrCode(BufferedImage image) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+        if (width < 10 || height < 10) return null;
+
         try {
             LuminanceSource source = new BufferedImageLuminanceSource(image);
             Binarizer binarizer = new HybridBinarizer(source);
@@ -24,8 +33,7 @@ public final class QrCodeUtil {
 
             return new MultiFormatReader().decode(binaryBitmap, hints);
         } catch (NotFoundException e) {
-            Toast.getInstance().show("Can't find any QRCode.", Toast.DELAY_DEFAULT);
+            return null;
         }
-        return null;
     }
 }
