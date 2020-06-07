@@ -21,8 +21,6 @@ import java.nio.channels.FileLock;
 import java.util.Enumeration;
 
 import static com.s0n1.screensnap.ui.UiRes.*;
-import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_HEIGHT;
-import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_WIDTH;
 
 /**
  * Main Entrance
@@ -87,11 +85,9 @@ public class App extends Application {
                 Object key = keys.nextElement();
                 Object value = UIManager.get(key);
                 if (value instanceof FontUIResource) {
-                    UIManager.put(key, new FontUIResource((
-                            (FontUIResource) value).getFamily(),
-                            ((FontUIResource) value).getStyle(),
-                            (int) (((FontUIResource) value).getSize() * DPI_SCALE_RATE)
-                    ));
+                    FontUIResource resource = (FontUIResource) value;
+                    UIManager.put(key,
+                            new FontUIResource(resource.deriveFont(resource.getSize() * DPI_SCALE_RATE)));
                 }
             }
         }
@@ -127,6 +123,7 @@ public class App extends Application {
         hotkeyDialog = new HotkeyDialog(homeFrame);
         hotkeyDialog.setTitle(CHANGE_HOTKEY);
         hotkeyDialog.setIconImage(APP_ICON);
+        AppUtil.setCenterLocation(hotkeyDialog);
 
         Settings.load();
         // 设置快捷键回调
@@ -136,6 +133,7 @@ public class App extends Application {
         colorJFrame.setIconImage(APP_ICON);
         colorJFrame.setTitle(COLOR_PICKER);
         colorJFrame.setPickAnotherCallback(this::showShot);
+        AppUtil.setCenterLocation(colorJFrame);
 
         // 初始化主界面
         homeFrame = new HomeJFrame(hotkeyDialog);
@@ -147,9 +145,7 @@ public class App extends Application {
                 onAppClose(Settings.isRunInBg());
             }
         });
-        // 在屏幕中间显示
-        homeFrame.setBounds((SCREEN_WIDTH - WINDOW_WIDTH) / 2,
-                (SCREEN_HEIGHT - WINDOW_HEIGHT) / 2, WINDOW_WIDTH, WINDOW_HEIGHT);
+        AppUtil.setCenterLocation(homeFrame);
     }
 
     private void showShot() {

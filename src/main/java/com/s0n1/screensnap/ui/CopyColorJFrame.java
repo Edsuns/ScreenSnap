@@ -8,8 +8,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import static com.s0n1.screensnap.ui.UiRes.COPY_ICON;
-import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_HEIGHT;
-import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_WIDTH;
 
 /**
  * Created by Edsuns@qq.com on 2020-06-02
@@ -23,10 +21,11 @@ public class CopyColorJFrame extends JFrame {
     public CopyColorJFrame() {
         setResizable(false);
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        setBounds((SCREEN_WIDTH - 360) / 2, (SCREEN_HEIGHT - 160) / 2, 330, 160);
+
         JPanel contentPane = new JPanel();
-        setContentPane(contentPane);
+        contentPane.setPreferredSize(new Dimension(320, 125));
         contentPane.setLayout(null);
+        setContentPane(contentPane);
 
         colorLabel = new JLabel();
         colorLabel.setBounds(10, 15, 100, 100);
@@ -94,6 +93,7 @@ public class CopyColorJFrame extends JFrame {
         copyHtmlBtn.addActionListener(e -> AppUtil.copy(htmlColorText.getText()));
         contentPane.add(copyHtmlBtn);
 
+        pack();
     }
 
     public void showCopy(Color color) {

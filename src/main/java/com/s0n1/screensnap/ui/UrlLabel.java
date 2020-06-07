@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+/**
+ * Created by Edsuns@qq.com on 2020-06-06
+ */
 public class UrlLabel extends JLabel {
     private MouseAdapter mouseAdapter;
 

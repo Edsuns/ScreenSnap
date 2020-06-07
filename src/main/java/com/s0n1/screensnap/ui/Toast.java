@@ -1,6 +1,7 @@
 package com.s0n1.screensnap.ui;
 
 import com.s0n1.screensnap.tools.AnimationInvoker;
+import com.s0n1.screensnap.util.AppUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,8 +9,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.s0n1.screensnap.ui.UiRes.COLOR_GRAY_LIGHT;
-import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_HEIGHT;
-import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_WIDTH;
 
 /**
  * Created by Edsuns@qq.com on 2020-06-06
@@ -20,9 +19,6 @@ public class Toast extends JFrame {
     public static final int DELAY_DEFAULT = 2000;
 
     private Toast() {
-        final int width = 300;
-        final int height = 80;
-        setBounds((SCREEN_WIDTH - width) / 2, (SCREEN_HEIGHT - height) / 2, width, height);
         setType(Type.UTILITY);
         setAlwaysOnTop(true);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -31,10 +27,13 @@ public class Toast extends JFrame {
         setFocusable(false);
         setBackground(new Color(0, true));
 
+        final int width = 200;
+        final int height = 60;
         JPanel contentPanel = new JPanel();
+        contentPanel.setPreferredSize(new Dimension(width, height));
         contentPanel.setBackground(new Color(0.95f, 0.95f, 0.97f, 0.95f));
-        contentPanel.setLayout(null);
         contentPanel.setBorder(BorderFactory.createLineBorder(COLOR_GRAY_LIGHT));
+        contentPanel.setLayout(null);
         setContentPane(contentPanel);
 
         msgLabel = new JLabel();
@@ -42,11 +41,14 @@ public class Toast extends JFrame {
         msgLabel.setHorizontalAlignment(SwingConstants.CENTER);
         msgLabel.setFont(msgLabel.getFont().deriveFont(Font.BOLD));
         contentPanel.add(msgLabel);
+
+        pack();
     }
 
     public static Toast getInstance() {
         if (instance == null) {
             instance = new Toast();
+            AppUtil.setCenterLocation(instance);
         }
         return instance;
     }

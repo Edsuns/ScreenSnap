@@ -4,6 +4,7 @@ import com.s0n1.screensnap.tools.GlobalHotKey;
 import com.s0n1.screensnap.tools.Settings;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
@@ -11,8 +12,6 @@ import java.util.List;
 
 import static com.s0n1.screensnap.ui.UiRes.APPLY;
 import static com.s0n1.screensnap.ui.UiRes.TIPS_SET_HOTKEY;
-import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_HEIGHT;
-import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_WIDTH;
 
 /**
  * Created by Edsuns@qq.com on 2020-05-30
@@ -23,7 +22,7 @@ public class HotkeyDialog extends JDialog {
 
     public HotkeyDialog(JFrame parent) {
         super(parent, true);
-        setBounds((SCREEN_WIDTH - 300) / 2, (SCREEN_HEIGHT - 200) / 2, 300, 170);
+        getContentPane().setPreferredSize(new Dimension(300, 125));
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setResizable(false);
         setLayout(null);
@@ -66,6 +65,8 @@ public class HotkeyDialog extends JDialog {
         tipsLabel.setText(TIPS_SET_HOTKEY);
         tipsLabel.setHorizontalAlignment(SwingConstants.CENTER);
         add(tipsLabel);
+
+        pack();
     }
 
     private void parseKey(KeyEvent event) {

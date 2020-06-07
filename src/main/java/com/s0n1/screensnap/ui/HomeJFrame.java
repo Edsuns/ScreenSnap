@@ -24,22 +24,23 @@ public class HomeJFrame extends JFrame {
         setDefaultCloseOperation(Settings.isRunInBg() ? JFrame.DO_NOTHING_ON_CLOSE : JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         setLayout(null);
-        initSettings();
+        initPanel();
     }
 
-    private void initSettings() {
+    private void initPanel() {
         // 边框Panel
-        JPanel contentPane = new JPanel();
-        contentPane.setBorder(new EmptyBorder(50, 50, 5, 5));
-        contentPane.setLayout(new GridLayout());
-        setContentPane(contentPane);
+        JPanel borderPane = new JPanel();
+        borderPane.setBorder(new EmptyBorder(40, 40, 5, 10));
+        borderPane.setLayout(new GridLayout(1, 1));
+        setContentPane(borderPane);
 
         // 设置Panel
+        // settingsPanel内容 宽340 高120
         JPanel settingsPanel = new JPanel();
+        settingsPanel.setPreferredSize(new Dimension(340, 120));
         settingsPanel.setLayout(null);
-        contentPane.add(settingsPanel);
+        borderPane.add(settingsPanel);
 
-        // settingsPanel内容 宽350 高125
         // 热键设置
         JLabel hotKeyLabel = new JLabel(HOTKEY);
         hotKeyLabel.setBounds(0, 0, 72, 30);
@@ -79,8 +80,10 @@ public class HomeJFrame extends JFrame {
         JLabel aboutLabel = new UrlLabel(ABOUT, ABOUT_URL);
         aboutLabel.setToolTipText(ABOUT_URL);
         aboutLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        aboutLabel.setBounds(310, 105, 40, 20);
+        aboutLabel.setBounds(300, 100, 40, 20);
         settingsPanel.add(aboutLabel);
+
+        pack();
     }
 
     private TrayIcon trayIcon;
