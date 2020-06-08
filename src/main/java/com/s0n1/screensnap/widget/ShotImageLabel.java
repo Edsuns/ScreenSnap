@@ -1,4 +1,4 @@
-package com.s0n1.screensnap.ui;
+package com.s0n1.screensnap.widget;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,13 +37,21 @@ public class ShotImageLabel extends JLabel {
         String area = w + " x " + h;
         g.drawString(area, x + w - 90, y + h - 10);
 
-        // 十字瞄准线，弃用
-//        if (lineX != -1 || lineY != -1) {
-//            g.drawLine(lineX, 0, lineX, getHeight());
-//            g.drawLine(0, lineY, getWidth(), lineY);
-//        }
+        // 十字瞄准线
+        if (lineX != -1 || lineY != -1) {
+            g.drawLine(lineX, 0, lineX, getHeight());
+            g.drawLine(0, lineY, getWidth(), lineY);
+        }
     }
 
+    /**
+     * 画圈选区域
+     *
+     * @param x      x坐标
+     * @param y      y坐标
+     * @param width  宽
+     * @param height 高
+     */
     public void drawRectangle(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
@@ -52,6 +60,12 @@ public class ShotImageLabel extends JLabel {
         repaint();
     }
 
+    /**
+     * 画十字瞄准线
+     *
+     * @param x x坐标
+     * @param y y坐标
+     */
     public void drawCross(int x, int y) {
         lineX = x;
         lineY = y;

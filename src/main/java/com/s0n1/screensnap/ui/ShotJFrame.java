@@ -2,6 +2,7 @@ package com.s0n1.screensnap.ui;
 
 import com.s0n1.screensnap.util.DeviceUtil;
 import com.s0n1.screensnap.widget.FullScreenJFrame;
+import com.s0n1.screensnap.widget.ShotImageLabel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -67,7 +68,7 @@ public class ShotJFrame extends FullScreenJFrame {
                 yStart = e.getY();
                 recW = 0;
                 recH = 0;
-                shotLabel.drawCross(xStart, yStart);
+//                shotLabel.drawCross(xStart, yStart);
             }
 
             @Override
@@ -111,11 +112,12 @@ public class ShotJFrame extends FullScreenJFrame {
 
             @Override
             public void mouseMoved(MouseEvent e) {
-                if (pressed) {
-                    shotLabel.drawCross(e.getX(), e.getY());
-                } else {
-                    refreshColorPanel(e.getX(), e.getY());
-                }
+//                if (pressed) {
+//                    shotLabel.drawCross(e.getX(), e.getY());
+//                } else {
+//                    refreshColorPanel(e.getX(), e.getY());
+//                }
+                refreshColorPanel(e.getX(), e.getY());
             }
         });
 

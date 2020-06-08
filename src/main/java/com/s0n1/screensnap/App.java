@@ -69,6 +69,7 @@ public class App extends Application {
     private ShotJFrame shotJFrame;
     private HotkeyDialog hotkeyDialog;
     private CopyColorJFrame colorJFrame;
+    private PictureJFrame pictureJFrame;
 
     private void init() {
         // 设置系统默认样式
@@ -102,20 +103,19 @@ public class App extends Application {
 
             @Override
             public void onRightCapture(BufferedImage image) {
-                System.out.println("onRightCapture");
                 Result result = QrCodeUtil.parseQrCode(image);
                 if (result == null) {
                     Toast.getInstance().show(NO_QRCODE, Toast.DELAY_DEFAULT);
                 } else {
                     String format = result.getBarcodeFormat().toString();
-                    AppUtil.copy(result.getText());
+                    AppUtil.copyText(result.getText());
                     Toast.getInstance().show(format + COPIED, Toast.DELAY_DEFAULT);
                 }
             }
 
             @Override
             public void onLeftCapture(BufferedImage image) {
-                System.out.println("onLeftCapture");
+                pictureJFrame.showPicture(image);
             }
         });
 
@@ -135,10 +135,16 @@ public class App extends Application {
         colorJFrame.setPickAnotherCallback(this::showShot);
         AppUtil.setCenterLocation(colorJFrame);
 
+        // 图片查看界面
+        pictureJFrame = new PictureJFrame();
+        pictureJFrame.setIconImage(APP_ICON);
+        pictureJFrame.setTitle(PICTURE_VIEWER);
+        AppUtil.setCenterLocation(pictureJFrame);
+
         // 初始化主界面
         homeFrame = new HomeJFrame(hotkeyDialog);
-        homeFrame.setTitle(APP_NAME);
         homeFrame.setIconImage(APP_ICON);
+        homeFrame.setTitle(APP_NAME);
         homeFrame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {

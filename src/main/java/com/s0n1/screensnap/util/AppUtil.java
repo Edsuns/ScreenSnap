@@ -1,8 +1,8 @@
 package com.s0n1.screensnap.util;
 
-import javax.swing.*;
+import com.s0n1.screensnap.widget.ImageTransferable;
+
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 
@@ -50,46 +50,19 @@ public final class AppUtil {
         return s;
     }
 
-    public static void copy(String text) {
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+    public static void copyText(String text) {
         // 封装文本内容
         Transferable trans = new StringSelection(text);
         // 把文本内容设置到系统剪贴板
-        clipboard.setContents(trans, null);
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(trans, null);
+    }
+
+    public static void copyImage(Image image) {
+        Transferable trans = new ImageTransferable(image);
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(trans, null);
     }
 
     public static void setCenterLocation(Window window) {
         window.setLocation((SCREEN_WIDTH - window.getWidth()) / 2, (SCREEN_HEIGHT - window.getHeight()) / 2);
-    }
-
-    /**
-     * 文本自动换行
-     * 必须在setBounds后使用
-     *
-     * @param jLabel     目标
-     * @param longString 文本内容
-     */
-    public static void setTextAuto(JLabel jLabel, String longString) {
-        StringBuilder builder = new StringBuilder("<html>");
-        char[] chars = longString.toCharArray();
-        FontMetrics fontMetrics = jLabel.getFontMetrics(jLabel.getFont());
-        int start = 0;
-        int len = 0;
-        while (start + len < longString.length()) {
-            while (true) {
-                len++;
-                if (start + len > longString.length()) break;
-                if (fontMetrics.charsWidth(chars, start, len)
-                        > jLabel.getWidth()) {
-                    break;
-                }
-            }
-            builder.append(chars, start, len - 1).append("<br/>");
-            start = start + len - 1;
-            len = 0;
-        }
-        builder.append(chars, start, longString.length() - start);
-        builder.append("</html>");
-        jLabel.setText(builder.toString());
     }
 }

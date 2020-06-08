@@ -12,6 +12,7 @@ public class UiRes {
     public final static String APP_NAME = "ScreenSnap";
     public final static String CHANGE_HOTKEY = "Change Hotkey";
     public final static String COLOR_PICKER = "Color Picker";
+    public final static String PICTURE_VIEWER = "Picture Viewer";
     public final static String ABOUT = "About";
     public final static String ABOUT_URL = "https://github.com/Edsuns/ScreenSnap";
     public final static String EXIT = "Exit";
@@ -21,7 +22,12 @@ public class UiRes {
     public final static String APPLY = "Apply";
     public final static String TIPS_SET_HOTKEY = "Type new global hotkey.";
     public final static String NO_QRCODE = "No QRCode";
+    public final static String COPY = "Copy";
     public final static String COPIED = " Copied";
+    public final static String FIT = "Fit";
+    public final static String ORIGIN = "Origin";
+    public final static String SAVE = "Save";
+    public final static String SAVE_SCREENSHOT = "Save Screenshot";
 
     // 程序图标
     public static final Image APP_ICON = Toolkit.getDefaultToolkit()

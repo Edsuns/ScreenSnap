@@ -78,19 +78,19 @@ public class CopyColorJFrame extends JFrame {
         JButton copyHexBtn = new JButton();
         copyHexBtn.setBounds(285, 15, size, size);
         copyHexBtn.setIcon(copyIcon);
-        copyHexBtn.addActionListener(e -> AppUtil.copy(hexColorText.getText()));
+        copyHexBtn.addActionListener(e -> AppUtil.copyText(hexColorText.getText()));
         contentPane.add(copyHexBtn);
 
         JButton copyRgbBtn = new JButton();
         copyRgbBtn.setBounds(285, 51, size, size);
         copyRgbBtn.setIcon(copyIcon);
-        copyRgbBtn.addActionListener(e -> AppUtil.copy(rgbColorText.getText()));
+        copyRgbBtn.addActionListener(e -> AppUtil.copyText(rgbColorText.getText()));
         contentPane.add(copyRgbBtn);
 
         JButton copyHtmlBtn = new JButton();
         copyHtmlBtn.setBounds(285, 89, size, size);
         copyHtmlBtn.setIcon(copyIcon);
-        copyHtmlBtn.addActionListener(e -> AppUtil.copy(htmlColorText.getText()));
+        copyHtmlBtn.addActionListener(e -> AppUtil.copyText(htmlColorText.getText()));
         contentPane.add(copyHtmlBtn);
 
         pack();
