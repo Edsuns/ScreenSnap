@@ -19,8 +19,8 @@ public class PictureViewer extends JComponent {
     private int widthFixed;
     private int heightFixed;
 
-    private static final float ZOOM_SCALE_MAX = 10;
-    private float zoomScaleMin;
+    private static final int ZOOM_SCALE_MAX = 10;
+    private static final float ZOOM_SCALE_MIN = 0.5f;
     private float zoomScale;
 
     private int lastMouseX;
@@ -42,8 +42,8 @@ public class PictureViewer extends JComponent {
             }
             if (zoomScale > ZOOM_SCALE_MAX) {
                 zoomScale = ZOOM_SCALE_MAX;
-            } else if (zoomScale < zoomScaleMin) {
-                zoomScale = zoomScaleMin;
+            } else if (zoomScale < ZOOM_SCALE_MIN) {
+                zoomScale = ZOOM_SCALE_MIN;
             }
             zoomPicture(zoomScaleOld);
         });
@@ -80,35 +80,18 @@ public class PictureViewer extends JComponent {
         });
     }
 
-    public void setPicture(BufferedImage image) {
+    public void setPicture(BufferedImage image, Dimension fixedSize) {
         picture = image;
-        setPictureSizeAuto();
+        widthFixed = fixedSize.width;
+        heightFixed = fixedSize.height;
+        zoomScale = (float) heightFixed / image.getWidth();
+        xFixed = (getWidth() - widthFixed) / 2;
+        yFixed = (getHeight() - heightFixed) / 2;
+        repaint();
     }
 
     public BufferedImage getPicture() {
         return picture;
-    }
-
-    /**
-     * @return 是否图片尺寸小于容器尺寸
-     */
-    private boolean isPicSmaller() {
-        return widthFixed <= getWidth() && heightFixed <= getHeight();
-    }
-
-    /**
-     * 根据图片尺寸选择合适的方法缩放图片
-     */
-    public void setPictureSizeAuto() {
-        if (picture == null) return;
-
-        if (picture.getWidth() < getHeight() && picture.getHeight() <= getHeight()) {
-            setPictureOriginSize();
-        } else {
-            setPictureFitSize();
-        }
-        // 最小缩放比例为Auto比例的一半
-        zoomScaleMin = zoomScale * 0.5f;
     }
 
     /**
@@ -137,18 +120,17 @@ public class PictureViewer extends JComponent {
         repaint();
     }
 
-    public boolean isOriginSize() {
-        if (picture == null) return true;
+    /**
+     * 根据图片尺寸选择合适的方法缩放图片
+     */
+    private void setPictureSizeAuto() {
+        if (picture == null) return;
 
-        return picture.getWidth() == widthFixed && picture.getHeight() == heightFixed;
-    }
-
-    public boolean isFitSize() {
-        if (picture == null) return true;
-
-        int w = getWidth();
-        int h = getHeight();
-        return (widthFixed == w && heightFixed <= h) || (heightFixed == h && widthFixed <= w);
+        if (picture.getWidth() < getHeight() && picture.getHeight() <= getHeight()) {
+            setPictureOriginSize();
+        } else {
+            setPictureFitSize();
+        }
     }
 
     /**
@@ -166,32 +148,69 @@ public class PictureViewer extends JComponent {
     }
 
     /**
-     * 缩放图片到刚好放进容器
+     * 缩放图片到刚好放进此部件
      */
     public void setPictureFitSize() {
         if (picture == null) return;
 
-        int width = picture.getWidth();
-        int height = picture.getHeight();
-        int sizeW = getWidth();
-        int sizeH = getHeight();
-        float rateW = (float) width / height;
-        float rateSize = (float) sizeW / sizeH;
-        boolean shouldZoomByW = rateW > rateSize;
-        if (shouldZoomByW) {
-            zoomScale = (float) sizeW / width;
-            heightFixed = (int) (height * zoomScale);
-            widthFixed = sizeW;
-            xFixed = 0;
-            yFixed = (sizeH - heightFixed) / 2;
-        } else {
-            zoomScale = (float) sizeH / height;
-            widthFixed = (int) (width * zoomScale);
-            heightFixed = sizeH;
-            xFixed = (sizeW - widthFixed) / 2;
-            yFixed = 0;
-        }
+        int width = getWidth();
+        int height = getHeight();
+        // getHeight获取到的总比PreferredSize的高度少1，加回去
+        Dimension dimension = calcFitSize(picture, width, height + 1);
+        widthFixed = dimension.width;
+        heightFixed = dimension.height;
+        zoomScale = (float) dimension.width / picture.getWidth();
+        // 居中显示
+        xFixed = (width - widthFixed) / 2;
+        yFixed = (height - heightFixed) / 2;
         repaint();
+    }
+
+    /**
+     * 计算刚好可以放进Max的尺寸
+     *
+     * @param image     源
+     * @param widthMax  缩放依据
+     * @param heightMax 缩放依据
+     * @return 结果
+     */
+    public static Dimension calcFitSize(BufferedImage image, int widthMax, int heightMax) {
+        if (image == null) return new Dimension(0, 0);
+
+        int w = image.getWidth();
+        int h = image.getHeight();
+        float zoomScale = (float) heightMax / h;
+        int wNew = (int) (w * zoomScale);
+        if (wNew <= widthMax) {
+            w = (int) (w * zoomScale);
+            h = heightMax;
+        } else {
+            zoomScale = (float) widthMax / w;
+            w = widthMax;
+            h = (int) (h * zoomScale);
+        }
+        return new Dimension(w, h);
+    }
+
+    public boolean isOriginSize() {
+        if (picture == null) return true;
+
+        return picture.getWidth() == widthFixed && picture.getHeight() == heightFixed;
+    }
+
+    public boolean isFitSize() {
+        if (picture == null) return true;
+
+        int w = getWidth();
+        int h = getHeight();
+        return (widthFixed == w && heightFixed <= h) || (heightFixed == h && widthFixed <= w);
+    }
+
+    /**
+     * @return 是否图片尺寸小于容器尺寸
+     */
+    private boolean isPicSmaller() {
+        return widthFixed <= getWidth() && heightFixed <= getHeight();
     }
 
     @Override
