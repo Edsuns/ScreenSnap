@@ -4,10 +4,11 @@ import com.google.zxing.Result;
 import com.s0n1.screensnap.tools.GlobalHotKey;
 import com.s0n1.screensnap.tools.Settings;
 import com.s0n1.screensnap.ui.*;
-import com.s0n1.screensnap.util.AppUtil;
 import com.s0n1.screensnap.util.DeviceUtil;
 import com.s0n1.screensnap.util.QrCodeUtil;
+import com.s0n1.screensnap.util.Util;
 import com.s0n1.screensnap.widget.Application;
+import com.s0n1.screensnap.widget.Toast;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
@@ -58,7 +59,7 @@ public class App extends Application {
 
         // 开始检查DPI缩放是否开启
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        boolean hasDPIScale = !DeviceUtil.isOldVersionJava && screenSize.height != DeviceUtil.displayMode.getHeight();
+        boolean hasDPIScale = !DeviceUtil.isOldVersionJava && screenSize.height != DeviceUtil.getScreenHeight();
         if (hasDPIScale) {
             // DPI缩放会导致截图模糊，要求关闭DPI缩放，自己适配高DPI
             throw new Error("Need disable DPI Scale by VM option: -Dsun.java2d.uiScale=1");
@@ -108,7 +109,7 @@ public class App extends Application {
                     Toast.getInstance().show(NO_QRCODE, Toast.DELAY_DEFAULT);
                 } else {
                     String format = result.getBarcodeFormat().toString();
-                    AppUtil.copyText(result.getText());
+                    Util.copyText(result.getText());
                     Toast.getInstance().show(format + COPIED, Toast.DELAY_DEFAULT);
                 }
             }
@@ -123,7 +124,7 @@ public class App extends Application {
         hotkeyDialog = new HotkeyDialog(homeFrame);
         hotkeyDialog.setTitle(CHANGE_HOTKEY);
         hotkeyDialog.setIconImage(APP_ICON);
-        AppUtil.setCenterLocation(hotkeyDialog);
+        Util.setCenterLocation(hotkeyDialog);
 
         Settings.load();
         // 设置快捷键回调
@@ -133,13 +134,12 @@ public class App extends Application {
         colorJFrame.setIconImage(APP_ICON);
         colorJFrame.setTitle(COLOR_PICKER);
         colorJFrame.setPickAnotherCallback(this::showShot);
-        AppUtil.setCenterLocation(colorJFrame);
+        Util.setCenterLocation(colorJFrame);
 
         // 图片查看界面
         pictureJFrame = new PictureJFrame();
         pictureJFrame.setIconImage(APP_ICON);
         pictureJFrame.setTitle(PICTURE_VIEWER);
-        AppUtil.setCenterLocation(pictureJFrame);
 
         // 初始化主界面
         homeFrame = new HomeJFrame(hotkeyDialog);
@@ -151,7 +151,7 @@ public class App extends Application {
                 onAppClose(Settings.isRunInBg());
             }
         });
-        AppUtil.setCenterLocation(homeFrame);
+        Util.setCenterLocation(homeFrame);
     }
 
     private void showShot() {

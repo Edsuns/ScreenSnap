@@ -1,6 +1,6 @@
 package com.s0n1.screensnap.ui;
 
-import com.s0n1.screensnap.util.AppUtil;
+import com.s0n1.screensnap.util.Util;
 
 import javax.swing.*;
 import java.awt.*;
@@ -78,19 +78,19 @@ public class CopyColorJFrame extends JFrame {
         JButton copyHexBtn = new JButton();
         copyHexBtn.setBounds(285, 15, size, size);
         copyHexBtn.setIcon(copyIcon);
-        copyHexBtn.addActionListener(e -> AppUtil.copyText(hexColorText.getText()));
+        copyHexBtn.addActionListener(e -> Util.copyText(hexColorText.getText()));
         contentPane.add(copyHexBtn);
 
         JButton copyRgbBtn = new JButton();
         copyRgbBtn.setBounds(285, 51, size, size);
         copyRgbBtn.setIcon(copyIcon);
-        copyRgbBtn.addActionListener(e -> AppUtil.copyText(rgbColorText.getText()));
+        copyRgbBtn.addActionListener(e -> Util.copyText(rgbColorText.getText()));
         contentPane.add(copyRgbBtn);
 
         JButton copyHtmlBtn = new JButton();
         copyHtmlBtn.setBounds(285, 89, size, size);
         copyHtmlBtn.setIcon(copyIcon);
-        copyHtmlBtn.addActionListener(e -> AppUtil.copyText(htmlColorText.getText()));
+        copyHtmlBtn.addActionListener(e -> Util.copyText(htmlColorText.getText()));
         contentPane.add(copyHtmlBtn);
 
         pack();
@@ -98,9 +98,9 @@ public class CopyColorJFrame extends JFrame {
 
     public void showCopy(Color color) {
         colorLabel.setBackground(color);
-        hexColorText.setText(AppUtil.getColorText(color, AppUtil.ColorMode.HEX));
-        rgbColorText.setText(AppUtil.getColorText(color, AppUtil.ColorMode.RGB));
-        htmlColorText.setText(AppUtil.getColorText(color, AppUtil.ColorMode.HTML));
+        hexColorText.setText(Util.getColorText(color, Util.ColorMode.HEX));
+        rgbColorText.setText(Util.getColorText(color, Util.ColorMode.RGB));
+        htmlColorText.setText(Util.getColorText(color, Util.ColorMode.HTML));
         setExtendedState(JFrame.NORMAL);
         setVisible(true);
         toFront();

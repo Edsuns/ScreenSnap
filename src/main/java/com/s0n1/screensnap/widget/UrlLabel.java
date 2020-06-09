@@ -1,4 +1,4 @@
-package com.s0n1.screensnap.ui;
+package com.s0n1.screensnap.widget;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,6 +1,6 @@
 package com.s0n1.screensnap.ui;
 
-import com.s0n1.screensnap.util.AppUtil;
+import com.s0n1.screensnap.util.Util;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,7 +50,7 @@ public class ColorPanel extends JPanel {
         Color color = robot.getPixelColor(x, y);
         pointLabel.setText("(" + x + "," + y + ")");
         colorLabel.setBackground(color);
-        colorTextLabel.setText(AppUtil.getColorText(color, AppUtil.ColorMode.HTML));
+        colorTextLabel.setText(Util.getColorText(color, Util.ColorMode.HTML));
         // 截取鼠标区域图像并绘制放大镜
         pointImage = robot.createScreenCapture(new Rectangle(x - 5, y - 5, 11, 11));
         repaint();

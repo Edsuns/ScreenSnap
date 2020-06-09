@@ -10,15 +10,12 @@ public final class DeviceUtil {
     private static final String JAVA_VERSION = System.getProperty("java.version");
     public static final boolean isOldVersionJava = Float.parseFloat(JAVA_VERSION.substring(0, 3)) < 1.9;
     public static final boolean isWindows = OS_NAME.contains("windows");
-    public static DisplayMode displayMode = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode();
 
-    // 屏幕宽高
-    public static int SCREEN_WIDTH = displayMode.getWidth();
-    public static int SCREEN_HEIGHT = displayMode.getHeight();
+    public static int getScreenWidth() {
+        return GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getWidth();
+    }
 
-    public static void updateDisplayMode() {
-        displayMode = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode();
-        SCREEN_WIDTH = displayMode.getWidth();
-        SCREEN_HEIGHT = displayMode.getHeight();
+    public static int getScreenHeight() {
+        return GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getHeight();
     }
 }

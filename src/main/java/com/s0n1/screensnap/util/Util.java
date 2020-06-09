@@ -5,14 +5,13 @@ import com.s0n1.screensnap.widget.ImageTransferable;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
-
-import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_HEIGHT;
-import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_WIDTH;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Edsuns@qq.com on 2020-05-26
  */
-public final class AppUtil {
+public final class Util {
     public enum ColorMode {
         RGB, HTML, HEX, HSB
     }// 颜色模式
@@ -63,6 +62,11 @@ public final class AppUtil {
     }
 
     public static void setCenterLocation(Window window) {
-        window.setLocation((SCREEN_WIDTH - window.getWidth()) / 2, (SCREEN_HEIGHT - window.getHeight()) / 2);
+        window.setLocation((DeviceUtil.getScreenWidth() - window.getWidth()) / 2, (DeviceUtil.getScreenHeight() - window.getHeight()) / 2);
+    }
+
+    public static String getCurrentTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HHmmss");
+        return dateFormat.format(new Date());
     }
 }

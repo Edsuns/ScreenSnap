@@ -25,7 +25,7 @@ public class UiRes {
     public final static String COPY = "Copy";
     public final static String COPIED = " Copied";
     public final static String FIT = "Fit";
-    public final static String ORIGIN = "Origin";
+    public final static String ORIGIN = "1:1";
     public final static String SAVE = "Save";
     public final static String SAVE_SCREENSHOT = "Save Screenshot";
 

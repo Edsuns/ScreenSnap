@@ -19,6 +19,8 @@ public class PictureViewer extends JComponent {
     private int widthFixed;
     private int heightFixed;
 
+    private static final float ZOOM_SCALE_MAX = 10;
+    private float zoomScaleMin;
     private float zoomScale;
 
     private int lastMouseX;
@@ -34,14 +36,14 @@ public class PictureViewer extends JComponent {
         addMouseWheelListener(e -> {
             final float zoomScaleOld = zoomScale;
             if (zoomScale < 1) {
-                zoomScale -= (float) e.getPreciseWheelRotation() * 0.1f;
+                zoomScale -= (float) e.getPreciseWheelRotation() * 0.05f;
             } else {
-                zoomScale -= (float) e.getPreciseWheelRotation() * 0.5f;
+                zoomScale -= (float) e.getPreciseWheelRotation() * 0.3f;
             }
-            if (zoomScale > 10) {
-                zoomScale = 10;
-            } else if (zoomScale < 0.1f) {
-                zoomScale = 0.1f;
+            if (zoomScale > ZOOM_SCALE_MAX) {
+                zoomScale = ZOOM_SCALE_MAX;
+            } else if (zoomScale < zoomScaleMin) {
+                zoomScale = zoomScaleMin;
             }
             zoomPicture(zoomScaleOld);
         });
@@ -105,6 +107,8 @@ public class PictureViewer extends JComponent {
         } else {
             setPictureFitSize();
         }
+        // 最小缩放比例为Auto比例的一半
+        zoomScaleMin = zoomScale * 0.5f;
     }
 
     /**
@@ -137,6 +141,14 @@ public class PictureViewer extends JComponent {
         if (picture == null) return true;
 
         return picture.getWidth() == widthFixed && picture.getHeight() == heightFixed;
+    }
+
+    public boolean isFitSize() {
+        if (picture == null) return true;
+
+        int w = getWidth();
+        int h = getHeight();
+        return (widthFixed == w && heightFixed <= h) || (heightFixed == h && widthFixed <= w);
     }
 
     /**
@@ -188,6 +200,19 @@ public class PictureViewer extends JComponent {
 
         if (picture != null) {
             g.drawImage(picture, xFixed, yFixed, widthFixed, heightFixed, null);
+            if (mPictureChangeListener != null) {
+                mPictureChangeListener.onPictureChange();
+            }
         }
+    }
+
+    private PictureChangeListener mPictureChangeListener;
+
+    public void setPictureChangeListener(PictureChangeListener l) {
+        this.mPictureChangeListener = l;
+    }
+
+    public interface PictureChangeListener {
+        void onPictureChange();
     }
 }

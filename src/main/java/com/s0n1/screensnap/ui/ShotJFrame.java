@@ -12,9 +12,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
-import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_HEIGHT;
-import static com.s0n1.screensnap.util.DeviceUtil.SCREEN_WIDTH;
-
 /**
  * Created by Edsuns@qq.com on 2020-05-26
  */
@@ -198,8 +195,8 @@ public class ShotJFrame extends FullScreenJFrame {
         Point mousePoint = MouseInfo.getPointerInfo().getLocation();
         refreshColorPanel(mousePoint.x, mousePoint.y);
 
-        DeviceUtil.updateDisplayMode();
-        shotImage = robot.createScreenCapture(new Rectangle(SCREEN_WIDTH, SCREEN_HEIGHT));
+        shotImage = robot.createScreenCapture(
+                new Rectangle(DeviceUtil.getScreenWidth(), DeviceUtil.getScreenHeight()));
         shotLabel.setIcon(new ImageIcon(shotImage));
         setVisible(true);
     }
