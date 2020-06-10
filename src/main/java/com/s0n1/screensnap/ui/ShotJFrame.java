@@ -143,6 +143,10 @@ public class ShotJFrame extends FullScreenJFrame {
                 }
             }
         });
+
+        // 修复：第一次setVisible无法最顶层显示
+        setVisible(true);
+        setVisible(false);
     }
 
     public void refreshColorPanel(final int mouseX, final int mouseY) {

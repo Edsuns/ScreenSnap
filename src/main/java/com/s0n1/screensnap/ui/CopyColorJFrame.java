@@ -101,6 +101,7 @@ public class CopyColorJFrame extends JFrame {
         hexColorText.setText(Util.getColorText(color, Util.ColorMode.HEX));
         rgbColorText.setText(Util.getColorText(color, Util.ColorMode.RGB));
         htmlColorText.setText(Util.getColorText(color, Util.ColorMode.HTML));
+        Util.setCenterLocation(this);
         setExtendedState(JFrame.NORMAL);
         setVisible(true);
         toFront();
