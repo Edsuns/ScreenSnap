@@ -9,6 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -26,10 +28,17 @@ public class PictureJFrame extends JFrame {
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setMinimumSize(new Dimension(400, 400));
         setLayout(new BorderLayout(0, 0));
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                pictureViewer.setPicture(null, null);
+            }
+        });
 
         pictureViewer = new PictureViewer();
         pictureViewer.setPictureChangeListener(() -> {
-            fitSizeBtn.setText(pictureViewer.isOriginSize() ? FIT : ORIGIN);
+            // 默认FIT，即isFitSize和isOriginSize都否时设置为FIT
+            fitSizeBtn.setText(pictureViewer.isFitSize() ? ORIGIN : FIT);
             fitSizeBtn.setEnabled(!pictureViewer.isOriginSize() || !pictureViewer.isFitSize());
         });
         pictureViewer.addMouseListener(new MouseAdapter() {
@@ -37,8 +46,13 @@ public class PictureJFrame extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 // 双击切换窗口最大化
                 if (e.getClickCount() == 2) {
-                    setExtendedState(getExtendedState() == JFrame.MAXIMIZED_BOTH ?
-                            JFrame.NORMAL : JFrame.MAXIMIZED_BOTH);
+                    if (getExtendedState() == JFrame.MAXIMIZED_BOTH) {
+                        // 通过showPicture设置最小化能同时恢复合适的尺寸
+                        showPicture(pictureViewer.getPicture());
+                    } else {
+                        // 最大化
+                        setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    }
                 }
             }
         });
@@ -57,6 +71,10 @@ public class PictureJFrame extends JFrame {
             }
         });
         controlPanel.add(fitSizeBtn);
+
+        JButton rotateBtn = new JButton(ROTATE);
+        rotateBtn.addActionListener(e -> pictureViewer.rotatePicture());
+        controlPanel.add(rotateBtn);
 
         JButton saveBtn = new JButton(SAVE);
         saveBtn.addActionListener(e -> savePicture());
@@ -90,9 +108,8 @@ public class PictureJFrame extends JFrame {
         int heightMax = (int) (DeviceUtil.getScreenHeight() * 0.8f);
         int imageWidth = image.getWidth();
         int imageHeight = image.getHeight();
-        Dimension fitSize = PictureViewer.calcFitSize(image, widthMax, heightMax);
-
         if (imageWidth > widthMax || imageHeight > heightMax) {// 如果超过限制的尺寸
+            Dimension fitSize = PictureViewer.calcFitSize(image, widthMax, heightMax);
             pictureViewer.setPreferredSize(fitSize);
             pictureViewer.setPicture(image, fitSize);
         } else {

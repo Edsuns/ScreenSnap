@@ -124,8 +124,8 @@ public class App extends Application {
         hotkeyDialog = new HotkeyDialog(homeFrame);
         hotkeyDialog.setTitle(CHANGE_HOTKEY);
         hotkeyDialog.setIconImage(APP_ICON);
-        Util.setCenterLocation(hotkeyDialog);
 
+        // 加载设置包括热键
         Settings.load();
         // 设置快捷键回调
         GlobalHotKey.getInstance().setHotKeyListener(this::showShot);
@@ -134,7 +134,6 @@ public class App extends Application {
         colorJFrame.setIconImage(APP_ICON);
         colorJFrame.setTitle(COLOR_PICKER);
         colorJFrame.setPickAnotherCallback(this::showShot);
-        Util.setCenterLocation(colorJFrame);
 
         // 图片查看界面
         pictureJFrame = new PictureJFrame();
@@ -154,6 +153,9 @@ public class App extends Application {
         Util.setCenterLocation(homeFrame);
     }
 
+    /**
+     * 清除障碍并显示屏幕截取功能
+     */
     private void showShot() {
         hotkeyDialog.dispose();
         colorJFrame.setVisible(false);
@@ -168,7 +170,7 @@ public class App extends Application {
             homeFrame.setVisible(false);
         } else {
             GlobalHotKey.getInstance().stopHotKey();
-            homeFrame.disableTrayIcon();
+            homeFrame.disableRunInBg();
             System.out.println("App closed.");
             System.exit(0);
         }

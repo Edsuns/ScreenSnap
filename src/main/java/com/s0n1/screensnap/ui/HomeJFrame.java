@@ -57,7 +57,10 @@ public class HomeJFrame extends JFrame {
 
         JButton editHotKeyBtn = new JButton(CHANGE);
         editHotKeyBtn.setBounds(240, 0, 80, 30);
-        editHotKeyBtn.addActionListener(e -> dialog.setVisible(true));
+        editHotKeyBtn.addActionListener(e -> {
+            dialog.setLocationRelativeTo(this);
+            dialog.setVisible(true);
+        });
         settingsPanel.add(editHotKeyBtn);
 
         // 后台运行设置
@@ -66,7 +69,7 @@ public class HomeJFrame extends JFrame {
         backgroundCheck.setSelected(Settings.isRunInBg());
         backgroundCheck.addItemListener(e -> {
             boolean runInBg = e.getStateChange() == ItemEvent.SELECTED;
-            if (!runInBg) disableTrayIcon();
+            if (!runInBg) disableRunInBg();
             Settings.setRunInBg(runInBg);
             System.out.println("RunInBg: " + runInBg);
         });
@@ -89,7 +92,7 @@ public class HomeJFrame extends JFrame {
 
     private TrayIcon trayIcon;
 
-    public void disableTrayIcon() {
+    public void disableRunInBg() {
         if (!SystemTray.isSupported()) return;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         SystemTray tray = SystemTray.getSystemTray();
