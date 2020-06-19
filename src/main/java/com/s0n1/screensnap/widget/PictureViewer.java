@@ -22,7 +22,7 @@ public class PictureViewer extends JComponent {
     private int fixedHeight;
 
     private static final int ZOOM_SCALE_MAX = 10;
-    private static final float ZOOM_SCALE_MIN = 0.5f;
+    private static final float ZOOM_SCALE_MIN = 0.1f;
     private float zoomScale;
 
     private int lastMouseX;

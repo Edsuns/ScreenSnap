@@ -1,6 +1,5 @@
 package com.s0n1.screensnap.ui;
 
-import com.s0n1.screensnap.tools.GlobalHotKey;
 import com.s0n1.screensnap.tools.Settings;
 
 import javax.swing.*;
@@ -54,7 +53,6 @@ public class HotkeyDialog extends JDialog {
                 mHotkeyChangeListener.onHotkeyChange(hotkey);
             }
             Settings.setHotkey(hotkey);
-            GlobalHotKey.getInstance().loadHotKey();
             dispose();
         });
         add(applyBtn);

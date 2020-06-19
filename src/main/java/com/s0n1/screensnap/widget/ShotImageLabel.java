@@ -24,18 +24,23 @@ public class ShotImageLabel extends JLabel {
         g.fillRect(x + w, y - 1, 1, h + 2);
         g.fillRect(x, y - 1, w, 1);
         g.fillRect(x, y + h, w, 1);
-        // 右下角文字背景
-        g.fillRect(x + w - 100, y + h - 30, 100, 30);
-
         // 选区外框
         g.setColor(COLOR_CAPTURE_DARK);
         g.fillRect(x - 2, y - 2, 1, h + 4);
         g.fillRect(x + w + 1, y - 2, 1, h + 4);
         g.fillRect(x - 1, y - 2, w + 2, 1);
         g.fillRect(x - 1, y + h + 1, w + 2, 1);
+
+        // 右下角文字背景
+        String text = w + " x " + h;
+        FontMetrics metrics = getFontMetrics(g.getFont());
+        int textW = metrics.stringWidth(text) + 8;
+        int textH = metrics.getHeight() + 6;
+        g.setColor(COLOR_CAPTURE_DARK);
+        g.fillRect(x + w - textW, y + h - textH, textW, textH);
         // 右下角文字
-        String area = w + " x " + h;
-        g.drawString(area, x + w - 90, y + h - 10);
+        g.setColor(COLOR_CAPTURE_LIGHT);
+        g.drawString(text, x + w - textW + 4, y + h - textH / 2 + 5);
 
         // 十字瞄准线
         if (lineX != -1 || lineY != -1) {

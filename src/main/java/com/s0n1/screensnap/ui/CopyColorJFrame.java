@@ -22,10 +22,8 @@ public class CopyColorJFrame extends JFrame {
         setResizable(false);
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
-        JPanel contentPane = new JPanel();
-        contentPane.setPreferredSize(new Dimension(320, 125));
-        contentPane.setLayout(null);
-        setContentPane(contentPane);
+        getContentPane().setPreferredSize(new Dimension(320, 125));
+        setLayout(null);
 
         colorLabel = new JLabel();
         colorLabel.setBounds(10, 15, 100, 100);
@@ -43,62 +41,62 @@ public class CopyColorJFrame extends JFrame {
                 }
             }
         });
-        contentPane.add(colorLabel);
+        add(colorLabel);
 
         hexColorText = new JTextField();
         hexColorText.setEditable(false);
         hexColorText.setBounds(165, 15, 110, 24);
-        contentPane.add(hexColorText);
+        add(hexColorText);
 
         rgbColorText = new JTextField();
         rgbColorText.setEditable(false);
         rgbColorText.setBounds(165, 51, 110, 24);
-        contentPane.add(rgbColorText);
+        add(rgbColorText);
 
         htmlColorText = new JTextField();
         htmlColorText.setEditable(false);
         htmlColorText.setBounds(165, 89, 110, 24);
-        contentPane.add(htmlColorText);
+        add(htmlColorText);
 
-        JLabel hexLabel = new JLabel("HEX");
-        hexLabel.setBounds(125, 18, 40, 18);
-        contentPane.add(hexLabel);
+        JLabel hsbLabel = new JLabel("HSB");
+        hsbLabel.setBounds(125, 18, 40, 18);
+        add(hsbLabel);
 
         JLabel rgbLabel = new JLabel("RGB");
         rgbLabel.setBounds(125, 52, 40, 18);
-        contentPane.add(rgbLabel);
+        add(rgbLabel);
 
         JLabel htmlLabel = new JLabel("HTML");
         htmlLabel.setBounds(125, 90, 40, 18);
-        contentPane.add(htmlLabel);
+        add(htmlLabel);
 
-        int size = 25;
-        ImageIcon copyIcon = new ImageIcon(COPY_ICON.getScaledInstance(size, size, Image.SCALE_DEFAULT));
+        final int size = 25;
+        ImageIcon copyIcon = new ImageIcon(COPY_ICON.getScaledInstance(size, size, Image.SCALE_SMOOTH));
 
-        JButton copyHexBtn = new JButton();
-        copyHexBtn.setBounds(285, 15, size, size);
-        copyHexBtn.setIcon(copyIcon);
-        copyHexBtn.addActionListener(e -> Util.copyText(hexColorText.getText()));
-        contentPane.add(copyHexBtn);
+        JButton copyHsbBtn = new JButton();
+        copyHsbBtn.setBounds(285, 15, size, size);
+        copyHsbBtn.setIcon(copyIcon);
+        copyHsbBtn.addActionListener(e -> Util.copyText(hexColorText.getText()));
+        add(copyHsbBtn);
 
         JButton copyRgbBtn = new JButton();
         copyRgbBtn.setBounds(285, 51, size, size);
         copyRgbBtn.setIcon(copyIcon);
         copyRgbBtn.addActionListener(e -> Util.copyText(rgbColorText.getText()));
-        contentPane.add(copyRgbBtn);
+        add(copyRgbBtn);
 
         JButton copyHtmlBtn = new JButton();
         copyHtmlBtn.setBounds(285, 89, size, size);
         copyHtmlBtn.setIcon(copyIcon);
         copyHtmlBtn.addActionListener(e -> Util.copyText(htmlColorText.getText()));
-        contentPane.add(copyHtmlBtn);
+        add(copyHtmlBtn);
 
         pack();
     }
 
     public void showCopy(Color color) {
         colorLabel.setBackground(color);
-        hexColorText.setText(Util.getColorText(color, Util.ColorMode.HEX));
+        hexColorText.setText(Util.getColorText(color, Util.ColorMode.HSB));
         rgbColorText.setText(Util.getColorText(color, Util.ColorMode.RGB));
         htmlColorText.setText(Util.getColorText(color, Util.ColorMode.HTML));
         Util.setCenterLocation(this);

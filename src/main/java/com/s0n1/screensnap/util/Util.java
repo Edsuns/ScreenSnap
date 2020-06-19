@@ -32,16 +32,14 @@ public final class Util {
             case RGB:
                 s = String.format("%d,%d,%d", c.getRed(), c.getGreen(), c.getBlue());
                 break;
+            case HEX:
             case HTML:
                 s = String.format("#%02X%02X%02X", c.getRed(), c.getGreen(), c.getBlue());
-                break;
-            case HEX:
-                s = String.format("0x%02X%02X%02X", c.getBlue(), c.getGreen(), c.getRed());
                 break;
             case HSB:
                 float[] hsbArr;
                 hsbArr = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(), null);
-                s = String.format("%3.0f%% %3.0f%% %3.0f%%", hsbArr[0] * 100, hsbArr[1] * 100, hsbArr[2] * 100);
+                s = String.format("%.0f%% %.0f%% %.0f%%", hsbArr[0] * 100, hsbArr[1] * 100, hsbArr[2] * 100);
                 break;
             default:
                 break;

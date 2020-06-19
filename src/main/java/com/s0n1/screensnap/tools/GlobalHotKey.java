@@ -20,12 +20,11 @@ public class GlobalHotKey implements HotKeyListener {
     public static GlobalHotKey getInstance() {
         if (instance == null) {
             instance = new GlobalHotKey();
-            instance.loadHotKey();
         }
         return instance;
     }
 
-    public void loadHotKey() {
+    public void load(String hotkey) {
         final GlobalHotKey instance = this;
         new Thread(() -> {
             try {
@@ -33,7 +32,7 @@ public class GlobalHotKey implements HotKeyListener {
                     hotKeyProvider = Provider.getCurrentProvider(false);
                 }
                 hotKeyProvider.reset();
-                hotKeyProvider.register(KeyStroke.getKeyStroke(Settings.getHotkey()), instance);
+                hotKeyProvider.register(KeyStroke.getKeyStroke(hotkey), instance);
             } catch (Exception e) {
                 hotKeyProvider = null;
                 e.printStackTrace();

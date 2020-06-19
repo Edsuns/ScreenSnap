@@ -35,6 +35,8 @@ public final class Settings {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+        // 存在FileNotFoundException，必须外置
+        GlobalHotKey.getInstance().load(hotkey);
     }
 
     public static void save() {
@@ -65,7 +67,7 @@ public final class Settings {
 
     public static void setHotkey(String hotkey) {
         Settings.hotkey = hotkey;
-        GlobalHotKey.getInstance().loadHotKey();
+        GlobalHotKey.getInstance().load(hotkey);
         save();
     }
 
