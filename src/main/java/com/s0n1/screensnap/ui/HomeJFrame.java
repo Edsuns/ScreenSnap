@@ -36,9 +36,9 @@ public class HomeJFrame extends JFrame {
         setContentPane(borderPane);
 
         // 设置Panel
-        // settingsPanel内容 宽340 高120
+        // settingsPanel内容 宽350 高140
         JPanel settingsPanel = new JPanel();
-        settingsPanel.setPreferredSize(new Dimension(340, 120));
+        settingsPanel.setPreferredSize(new Dimension(350, 140));
         settingsPanel.setLayout(null);
         borderPane.add(settingsPanel);
 
@@ -56,7 +56,7 @@ public class HomeJFrame extends JFrame {
         dialog.setHotkeyChangeListener(hotKeyText::setText);
 
         JButton editHotKeyBtn = new JButton(CHANGE);
-        editHotKeyBtn.setBounds(240, 0, 80, 30);
+        editHotKeyBtn.setBounds(240, 0, 90, 30);
         editHotKeyBtn.addActionListener(e -> {
             dialog.setLocationRelativeTo(this);
             dialog.setVisible(true);
@@ -65,7 +65,7 @@ public class HomeJFrame extends JFrame {
 
         // 后台运行设置
         JCheckBox backgroundCheck = new JCheckBox(RUN_IN_BG);
-        backgroundCheck.setBounds(0, 50, 220, 30);
+        backgroundCheck.setBounds(0, 60, 220, 30);
         backgroundCheck.setSelected(Settings.isRunInBg());
         backgroundCheck.addItemListener(e -> {
             boolean runInBg = e.getStateChange() == ItemEvent.SELECTED;
@@ -76,7 +76,7 @@ public class HomeJFrame extends JFrame {
         settingsPanel.add(backgroundCheck);
 
         JButton exitBtn = new JButton(EXIT);
-        exitBtn.setBounds(240, 50, 80, 30);
+        exitBtn.setBounds(240, 60, 90, 30);
         exitBtn.addActionListener(e -> Application.getInstance().onAppClose(false));
         settingsPanel.add(exitBtn);
 
@@ -84,7 +84,7 @@ public class HomeJFrame extends JFrame {
         JLabel aboutLabel = new UrlLabel(ABOUT, ABOUT_URL);
         aboutLabel.setToolTipText(ABOUT_URL);
         aboutLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        aboutLabel.setBounds(300, 100, 40, 20);
+        aboutLabel.setBounds(300, 120, 50, 20);
         settingsPanel.add(aboutLabel);
 
         pack();

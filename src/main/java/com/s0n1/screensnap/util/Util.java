@@ -30,7 +30,7 @@ public final class Util {
         String s = "";
         switch (mode) {
             case RGB:
-                s = String.format("%d,%d,%d", c.getRed(), c.getGreen(), c.getBlue());
+                s = String.format("%d, %d, %d", c.getRed(), c.getGreen(), c.getBlue());
                 break;
             case HEX:
             case HTML:

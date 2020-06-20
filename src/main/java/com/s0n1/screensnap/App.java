@@ -73,26 +73,8 @@ public class App extends Application {
     private PictureJFrame pictureJFrame;
 
     private void init() {
-        // 设置系统默认样式
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-                | UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        }
-        if (!DeviceUtil.isOldVersionJava) {
-            // 缩放字体大小，要在设置样式后
-            Enumeration<Object> keys = UIManager.getDefaults().keys();
-            while (keys.hasMoreElements()) {
-                Object key = keys.nextElement();
-                Object value = UIManager.get(key);
-                if (value instanceof FontUIResource) {
-                    FontUIResource resource = (FontUIResource) value;
-                    UIManager.put(key,
-                            new FontUIResource(resource.deriveFont(resource.getSize() * DPI_SCALE_RATE)));
-                }
-            }
-        }
+        // 设置系统默认UI
+        setLookAndFeel();
 
         // 初始化取色界面
         shotJFrame = new ShotJFrame();
@@ -173,6 +155,40 @@ public class App extends Application {
             homeFrame.disableRunInBg();
             System.out.println("App closed.");
             System.exit(0);
+        }
+    }
+
+    private void setLookAndFeel() {
+        // 设置系统默认样式
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+                | UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
+        // 获取系统字体
+        GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        String[] allFonts = environment.getAvailableFontFamilyNames();
+        String fontName = null;
+        for (String font : allFonts) {
+            if ("Microsoft YaHei UI".equals(font)
+                    || "PingFang SC".equals(font) || "YaHei Consolas Hybrid".equals(font)) {
+                fontName = font;
+                break;
+            }
+        }
+        // 设置系统字体和缩放字体大小，要在设置样式后
+        Enumeration<Object> keys = UIManager.getDefaults().keys();
+        while (keys.hasMoreElements()) {
+            Object key = keys.nextElement();
+            Object value = UIManager.get(key);
+            if (value instanceof FontUIResource) {
+                FontUIResource resource = (FontUIResource) value;
+                int style = resource.getStyle();
+                float size = DeviceUtil.isOldVersionJava ?
+                        resource.getSize() : resource.getSize() * DPI_SCALE_RATE;
+                UIManager.put(key, new FontUIResource(fontName, style, (int) size));
+            }
         }
     }
 }
