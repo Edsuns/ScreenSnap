@@ -12,8 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Locale;
 
-import static com.s0n1.screensnap.ui.UiRes.ABOUT_URL;
-import static com.s0n1.screensnap.ui.UiRes.APP_ICON;
+import static com.s0n1.screensnap.ui.UiRes.*;
 
 /**
  * Created by Edsuns@qq.com on 2020-05-29
@@ -109,12 +108,19 @@ public class HomeJFrame extends JFrame {
         });
         settingsPanel.add(comboBox);
 
+        // 底部
+        JPanel bottom = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+        bottom.setBounds(260, 170, 100, 20);
+        settingsPanel.add(bottom);
+
+        // 版本号
+        JLabel version = new JLabel(VERSION);
+        bottom.add(version);
+
         // About链接
         JLabel aboutLabel = new UrlLabel(Application.res().getString("about"), ABOUT_URL);
         aboutLabel.setToolTipText(ABOUT_URL);
-        aboutLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        aboutLabel.setBounds(300, 170, 50, 20);
-        settingsPanel.add(aboutLabel);
+        bottom.add(aboutLabel);
 
         pack();
     }

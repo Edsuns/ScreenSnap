@@ -1,5 +1,5 @@
 # ScreenSnap  
-> 下载：[ScreenSnap/releases](ScreenSnap/releases)
+> 下载：[ScreenSnap/releases](https://github.com/Edsuns/ScreenSnap/releases)
 
 ### 功能概览  
 > 兼容多平台

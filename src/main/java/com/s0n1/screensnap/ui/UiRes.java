@@ -8,8 +8,9 @@ import java.awt.*;
  * UI资源常量
  */
 public class UiRes {
-    public final static String ABOUT_URL = "https://github.com/Edsuns/ScreenSnap";
-    public final static String ORIGIN = "1:1";
+    public static final String VERSION = "v1.1";
+    public static final String ABOUT_URL = "https://github.com/Edsuns/ScreenSnap";
+    public static final String ORIGIN = "1:1";
 
     // 程序图标
     public static final Image APP_ICON = Toolkit.getDefaultToolkit()

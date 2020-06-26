@@ -20,14 +20,14 @@ public final class Settings {
     private static boolean runInBg = true;
     private static Locale locale = Locale.getDefault();
 
-    private static final String FILE_PATH_CONF = "config.properties";
+    private static final String CONF_FILE_PATH = "config.properties";
     private static final String KEY_HOTKEY = "Hotkey";
     private static final String KEY_RUN_IN_BG = "RunInBackground";
     private static final String KEY_LANGUAGE = "Language";
 
     public static void load() {
         try {
-            FileInputStream inputStream = new FileInputStream(FILE_PATH_CONF);
+            FileInputStream inputStream = new FileInputStream(CONF_FILE_PATH);
             Properties properties = new Properties();
             properties.load(inputStream);
 
@@ -57,9 +57,9 @@ public final class Settings {
 
     public static void save() {
         try {
-            File file = new File(FILE_PATH_CONF);
+            File file = new File(CONF_FILE_PATH);
             if (!file.exists() && !file.createNewFile()) {
-                throw new IOException("Fail to create new file: " + FILE_PATH_CONF);
+                throw new IOException("Fail to create new file: " + CONF_FILE_PATH);
             }
             FileInputStream inputStream = new FileInputStream(file);
             FileOutputStream outputStream = new FileOutputStream(file);

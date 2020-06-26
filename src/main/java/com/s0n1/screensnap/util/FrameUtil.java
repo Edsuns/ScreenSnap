@@ -24,11 +24,13 @@ public final class FrameUtil {
     public static final float DPI_SCALE = Toolkit.getDefaultToolkit().getScreenResolution() / 96f;
 
     public static int getScreenWidth() {
-        return GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getWidth();
+        return GraphicsEnvironment.getLocalGraphicsEnvironment()
+                .getDefaultScreenDevice().getDisplayMode().getWidth();
     }
 
     public static int getScreenHeight() {
-        return GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getHeight();
+        return GraphicsEnvironment.getLocalGraphicsEnvironment()
+                .getDefaultScreenDevice().getDisplayMode().getHeight();
     }
 
     /**
@@ -37,7 +39,8 @@ public final class FrameUtil {
      * boolean hasDPIScale = !isOldVersionJava && screenSize.height != getScreenHeight();
      */
     public static void setCenterLocation(Window window) {
-        window.setLocation((getScreenWidth() - window.getWidth()) / 2, (getScreenHeight() - window.getHeight()) / 2);
+        window.setLocation((getScreenWidth() - window.getWidth()) / 2,
+                (getScreenHeight() - window.getHeight()) / 2);
     }
 
     /**
