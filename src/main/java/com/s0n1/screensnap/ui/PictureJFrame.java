@@ -1,7 +1,8 @@
 package com.s0n1.screensnap.ui;
 
-import com.s0n1.screensnap.util.DeviceUtil;
+import com.s0n1.screensnap.util.FrameUtil;
 import com.s0n1.screensnap.util.Util;
+import com.s0n1.screensnap.widget.Application;
 import com.s0n1.screensnap.widget.PictureViewer;
 
 import javax.imageio.ImageIO;
@@ -15,7 +16,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static com.s0n1.screensnap.ui.UiRes.*;
+import static com.s0n1.screensnap.ui.UiRes.ORIGIN;
 
 /**
  * Created by Edsuns@qq.com on 2020-06-08
@@ -38,7 +39,7 @@ public class PictureJFrame extends JFrame {
         pictureViewer = new PictureViewer();
         pictureViewer.setPictureChangeListener(() -> {
             // 默认FIT，即isFitSize和isOriginSize都否时设置为FIT
-            fitSizeBtn.setText(pictureViewer.isFitSize() ? ORIGIN : FIT);
+            fitSizeBtn.setText(pictureViewer.isFitSize() ? ORIGIN : Application.res().getString("fit"));
             fitSizeBtn.setEnabled(!pictureViewer.isOriginSize() || !pictureViewer.isFitSize());
         });
         pictureViewer.addMouseListener(new MouseAdapter() {
@@ -64,7 +65,7 @@ public class PictureJFrame extends JFrame {
 
         fitSizeBtn = new JButton();
         fitSizeBtn.addActionListener(e -> {
-            if (FIT.equals(fitSizeBtn.getText())) {
+            if (Application.res().getString("fit").equals(fitSizeBtn.getText())) {
                 pictureViewer.setPictureFitSize();
             } else {
                 pictureViewer.setPictureOriginSize();
@@ -72,21 +73,21 @@ public class PictureJFrame extends JFrame {
         });
         controlPanel.add(fitSizeBtn);
 
-        JButton rotateBtn = new JButton(ROTATE);
+        JButton rotateBtn = new JButton(Application.res().getString("rotate"));
         rotateBtn.addActionListener(e -> pictureViewer.rotatePicture());
         controlPanel.add(rotateBtn);
 
-        JButton saveBtn = new JButton(SAVE);
+        JButton saveBtn = new JButton(Application.res().getString("save"));
         saveBtn.addActionListener(e -> savePicture());
         controlPanel.add(saveBtn);
 
-        JButton copyBtn = new JButton(COPY);
+        JButton copyBtn = new JButton(Application.res().getString("copy"));
         copyBtn.addActionListener(e -> Util.copyImage(pictureViewer.getPicture()));
         controlPanel.add(copyBtn);
     }
 
     private void savePicture() {
-        FileDialog fileDialog = new FileDialog(this, SAVE_SCREENSHOT, FileDialog.SAVE);
+        FileDialog fileDialog = new FileDialog(this, Application.res().getString("save_screenshot"), FileDialog.SAVE);
         fileDialog.setIconImage(getIconImage());
         fileDialog.setFile("Screenshot_" + Util.getCurrentTime().replace(" ", "_") + ".png");
         fileDialog.setVisible(true);
@@ -104,8 +105,8 @@ public class PictureJFrame extends JFrame {
     }
 
     public void showPicture(BufferedImage image) {
-        int widthMax = (int) (DeviceUtil.getScreenWidth() * 0.8f);
-        int heightMax = (int) (DeviceUtil.getScreenHeight() * 0.8f);
+        int widthMax = (int) (FrameUtil.getScreenWidth() * 0.8f);
+        int heightMax = (int) (FrameUtil.getScreenHeight() * 0.8f);
         int imageWidth = image.getWidth();
         int imageHeight = image.getHeight();
         if (imageWidth > widthMax || imageHeight > heightMax) {// 如果超过限制的尺寸
@@ -119,7 +120,7 @@ public class PictureJFrame extends JFrame {
         }
         pack();// 必须
 
-        Util.setCenterLocation(this);
+        FrameUtil.setCenterLocation(this);
 
         // 显示
         setExtendedState(JFrame.NORMAL);

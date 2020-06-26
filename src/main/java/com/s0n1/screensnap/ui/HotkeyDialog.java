@@ -1,6 +1,7 @@
 package com.s0n1.screensnap.ui;
 
 import com.s0n1.screensnap.tools.Settings;
+import com.s0n1.screensnap.widget.Application;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,9 +9,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.List;
-
-import static com.s0n1.screensnap.ui.UiRes.APPLY;
-import static com.s0n1.screensnap.ui.UiRes.TIPS_SET_HOTKEY;
 
 /**
  * Created by Edsuns@qq.com on 2020-05-30
@@ -42,7 +40,7 @@ public class HotkeyDialog extends JDialog {
         });
         add(hotkeyText);
 
-        JButton applyBtn = new JButton(APPLY);
+        JButton applyBtn = new JButton(Application.res().getString("apply"));
         applyBtn.setFocusable(false);
         applyBtn.setBounds(marginLeft + 160, marginTop, 80, 30);
         applyBtn.addActionListener(e -> {
@@ -60,7 +58,7 @@ public class HotkeyDialog extends JDialog {
         JLabel tipsLabel = new JLabel();
         tipsLabel.setFocusable(false);
         tipsLabel.setBounds(marginLeft, marginTop + 30 + 20, 240, 30);
-        tipsLabel.setText(TIPS_SET_HOTKEY);
+        tipsLabel.setText(Application.res().getString("hotkey_tips"));
         tipsLabel.setHorizontalAlignment(SwingConstants.CENTER);
         add(tipsLabel);
 

@@ -1,5 +1,6 @@
 package com.s0n1.screensnap.ui;
 
+import com.s0n1.screensnap.util.FrameUtil;
 import com.s0n1.screensnap.util.Util;
 
 import javax.swing.*;
@@ -45,29 +46,29 @@ public class CopyColorJFrame extends JFrame {
 
         hsbColorText = new JTextField();
         hsbColorText.setEditable(false);
-        hsbColorText.setBounds(165, 15, 130, 24);
+        hsbColorText.setBounds(165, 15, 130, 25);
         add(hsbColorText);
 
         rgbColorText = new JTextField();
         rgbColorText.setEditable(false);
-        rgbColorText.setBounds(165, 51, 130, 24);
+        rgbColorText.setBounds(165, 52, 130, 25);
         add(rgbColorText);
 
         hexColorText = new JTextField();
         hexColorText.setEditable(false);
-        hexColorText.setBounds(165, 89, 130, 24);
+        hexColorText.setBounds(165, 90, 130, 25);
         add(hexColorText);
 
         JLabel hsbLabel = new JLabel("HSB");
-        hsbLabel.setBounds(125, 18, 40, 18);
+        hsbLabel.setBounds(125, 19, 40, 18);
         add(hsbLabel);
 
         JLabel rgbLabel = new JLabel("RGB");
-        rgbLabel.setBounds(125, 52, 40, 18);
+        rgbLabel.setBounds(125, 56, 40, 18);
         add(rgbLabel);
 
         JLabel hexLabel = new JLabel("HEX");
-        hexLabel.setBounds(125, 90, 40, 18);
+        hexLabel.setBounds(125, 93, 40, 18);
         add(hexLabel);
 
         final int size = 25;
@@ -80,13 +81,13 @@ public class CopyColorJFrame extends JFrame {
         add(copyHsbBtn);
 
         JButton copyRgbBtn = new JButton();
-        copyRgbBtn.setBounds(305, 51, size, size);
+        copyRgbBtn.setBounds(305, 52, size, size);
         copyRgbBtn.setIcon(copyIcon);
         copyRgbBtn.addActionListener(e -> Util.copyText(rgbColorText.getText()));
         add(copyRgbBtn);
 
         JButton copyHexBtn = new JButton();
-        copyHexBtn.setBounds(305, 89, size, size);
+        copyHexBtn.setBounds(305, 90, size, size);
         copyHexBtn.setIcon(copyIcon);
         copyHexBtn.addActionListener(e -> Util.copyText(hexColorText.getText()));
         add(copyHexBtn);
@@ -99,7 +100,7 @@ public class CopyColorJFrame extends JFrame {
         hsbColorText.setText(Util.getColorText(color, Util.ColorMode.HSB));
         rgbColorText.setText(Util.getColorText(color, Util.ColorMode.RGB));
         hexColorText.setText(Util.getColorText(color, Util.ColorMode.HEX));
-        Util.setCenterLocation(this);
+        FrameUtil.setCenterLocation(this);
         setExtendedState(JFrame.NORMAL);
         setVisible(true);
         toFront();

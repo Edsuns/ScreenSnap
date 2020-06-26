@@ -4,14 +4,12 @@ import com.google.zxing.Result;
 import com.s0n1.screensnap.tools.GlobalHotKey;
 import com.s0n1.screensnap.tools.Settings;
 import com.s0n1.screensnap.ui.*;
-import com.s0n1.screensnap.util.DeviceUtil;
+import com.s0n1.screensnap.util.FrameUtil;
 import com.s0n1.screensnap.util.QrCodeUtil;
 import com.s0n1.screensnap.util.Util;
 import com.s0n1.screensnap.widget.Application;
 import com.s0n1.screensnap.widget.Toast;
 
-import javax.swing.*;
-import javax.swing.plaf.FontUIResource;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -19,9 +17,8 @@ import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileLock;
-import java.util.Enumeration;
 
-import static com.s0n1.screensnap.ui.UiRes.*;
+import static com.s0n1.screensnap.ui.UiRes.APP_ICON;
 
 /**
  * Main Entrance
@@ -53,13 +50,13 @@ public class App extends Application {
         }
 
         System.out.println("App started.");
-        System.out.println("isWindows: " + DeviceUtil.isWindows);
-        System.out.println("isOldVersionJava: " + DeviceUtil.isOldVersionJava);
-        System.out.println("DPI Scale: " + DPI_SCALE_RATE);
+        System.out.println("isWindows: " + FrameUtil.OS_NAME.contains("windows"));
+        System.out.println("isOldVersionJava: " + FrameUtil.isOldVersionJava);
+        System.out.println("DPI Scale: " + FrameUtil.DPI_SCALE);
 
-        // 开始检查DPI缩放是否开启
+        // 开始检查程序是否被应用了DPI缩放
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        boolean hasDPIScale = !DeviceUtil.isOldVersionJava && screenSize.height != DeviceUtil.getScreenHeight();
+        boolean hasDPIScale = !FrameUtil.isOldVersionJava && screenSize.height != FrameUtil.getScreenHeight();
         if (hasDPIScale) {
             // DPI缩放会导致截图模糊，要求关闭DPI缩放，自己适配高DPI
             throw new Error("Need disable DPI Scale by VM option: -Dsun.java2d.uiScale=1");
@@ -73,8 +70,13 @@ public class App extends Application {
     private PictureJFrame pictureJFrame;
 
     private void init() {
+        // 加载设置包括热键和语言
+        Settings.load();
+        // 设置快捷键回调
+        GlobalHotKey.getInstance().setHotKeyListener(this::showShot);
+
         // 设置系统默认UI
-        setLookAndFeel();
+        FrameUtil.setSystemLookAndFeel();
 
         // 初始化取色界面
         shotJFrame = new ShotJFrame();
@@ -88,11 +90,12 @@ public class App extends Application {
             public void onRightCapture(BufferedImage image) {
                 Result result = QrCodeUtil.parseQrCode(image);
                 if (result == null) {
-                    Toast.getInstance().show(NO_QRCODE, Toast.DELAY_DEFAULT);
+                    Toast.getInstance().show(Application.res().getString("no_bar_code"),
+                            Toast.DELAY_DEFAULT);
                 } else {
                     String format = result.getBarcodeFormat().toString();
                     Util.copyText(result.getText());
-                    Toast.getInstance().show(format + COPIED, Toast.DELAY_DEFAULT);
+                    Toast.getInstance().show(format + Application.res().getString("copied"), Toast.DELAY_DEFAULT);
                 }
             }
 
@@ -104,35 +107,30 @@ public class App extends Application {
 
         // 设置热键的对话框
         hotkeyDialog = new HotkeyDialog(homeFrame);
-        hotkeyDialog.setTitle(CHANGE_HOTKEY);
+        hotkeyDialog.setTitle(res().getString("change_hotkey"));
         hotkeyDialog.setIconImage(APP_ICON);
-
-        // 加载设置包括热键
-        Settings.load();
-        // 设置快捷键回调
-        GlobalHotKey.getInstance().setHotKeyListener(this::showShot);
 
         colorJFrame = new CopyColorJFrame();
         colorJFrame.setIconImage(APP_ICON);
-        colorJFrame.setTitle(COLOR_PICKER);
+        colorJFrame.setTitle(res().getString("color_picker"));
         colorJFrame.setPickAnotherCallback(this::showShot);
 
         // 图片查看界面
         pictureJFrame = new PictureJFrame();
         pictureJFrame.setIconImage(APP_ICON);
-        pictureJFrame.setTitle(PICTURE_VIEWER);
+        pictureJFrame.setTitle(res().getString("picture_viewer"));
 
         // 初始化主界面
         homeFrame = new HomeJFrame(hotkeyDialog);
         homeFrame.setIconImage(APP_ICON);
-        homeFrame.setTitle(APP_NAME);
+        homeFrame.setTitle(res().getString("app_name"));
         homeFrame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 onAppClose(Settings.isRunInBg());
             }
         });
-        Util.setCenterLocation(homeFrame);
+        FrameUtil.setCenterLocation(homeFrame);
     }
 
     /**
@@ -155,40 +153,6 @@ public class App extends Application {
             homeFrame.disableRunInBg();
             System.out.println("App closed.");
             System.exit(0);
-        }
-    }
-
-    private void setLookAndFeel() {
-        // 设置系统默认样式
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-                | UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        }
-        // 获取系统字体
-        GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        String[] allFonts = environment.getAvailableFontFamilyNames();
-        String fontName = null;
-        for (String font : allFonts) {
-            if ("Microsoft YaHei UI".equals(font)
-                    || "PingFang SC".equals(font) || "YaHei Consolas Hybrid".equals(font)) {
-                fontName = font;
-                break;
-            }
-        }
-        // 设置系统字体和缩放字体大小，要在设置样式后
-        Enumeration<Object> keys = UIManager.getDefaults().keys();
-        while (keys.hasMoreElements()) {
-            Object key = keys.nextElement();
-            Object value = UIManager.get(key);
-            if (value instanceof FontUIResource) {
-                FontUIResource resource = (FontUIResource) value;
-                int style = resource.getStyle();
-                float size = DeviceUtil.isOldVersionJava ?
-                        resource.getSize() : resource.getSize() * DPI_SCALE_RATE;
-                UIManager.put(key, new FontUIResource(fontName, style, (int) size));
-            }
         }
     }
 }

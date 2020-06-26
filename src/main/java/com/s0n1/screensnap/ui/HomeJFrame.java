@@ -10,8 +10,10 @@ import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Locale;
 
-import static com.s0n1.screensnap.ui.UiRes.*;
+import static com.s0n1.screensnap.ui.UiRes.ABOUT_URL;
+import static com.s0n1.screensnap.ui.UiRes.APP_ICON;
 
 /**
  * Created by Edsuns@qq.com on 2020-05-29
@@ -38,12 +40,12 @@ public class HomeJFrame extends JFrame {
         // 设置Panel
         // settingsPanel内容 宽350 高140
         JPanel settingsPanel = new JPanel();
-        settingsPanel.setPreferredSize(new Dimension(350, 140));
+        settingsPanel.setPreferredSize(new Dimension(350, 190));
         settingsPanel.setLayout(null);
         borderPane.add(settingsPanel);
 
         // 热键设置
-        JLabel hotKeyLabel = new JLabel(HOTKEY);
+        JLabel hotKeyLabel = new JLabel(Application.res().getString("hotkey"));
         hotKeyLabel.setBounds(0, 0, 72, 30);
         settingsPanel.add(hotKeyLabel);
 
@@ -55,7 +57,7 @@ public class HomeJFrame extends JFrame {
         settingsPanel.add(hotKeyText);
         dialog.setHotkeyChangeListener(hotKeyText::setText);
 
-        JButton editHotKeyBtn = new JButton(CHANGE);
+        JButton editHotKeyBtn = new JButton(Application.res().getString("change"));
         editHotKeyBtn.setBounds(240, 0, 90, 30);
         editHotKeyBtn.addActionListener(e -> {
             dialog.setLocationRelativeTo(this);
@@ -64,7 +66,7 @@ public class HomeJFrame extends JFrame {
         settingsPanel.add(editHotKeyBtn);
 
         // 后台运行设置
-        JCheckBox backgroundCheck = new JCheckBox(RUN_IN_BG);
+        JCheckBox backgroundCheck = new JCheckBox(Application.res().getString("run_in_bg"));
         backgroundCheck.setBounds(0, 60, 220, 30);
         backgroundCheck.setSelected(Settings.isRunInBg());
         backgroundCheck.addItemListener(e -> {
@@ -75,16 +77,43 @@ public class HomeJFrame extends JFrame {
         });
         settingsPanel.add(backgroundCheck);
 
-        JButton exitBtn = new JButton(EXIT);
+        JButton exitBtn = new JButton(Application.res().getString("exit"));
         exitBtn.setBounds(240, 60, 90, 30);
-        exitBtn.addActionListener(e -> Application.getInstance().onAppClose(false));
+        exitBtn.addActionListener(e -> Application.instance().onAppClose(false));
         settingsPanel.add(exitBtn);
 
+        // 语言设置
+        JLabel languageLabel = new JLabel(Application.res().getString("language_setting"));
+        languageLabel.setBounds(0, 120, 100, 30);
+        settingsPanel.add(languageLabel);
+
+        String[] languageName = {"English", "简体中文"};
+        String[] languageTag = {"en", "zh-CN"};
+        JComboBox<String> comboBox = new JComboBox<>(languageName);
+        comboBox.setBounds(100, 120, 100, 30);
+        // 获取设置的语言
+        String currentTag = Settings.getLocale().toLanguageTag();
+        int i = 0;
+        for (; i < languageName.length; i++) {
+            if (languageTag[i].contains(currentTag)) break;// 使用contains能匹配相关的语言
+        }
+        comboBox.setSelectedIndex(Math.min(i, comboBox.getItemCount() - 1));
+        // 必须在后，因为setSelectedIndex会触发Action导致程序重启，最终出错
+        comboBox.addActionListener(e -> {
+            String s = (String) comboBox.getSelectedItem();
+            int index = 0;// 获取选中的语言
+            for (; index < languageName.length; index++) {
+                if (languageName[index].equals(s)) break;
+            }
+            Settings.setLanguage(Locale.forLanguageTag(languageTag[index]));
+        });
+        settingsPanel.add(comboBox);
+
         // About链接
-        JLabel aboutLabel = new UrlLabel(ABOUT, ABOUT_URL);
+        JLabel aboutLabel = new UrlLabel(Application.res().getString("about"), ABOUT_URL);
         aboutLabel.setToolTipText(ABOUT_URL);
         aboutLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        aboutLabel.setBounds(300, 120, 50, 20);
+        aboutLabel.setBounds(300, 170, 50, 20);
         settingsPanel.add(aboutLabel);
 
         pack();
@@ -110,11 +139,11 @@ public class HomeJFrame extends JFrame {
         // 创建弹出菜单
         PopupMenu popup = new PopupMenu();
         //退出程序选项
-        MenuItem exitItem = new MenuItem(EXIT);
-        exitItem.addActionListener(e -> Application.getInstance().onAppClose(false));
+        MenuItem exitItem = new MenuItem(Application.res().getString("exit"));
+        exitItem.addActionListener(e -> Application.instance().onAppClose(false));
         popup.add(exitItem);
 
-        trayIcon = new TrayIcon(APP_ICON, APP_NAME, popup);// 创建trayIcon
+        trayIcon = new TrayIcon(APP_ICON, Application.res().getString("app_name"), popup);// 创建trayIcon
         trayIcon.setImageAutoSize(true);
         trayIcon.addMouseListener(new MouseAdapter() {
             @Override

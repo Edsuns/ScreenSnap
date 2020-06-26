@@ -1,4 +1,5 @@
 # ScreenSnap  
+> 下载：[ScreenSnap/releases](ScreenSnap/releases)
 
 ### 功能概览  
 > 兼容多平台
@@ -37,4 +38,4 @@ __3. 取色复制窗口__
 在Artifacts里把resources添加到Directory Content
 
 - __程序卡住：__  
-选中Windows自带控制台的内容时，System.out会被阻塞，导致程序卡住。右键控制台，让程序继续运行  
+选中Windows自带控制台的内容时，`System.out`会被阻塞，导致程序卡住。右键控制台，让程序继续运行  

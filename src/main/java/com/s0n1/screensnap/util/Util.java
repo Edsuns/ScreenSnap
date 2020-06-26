@@ -59,10 +59,6 @@ public final class Util {
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(trans, null);
     }
 
-    public static void setCenterLocation(Window window) {
-        window.setLocation((DeviceUtil.getScreenWidth() - window.getWidth()) / 2, (DeviceUtil.getScreenHeight() - window.getHeight()) / 2);
-    }
-
     public static String getCurrentTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HHmmss");
         return dateFormat.format(new Date());

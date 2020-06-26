@@ -1,7 +1,7 @@
 package com.s0n1.screensnap.widget;
 
 import com.s0n1.screensnap.tools.AnimationInvoker;
-import com.s0n1.screensnap.util.Util;
+import com.s0n1.screensnap.util.FrameUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,7 +48,7 @@ public class Toast extends JFrame {
     public static Toast getInstance() {
         if (instance == null) {
             instance = new Toast();
-            Util.setCenterLocation(instance);
+            FrameUtil.setCenterLocation(instance);
         }
         return instance;
     }

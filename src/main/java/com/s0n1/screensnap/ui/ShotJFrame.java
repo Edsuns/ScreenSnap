@@ -1,6 +1,6 @@
 package com.s0n1.screensnap.ui;
 
-import com.s0n1.screensnap.util.DeviceUtil;
+import com.s0n1.screensnap.util.FrameUtil;
 import com.s0n1.screensnap.widget.FullScreenJFrame;
 import com.s0n1.screensnap.widget.ShotImageLabel;
 
@@ -196,7 +196,7 @@ public class ShotJFrame extends FullScreenJFrame {
         refreshColorPanel(mousePoint.x, mousePoint.y);
 
         shotImage = robot.createScreenCapture(
-                new Rectangle(DeviceUtil.getScreenWidth(), DeviceUtil.getScreenHeight()));
+                new Rectangle(FrameUtil.getScreenWidth(), FrameUtil.getScreenHeight()));
         shotLabel.setIcon(new ImageIcon(shotImage));
         setVisible(true);
     }
