@@ -91,12 +91,13 @@ public class HomeJFrame extends JFrame {
         JComboBox<String> comboBox = new JComboBox<>(languageName);
         comboBox.setBounds(100, 120, 100, 30);
         // 获取设置的语言
-        String currentTag = Settings.getLocale().toLanguageTag();
+        String setTag = Settings.getLocale().toLanguageTag();
         int i = 0;
         for (; i < languageName.length; i++) {
-            if (languageTag[i].contains(currentTag)) break;// 使用contains能匹配相关的语言
+            if (languageTag[i].contains(setTag)) break;// 使用contains能匹配相关的语言
         }
-        comboBox.setSelectedIndex(Math.min(i, comboBox.getItemCount() - 1));
+        final int setIndex = Math.min(i, comboBox.getItemCount() - 1);
+        comboBox.setSelectedIndex(setIndex);
         // 必须在后，因为setSelectedIndex会触发Action导致程序重启，最终出错
         comboBox.addActionListener(e -> {
             String s = (String) comboBox.getSelectedItem();
@@ -104,7 +105,9 @@ public class HomeJFrame extends JFrame {
             for (; index < languageName.length; index++) {
                 if (languageName[index].equals(s)) break;
             }
-            Settings.setLanguage(Locale.forLanguageTag(languageTag[index]));
+            if (!languageTag[setIndex].equals(languageTag[index])) {// 如果语言选择有改变
+                Settings.setLanguage(Locale.forLanguageTag(languageTag[index]));
+            }
         });
         settingsPanel.add(comboBox);
 
