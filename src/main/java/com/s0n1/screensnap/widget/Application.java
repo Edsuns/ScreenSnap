@@ -1,10 +1,10 @@
 package com.s0n1.screensnap.widget;
 
-import com.s0n1.screensnap.tools.Settings;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
+import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
@@ -23,7 +23,15 @@ public abstract class Application {
         return instance;
     }
 
-    private static ResourceBundle resourceBundle = ResourceBundle.getBundle("language", Settings.getLocale());
+    private static ResourceBundle resourceBundle;
+
+    static {
+        try {
+            resourceBundle = ResourceBundle.getBundle("language");// 不指定Locale即跟随系统设置
+        } catch (MissingResourceException e) {// 没有系统设置的语言时，默认英文
+            resourceBundle = ResourceBundle.getBundle("language", Locale.ENGLISH);
+        }
+    }
 
     public static ResourceBundle res() {
         return resourceBundle;

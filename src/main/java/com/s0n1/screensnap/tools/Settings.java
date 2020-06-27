@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -18,7 +19,7 @@ public final class Settings {
     // Default settings
     private static String hotkey = "shift ctrl X";
     private static boolean runInBg = true;
-    private static Locale locale = Locale.getDefault();
+    private static Locale locale = Application.res().getLocale();
 
     private static final String CONF_FILE_PATH = "config.properties";
     private static final String KEY_HOTKEY = "Hotkey";
@@ -41,12 +42,15 @@ public final class Settings {
             // Language
             String language = properties.getProperty(KEY_LANGUAGE);
             if (language != null) {
-                locale = Locale.forLanguageTag(language);
-                ResourceBundle resource = ResourceBundle.getBundle("language", locale);
-                // TODO 检查方法不严谨，不能防止注入
-                if (resource.getLocale().equals(locale)) {// 如果获取得到locale
-                    Application.setResourceBundle(resource);// 设置ResourceBundle
-                }// 不setResourceBundle即取初始值
+                try {
+                    Locale l = Locale.forLanguageTag(language);
+                    // 如果抛MissingResourceException就不会设置ResourceBundle和locale
+                    ResourceBundle resource = ResourceBundle.getBundle("language", l);
+                    // 设置ResourceBundle和locale
+                    Application.setResourceBundle(resource);
+                    locale = l;
+                } catch (MissingResourceException ignored) {
+                }
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
