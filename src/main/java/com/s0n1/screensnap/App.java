@@ -93,9 +93,8 @@ public class App extends Application {
                     Toast.getInstance().show(Application.res().getString("no_bar_code"),
                             Toast.DELAY_DEFAULT);
                 } else {
-                    String format = result.getBarcodeFormat().toString();
                     Util.copyText(result.getText());
-                    Toast.getInstance().show(format + Application.res().getString("copied"), Toast.DELAY_DEFAULT);
+                    Toast.getInstance().show(Application.res().getString("content_copied"), Toast.DELAY_DEFAULT);
                 }
             }
 

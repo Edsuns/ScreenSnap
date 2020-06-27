@@ -49,7 +49,7 @@ public class HomeJFrame extends JFrame {
         settingsPanel.add(hotKeyLabel);
 
         JTextField hotKeyText = new JTextField();
-        hotKeyText.setBounds(80, 0, 140, 30);
+        hotKeyText.setBounds(70, 0, 140, 30);
         hotKeyText.setHorizontalAlignment(SwingConstants.CENTER);
         hotKeyText.setText(Settings.getHotkey());
         hotKeyText.setEditable(false);
@@ -57,39 +57,22 @@ public class HomeJFrame extends JFrame {
         dialog.setHotkeyChangeListener(hotKeyText::setText);
 
         JButton editHotKeyBtn = new JButton(Application.res().getString("change"));
-        editHotKeyBtn.setBounds(240, 0, 90, 30);
+        editHotKeyBtn.setBounds(230, 0, 100, 30);
         editHotKeyBtn.addActionListener(e -> {
             dialog.setLocationRelativeTo(this);
             dialog.setVisible(true);
         });
         settingsPanel.add(editHotKeyBtn);
 
-        // 后台运行设置
-        JCheckBox backgroundCheck = new JCheckBox(Application.res().getString("run_in_bg"));
-        backgroundCheck.setBounds(0, 60, 220, 30);
-        backgroundCheck.setSelected(Settings.isRunInBg());
-        backgroundCheck.addItemListener(e -> {
-            boolean runInBg = e.getStateChange() == ItemEvent.SELECTED;
-            if (!runInBg) disableRunInBg();
-            Settings.setRunInBg(runInBg);
-            System.out.println("RunInBg: " + runInBg);
-        });
-        settingsPanel.add(backgroundCheck);
-
-        JButton exitBtn = new JButton(Application.res().getString("exit"));
-        exitBtn.setBounds(240, 60, 90, 30);
-        exitBtn.addActionListener(e -> Application.instance().onAppClose(false));
-        settingsPanel.add(exitBtn);
-
         // 语言设置
         JLabel languageLabel = new JLabel(Application.res().getString("language_setting"));
-        languageLabel.setBounds(0, 120, 100, 30);
+        languageLabel.setBounds(0, 60, 200, 30);
         settingsPanel.add(languageLabel);
 
         String[] languageName = {"English", "简体中文"};
         String[] languageTag = {"en", "zh-CN"};
         JComboBox<String> comboBox = new JComboBox<>(languageName);
-        comboBox.setBounds(100, 120, 100, 30);
+        comboBox.setBounds(230, 60, 100, 30);
         // 获取设置的语言
         String setTag = Settings.getLocale().toLanguageTag();
         int i = 0;
@@ -110,6 +93,23 @@ public class HomeJFrame extends JFrame {
             }
         });
         settingsPanel.add(comboBox);
+
+        // 后台运行设置
+        JCheckBox backgroundCheck = new JCheckBox(Application.res().getString("run_in_bg"));
+        backgroundCheck.setBounds(0, 120, 220, 30);
+        backgroundCheck.setSelected(Settings.isRunInBg());
+        backgroundCheck.addItemListener(e -> {
+            boolean runInBg = e.getStateChange() == ItemEvent.SELECTED;
+            if (!runInBg) disableRunInBg();
+            Settings.setRunInBg(runInBg);
+            System.out.println("RunInBg: " + runInBg);
+        });
+        settingsPanel.add(backgroundCheck);
+
+        JButton exitBtn = new JButton(Application.res().getString("exit"));
+        exitBtn.setBounds(230, 120, 100, 30);
+        exitBtn.addActionListener(e -> Application.instance().onAppClose(false));
+        settingsPanel.add(exitBtn);
 
         // 底部
         JPanel bottom = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));

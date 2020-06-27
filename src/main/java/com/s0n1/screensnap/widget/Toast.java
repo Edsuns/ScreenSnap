@@ -39,7 +39,8 @@ public class Toast extends JFrame {
         msgLabel = new JLabel();
         msgLabel.setBounds(0, 0, width, height);
         msgLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        msgLabel.setFont(msgLabel.getFont().deriveFont(Font.BOLD));
+        Font font = msgLabel.getFont();
+        msgLabel.setFont(font.deriveFont(Font.BOLD, font.getSize() * 1.2f));
         contentPanel.add(msgLabel);
 
         pack();
