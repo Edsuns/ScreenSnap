@@ -27,9 +27,9 @@ public abstract class Application {
 
     static {
         try {
-            resourceBundle = ResourceBundle.getBundle("language");// 不指定Locale即跟随系统设置
+            resourceBundle = Utf8ResourceBundle.getBundle("language");// 不指定Locale即跟随系统设置
         } catch (MissingResourceException e) {// 没有系统设置的语言时，默认英文
-            resourceBundle = ResourceBundle.getBundle("language", Locale.ENGLISH);
+            resourceBundle = Utf8ResourceBundle.getBundle("language", Locale.ENGLISH);
         }
     }
 

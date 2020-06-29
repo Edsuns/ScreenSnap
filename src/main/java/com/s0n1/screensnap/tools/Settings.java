@@ -1,6 +1,7 @@
 package com.s0n1.screensnap.tools;
 
 import com.s0n1.screensnap.widget.Application;
+import com.s0n1.screensnap.widget.Utf8ResourceBundle;
 
 import javax.swing.*;
 import java.io.File;
@@ -45,7 +46,7 @@ public final class Settings {
                 try {
                     Locale l = Locale.forLanguageTag(language);
                     // 如果抛MissingResourceException就不会设置ResourceBundle和locale
-                    ResourceBundle resource = ResourceBundle.getBundle("language", l);
+                    ResourceBundle resource = Utf8ResourceBundle.getBundle("language", l);
                     // 设置ResourceBundle和locale
                     Application.setResourceBundle(resource);
                     locale = l;
