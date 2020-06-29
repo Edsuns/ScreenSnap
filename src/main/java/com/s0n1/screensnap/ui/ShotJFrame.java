@@ -6,7 +6,7 @@ import com.s0n1.screensnap.widget.ShotImageLabel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
+import java.awt.event.AWTEventListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -32,6 +32,7 @@ public class ShotJFrame extends FullScreenJFrame {
         } catch (AWTException e) {
             e.printStackTrace();
         }
+        initKeyboardListener();
 
         colorPanel = new ColorPanel();
         add(colorPanel);
@@ -117,17 +118,22 @@ public class ShotJFrame extends FullScreenJFrame {
                 refreshColorPanel(e.getX(), e.getY());
             }
         });
+    }
 
-        // 必要，不然监听不到键盘事件
-        colorPanel.setFocusable(false);
-        shotLabel.setFocusable(false);
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
+    /**
+     * 初始化键盘监听事件
+     */
+    private void initKeyboardListener() {
+        AWTEventListener listener = event -> {
+            // 过滤出KeyEvent
+            if (event.getClass() != KeyEvent.class) return;
+            KeyEvent key = (KeyEvent) event;
+
+            if (key.getID() == KeyEvent.KEY_PRESSED) {
                 Point mousePoint = MouseInfo.getPointerInfo().getLocation();
                 int x = mousePoint.x;
                 int y = mousePoint.y;
-                switch (e.getKeyCode()) {
+                switch (key.getKeyCode()) {
                     case KeyEvent.VK_UP:
                         robot.mouseMove(x, y - 1);
                         break;
@@ -140,9 +146,14 @@ public class ShotJFrame extends FullScreenJFrame {
                     case KeyEvent.VK_RIGHT:
                         robot.mouseMove(x + 1, y);
                         break;
+                    case KeyEvent.VK_ENTER:
+                    case KeyEvent.VK_SPACE:
+                        pickColor();
+                        break;
                 }
             }
-        });
+        };
+        Toolkit.getDefaultToolkit().addAWTEventListener(listener, AWTEvent.KEY_EVENT_MASK);
     }
 
     public void refreshColorPanel(final int mouseX, final int mouseY) {
