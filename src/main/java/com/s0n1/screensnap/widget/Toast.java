@@ -60,6 +60,7 @@ public class Toast extends JFrame {
         if (timer != null) {
             timer.cancel();
         }
+        // cancel()后就不能schedule()，重新实例化一个
         timer = new Timer();
         timer.schedule(new TimerTask() {
             public void run() {

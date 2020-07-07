@@ -1,7 +1,5 @@
 package com.s0n1.screensnap.ui;
 
-import com.s0n1.screensnap.App;
-
 import java.awt.*;
 
 /**
@@ -14,9 +12,9 @@ public class UiRes {
 
     // 程序图标
     public static final Image APP_ICON = Toolkit.getDefaultToolkit()
-            .getImage(App.class.getResource("/icon/AppIcon.png"));
+            .getImage(UiRes.class.getResource("/icon/launcher.png"));
     public static final Image COPY_ICON = Toolkit.getDefaultToolkit()
-            .getImage(App.class.getResource("/icon/copy.png"));
+            .getImage(UiRes.class.getResource("/icon/copy.png"));
 
     public static final Color COLOR_CAPTURE_LIGHT = new Color(0xFFE70B);
     public static final Color COLOR_CAPTURE_DARK = new Color(0x2C251B);

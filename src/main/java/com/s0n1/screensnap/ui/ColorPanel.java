@@ -8,6 +8,7 @@ import java.awt.*;
 import static com.s0n1.screensnap.ui.UiRes.COLOR_CAPTURE_LIGHT;
 
 /**
+ * 悬浮窗，包含放大镜
  * Created by Edsuns@qq.com on 2020-06-03
  */
 public class ColorPanel extends JPanel {

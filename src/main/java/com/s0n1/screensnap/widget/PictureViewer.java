@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 /**
+ * 图片查看JComponent
  * Created by Edsuns@qq.com on 2020-06-08
  */
 public class PictureViewer extends JComponent {

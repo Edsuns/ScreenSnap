@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * 热键设置对话框
  * Created by Edsuns@qq.com on 2020-05-30
  */
 public class HotkeyDialog extends JDialog {

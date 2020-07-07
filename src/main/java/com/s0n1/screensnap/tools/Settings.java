@@ -54,22 +54,18 @@ public final class Settings {
                 }
             }
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         // 存在FileNotFoundException，必须外置
         GlobalHotKey.getInstance().load(hotkey);
     }
 
     public static void save() {
+        FileOutputStream outputStream = null;
         try {
             File file = new File(CONF_FILE_PATH);
-            if (!file.exists() && !file.createNewFile()) {
-                throw new IOException("Fail to create new file: " + CONF_FILE_PATH);
-            }
-            FileInputStream inputStream = new FileInputStream(file);
-            FileOutputStream outputStream = new FileOutputStream(file);
+            outputStream = new FileOutputStream(file);
             Properties properties = new Properties();
-            properties.load(inputStream);
             // Hotkey
             properties.setProperty(KEY_HOTKEY, hotkey);
             // Run in background
@@ -79,7 +75,15 @@ public final class Settings {
             // Save to file
             properties.store(outputStream, null);
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
+        } finally {
+            if (outputStream != null) {
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

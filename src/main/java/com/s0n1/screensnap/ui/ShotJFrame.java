@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 /**
+ * 全屏的屏幕取样界面
  * Created by Edsuns@qq.com on 2020-05-26
  */
 public class ShotJFrame extends FullScreenJFrame {

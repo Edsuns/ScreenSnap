@@ -9,6 +9,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 /**
+ * 显示超链接的JLabel
  * Created by Edsuns@qq.com on 2020-06-06
  */
 public class UrlLabel extends JLabel {

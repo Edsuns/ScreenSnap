@@ -160,7 +160,7 @@ public class HomeJFrame extends JFrame {
                 // 鼠标左键
                 if (e.getButton() == MouseEvent.BUTTON1) {
                     setExtendedState(JFrame.NORMAL);
-                    setVisible(!isVisible());
+                    setVisible(!isActive());
                     toFront();
                 }
             }

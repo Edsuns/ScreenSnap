@@ -7,6 +7,7 @@ import static com.s0n1.screensnap.ui.UiRes.COLOR_CAPTURE_DARK;
 import static com.s0n1.screensnap.ui.UiRes.COLOR_CAPTURE_LIGHT;
 
 /**
+ * 带标记功能的JLabel
  * Created by Edsuns@qq.com on 2020-05-31
  */
 public class ShotImageLabel extends JLabel {

@@ -2,6 +2,8 @@ package com.s0n1.screensnap.widget;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * Created by Edsuns@qq.com on 2020-05-25
@@ -14,6 +16,12 @@ public class FullScreenJFrame extends JFrame {
         setAlwaysOnTop(true);
         // 不显示任务栏图标
         setType(Type.UTILITY);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+                setVisible(false);// windowDeactivated时窗口会被非全屏化，不如直接不显示
+            }
+        });
     }
 
     @Override

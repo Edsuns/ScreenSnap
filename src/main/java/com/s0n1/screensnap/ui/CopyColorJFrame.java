@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import static com.s0n1.screensnap.ui.UiRes.COPY_ICON;
 
 /**
+ * 颜色复制窗口
  * Created by Edsuns@qq.com on 2020-06-02
  */
 public class CopyColorJFrame extends JFrame {

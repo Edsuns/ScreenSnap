@@ -19,6 +19,7 @@ import java.io.IOException;
 import static com.s0n1.screensnap.ui.UiRes.ORIGIN;
 
 /**
+ * 图片查看器
  * Created by Edsuns@qq.com on 2020-06-08
  */
 public class PictureJFrame extends JFrame {

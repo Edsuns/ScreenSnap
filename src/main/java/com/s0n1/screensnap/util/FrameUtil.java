@@ -34,13 +34,15 @@ public final class FrameUtil {
     }
 
     /**
-     * 在中间显示窗口
-     * 不考虑有DPI缩放的情况
-     * boolean hasDPIScale = !isOldVersionJava && screenSize.height != getScreenHeight();
+     * 在屏幕中间显示窗口
      */
     public static void setCenterLocation(Window window) {
-        window.setLocation((getScreenWidth() - window.getWidth()) / 2,
-                (getScreenHeight() - window.getHeight()) / 2);
+        // 这里的屏幕尺寸不能使用以下方法获取
+        // GraphicsEnvironment.getLocalGraphicsEnvironment()
+        //                .getDefaultScreenDevice().getDisplayMode().getWidth()
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        window.setLocation((screenSize.width - window.getWidth()) / 2,
+                (screenSize.height - window.getHeight()) / 2);
     }
 
     /**
@@ -73,6 +75,8 @@ public final class FrameUtil {
             if (value instanceof FontUIResource) {
                 FontUIResource resource = (FontUIResource) value;
                 int style = resource.getStyle();
+                // 使用JVM参数关闭DPI缩放在低版本Java上字体仍然会被缩放
+                // 由于本程序已强制要求关闭DPI缩放，高版本Java也带上字体缩放便可获得一致的显示效果
                 float size = FrameUtil.isOldVersionJava ?
                         resource.getSize() : resource.getSize() * DPI_SCALE;
                 UIManager.put(key, new FontUIResource(fontName, style, (int) size));

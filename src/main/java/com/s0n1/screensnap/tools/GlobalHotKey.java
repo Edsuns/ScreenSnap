@@ -24,6 +24,11 @@ public class GlobalHotKey implements HotKeyListener {
         return instance;
     }
 
+    /**
+     * 加载设置（重置+注册）
+     *
+     * @param hotkey 热键
+     */
     public void load(String hotkey) {
         final GlobalHotKey instance = this;
         new Thread(() -> {

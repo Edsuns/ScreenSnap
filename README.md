@@ -1,4 +1,4 @@
-# ScreenSnap  
+# 屏幕取样  
 > 下载：[ScreenSnap/releases](https://github.com/Edsuns/ScreenSnap/releases)
 
 ### 功能概览  
@@ -16,6 +16,7 @@ __1. 选取操作__
 - 右键拖动圈选 -> 二维码扫描
 - 右键单击 -> 取消
 - 键盘方向键 -> 单像素移动鼠标
+- 键盘回车或空格 -> 确认取色
 
 __2. 截图预览__  
 - 鼠标滚轮 -> 缩放大小
