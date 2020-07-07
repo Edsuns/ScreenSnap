@@ -4,10 +4,7 @@ import com.s0n1.screensnap.widget.Application;
 import com.s0n1.screensnap.widget.Utf8ResourceBundle;
 
 import javax.swing.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.Properties;
@@ -53,6 +50,7 @@ public final class Settings {
                 } catch (MissingResourceException ignored) {
                 }
             }
+        } catch (FileNotFoundException ignored) {
         } catch (IOException e) {
             e.printStackTrace();
         }
