@@ -37,12 +37,7 @@ public final class FrameUtil {
      * 在屏幕中间显示窗口
      */
     public static void setCenterLocation(Window window) {
-        // 这里的屏幕尺寸不能使用以下方法获取
-        // GraphicsEnvironment.getLocalGraphicsEnvironment()
-        //                .getDefaultScreenDevice().getDisplayMode().getWidth()
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        window.setLocation((screenSize.width - window.getWidth()) / 2,
-                (screenSize.height - window.getHeight()) / 2);
+        window.setLocationRelativeTo(null);
     }
 
     /**
