@@ -1,6 +1,6 @@
-package com.s0n1.screensnap.widget;
+package io.github.edsuns.screensnap.widget;
 
-import com.s0n1.screensnap.util.FrameUtil;
+import io.github.edsuns.screensnap.util.FrameUtil;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;

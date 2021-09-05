@@ -1,4 +1,4 @@
-package com.s0n1.screensnap.util;
+package io.github.edsuns.screensnap.util;
 
 import com.google.zxing.*;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;

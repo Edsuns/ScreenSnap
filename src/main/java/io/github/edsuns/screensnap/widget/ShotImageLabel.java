@@ -1,10 +1,10 @@
-package com.s0n1.screensnap.widget;
+package io.github.edsuns.screensnap.widget;
 
 import javax.swing.*;
 import java.awt.*;
 
-import static com.s0n1.screensnap.ui.UiRes.COLOR_CAPTURE_DARK;
-import static com.s0n1.screensnap.ui.UiRes.COLOR_CAPTURE_LIGHT;
+import static io.github.edsuns.screensnap.ui.UiRes.COLOR_CAPTURE_DARK;
+import static io.github.edsuns.screensnap.ui.UiRes.COLOR_CAPTURE_LIGHT;
 
 /**
  * 带标记功能的JLabel

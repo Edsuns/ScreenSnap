@@ -1,6 +1,6 @@
-package com.s0n1.screensnap.util;
+package io.github.edsuns.screensnap.util;
 
-import com.s0n1.screensnap.widget.ImageTransferable;
+import io.github.edsuns.screensnap.widget.ImageTransferable;
 
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;

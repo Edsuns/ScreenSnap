@@ -1,7 +1,7 @@
-package com.s0n1.screensnap.tools;
+package io.github.edsuns.screensnap.tools;
 
-import com.s0n1.screensnap.widget.Application;
-import com.s0n1.screensnap.widget.Utf8ResourceBundle;
+import io.github.edsuns.screensnap.widget.Application;
+import io.github.edsuns.screensnap.widget.Utf8ResourceBundle;
 
 import javax.swing.*;
 import java.io.*;

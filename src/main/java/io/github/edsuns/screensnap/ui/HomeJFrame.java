@@ -1,8 +1,8 @@
-package com.s0n1.screensnap.ui;
+package io.github.edsuns.screensnap.ui;
 
-import com.s0n1.screensnap.tools.Settings;
-import com.s0n1.screensnap.widget.Application;
-import com.s0n1.screensnap.widget.UrlLabel;
+import io.github.edsuns.screensnap.tools.Settings;
+import io.github.edsuns.screensnap.widget.Application;
+import io.github.edsuns.screensnap.widget.UrlLabel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -12,7 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Locale;
 
-import static com.s0n1.screensnap.ui.UiRes.*;
+import static io.github.edsuns.screensnap.ui.UiRes.*;
 
 /**
  * Created by Edsuns@qq.com on 2020-05-29

@@ -1,14 +1,14 @@
-package com.s0n1.screensnap.widget;
+package io.github.edsuns.screensnap.widget;
 
-import com.s0n1.screensnap.tools.AnimationInvoker;
-import com.s0n1.screensnap.util.FrameUtil;
+import io.github.edsuns.screensnap.tools.AnimationInvoker;
+import io.github.edsuns.screensnap.util.FrameUtil;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.s0n1.screensnap.ui.UiRes.COLOR_GRAY_LIGHT;
+import static io.github.edsuns.screensnap.ui.UiRes.COLOR_GRAY_LIGHT;
 
 /**
  * Created by Edsuns@qq.com on 2020-06-06

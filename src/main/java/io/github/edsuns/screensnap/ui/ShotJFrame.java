@@ -1,8 +1,8 @@
-package com.s0n1.screensnap.ui;
+package io.github.edsuns.screensnap.ui;
 
-import com.s0n1.screensnap.util.FrameUtil;
-import com.s0n1.screensnap.widget.FullScreenJFrame;
-import com.s0n1.screensnap.widget.ShotImageLabel;
+import io.github.edsuns.screensnap.util.FrameUtil;
+import io.github.edsuns.screensnap.widget.FullScreenJFrame;
+import io.github.edsuns.screensnap.widget.ShotImageLabel;
 
 import javax.swing.*;
 import java.awt.*;

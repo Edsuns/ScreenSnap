@@ -1,14 +1,14 @@
-package com.s0n1.screensnap;
+package io.github.edsuns.screensnap;
 
 import com.google.zxing.Result;
-import com.s0n1.screensnap.tools.GlobalHotKey;
-import com.s0n1.screensnap.tools.Settings;
-import com.s0n1.screensnap.ui.*;
-import com.s0n1.screensnap.util.FrameUtil;
-import com.s0n1.screensnap.util.QrCodeUtil;
-import com.s0n1.screensnap.util.Util;
-import com.s0n1.screensnap.widget.Application;
-import com.s0n1.screensnap.widget.Toast;
+import io.github.edsuns.screensnap.tools.GlobalHotKey;
+import io.github.edsuns.screensnap.tools.Settings;
+import io.github.edsuns.screensnap.ui.*;
+import io.github.edsuns.screensnap.util.FrameUtil;
+import io.github.edsuns.screensnap.util.QrCodeUtil;
+import io.github.edsuns.screensnap.util.Util;
+import io.github.edsuns.screensnap.widget.Application;
+import io.github.edsuns.screensnap.widget.Toast;
 
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -18,7 +18,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileLock;
 
-import static com.s0n1.screensnap.ui.UiRes.APP_ICON;
+import static io.github.edsuns.screensnap.ui.UiRes.APP_ICON;
 
 /**
  * Main Entrance

@@ -1,9 +1,9 @@
-package com.s0n1.screensnap.ui;
+package io.github.edsuns.screensnap.ui;
 
-import com.s0n1.screensnap.util.FrameUtil;
-import com.s0n1.screensnap.util.Util;
-import com.s0n1.screensnap.widget.Application;
-import com.s0n1.screensnap.widget.PictureViewer;
+import io.github.edsuns.screensnap.util.FrameUtil;
+import io.github.edsuns.screensnap.util.Util;
+import io.github.edsuns.screensnap.widget.Application;
+import io.github.edsuns.screensnap.widget.PictureViewer;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -16,7 +16,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static com.s0n1.screensnap.ui.UiRes.ORIGIN;
+import static io.github.edsuns.screensnap.ui.UiRes.ORIGIN;
 
 /**
  * 图片查看器

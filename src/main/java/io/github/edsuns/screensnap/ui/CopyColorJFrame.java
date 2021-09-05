@@ -1,14 +1,14 @@
-package com.s0n1.screensnap.ui;
+package io.github.edsuns.screensnap.ui;
 
-import com.s0n1.screensnap.util.FrameUtil;
-import com.s0n1.screensnap.util.Util;
+import io.github.edsuns.screensnap.util.FrameUtil;
+import io.github.edsuns.screensnap.util.Util;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import static com.s0n1.screensnap.ui.UiRes.COPY_ICON;
+import static io.github.edsuns.screensnap.ui.UiRes.COPY_ICON;
 
 /**
  * 颜色复制窗口

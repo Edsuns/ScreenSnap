@@ -1,4 +1,4 @@
-package com.s0n1.screensnap.tools;
+package io.github.edsuns.screensnap.tools;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,4 +1,4 @@
-package com.s0n1.screensnap.util;
+package io.github.edsuns.screensnap.util;
 
 import javax.swing.*;
 import javax.swing.plaf.FontUIResource;

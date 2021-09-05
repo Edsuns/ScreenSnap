@@ -1,11 +1,9 @@
-package com.s0n1.screensnap.ui;
+package io.github.edsuns.screensnap.ui;
 
-import com.s0n1.screensnap.util.Util;
+import io.github.edsuns.screensnap.util.Util;
 
 import javax.swing.*;
 import java.awt.*;
-
-import static com.s0n1.screensnap.ui.UiRes.COLOR_CAPTURE_LIGHT;
 
 /**
  * 悬浮窗，包含放大镜
@@ -76,7 +74,7 @@ public class ColorPanel extends JPanel {
         g.fillRect(55, 65, 10, 1);
         g.fillRect(65, 55, 1, 11);
         // 瞄准内方框
-        g.setColor(COLOR_CAPTURE_LIGHT);
+        g.setColor(UiRes.COLOR_CAPTURE_LIGHT);
         g.fillRect(56, 56, 8, 1);
         g.fillRect(56, 56, 1, 9);
         g.fillRect(56, 64, 8, 1);

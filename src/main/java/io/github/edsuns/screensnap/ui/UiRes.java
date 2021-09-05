@@ -1,4 +1,4 @@
-package com.s0n1.screensnap.ui;
+package io.github.edsuns.screensnap.ui;
 
 import java.awt.*;
 
