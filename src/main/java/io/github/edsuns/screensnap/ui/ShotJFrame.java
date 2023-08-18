@@ -1,5 +1,7 @@
 package io.github.edsuns.screensnap.ui;
 
+import com.sun.jna.platform.win32.User32;
+import com.sun.jna.platform.win32.WinUser;
 import io.github.edsuns.screensnap.util.FrameUtil;
 import io.github.edsuns.screensnap.widget.FullScreenJFrame;
 import io.github.edsuns.screensnap.widget.ShotImageLabel;
@@ -158,6 +160,7 @@ public class ShotJFrame extends FullScreenJFrame {
     }
 
     public void refreshColorPanel(final int mouseX, final int mouseY) {
+
         int panelX = mouseX - ColorPanel.Width;
         int panelY = mouseY - ColorPanel.Height - ColorPanel.Margin;
         int position = getPositionInScreen(mouseX, mouseY);
@@ -190,7 +193,7 @@ public class ShotJFrame extends FullScreenJFrame {
         int x = mousePoint.x;
         int y = mousePoint.y;
         if (mPickColorListener != null) {
-            mPickColorListener.onColorPicked(robot.getPixelColor(x, y));
+            mPickColorListener.onColorPicked(new Color(MyGDI32.INSTANCE.GetPixel(null,x,y)));
         }
         setVisible(false);
         System.out.println("Point x: " + x + ", y: " + y);
@@ -207,10 +210,23 @@ public class ShotJFrame extends FullScreenJFrame {
         Point mousePoint = MouseInfo.getPointerInfo().getLocation();
         refreshColorPanel(mousePoint.x, mousePoint.y);
 
-        shotImage = robot.createScreenCapture(
-                new Rectangle(FrameUtil.getScreenWidth(), FrameUtil.getScreenHeight()));
+        // shotImage = robot.createScreenCapture(
+        //         new Rectangle(FrameUtil.getScreenWidth(), FrameUtil.getScreenHeight()));
+        CustomGDI32Util customGDI32Util = new CustomGDI32Util(getFullVirtualScreenRect());
+        shotImage =  customGDI32Util.getScreenshot();
+        // shotImage = robot.createScreenCapture( new Rectangle( -1920,0,1920,1080));
         shotLabel.setIcon(new ImageIcon(shotImage));
         setVisible(true);
+    }
+
+
+    public static Rectangle getFullVirtualScreenRect() {
+        int x = User32.INSTANCE.GetSystemMetrics(WinUser.SM_XVIRTUALSCREEN);
+        int y = User32.INSTANCE.GetSystemMetrics(WinUser.SM_YVIRTUALSCREEN);
+        int w = User32.INSTANCE.GetSystemMetrics(WinUser.SM_CXVIRTUALSCREEN);
+        int h = User32.INSTANCE.GetSystemMetrics(WinUser.SM_CYVIRTUALSCREEN);
+        Rectangle screenRect = new Rectangle(x, y, w, h);
+        return screenRect;
     }
 
     public void stopShot() {

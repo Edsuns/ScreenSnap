@@ -1,5 +1,8 @@
 package io.github.edsuns.screensnap.widget;
 
+import com.sun.jna.platform.win32.User32;
+import com.sun.jna.platform.win32.WinUser;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -30,9 +33,16 @@ public class FullScreenJFrame extends JFrame {
             // 必须在setVisible这里执行setFullScreenWindow和setExtendedState
             // 兼容Linux
             GraphicsEnvironment localGraphics = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            localGraphics.getDefaultScreenDevice().setFullScreenWindow(this);
+            // localGraphics.getDefaultScreenDevice().setFullScreenWindow(this);
+            // localGraphics.getScreenDevices()[1].setFullScreenWindow(this);
             // 兼容Windows
-            setExtendedState(JFrame.MAXIMIZED_BOTH);
+            // setExtendedState(JFrame.MAXIMIZED_BOTH);
+            int x = User32.INSTANCE.GetSystemMetrics(WinUser.SM_XVIRTUALSCREEN);
+            int y = User32.INSTANCE.GetSystemMetrics(WinUser.SM_YVIRTUALSCREEN);
+            int w = User32.INSTANCE.GetSystemMetrics(WinUser.SM_CXVIRTUALSCREEN);
+            int h = User32.INSTANCE.GetSystemMetrics(WinUser.SM_CYVIRTUALSCREEN);
+            setLocation(new Point(x,y));
+            setSize(new Dimension(w,h));
         }
         super.setVisible(b);
     }
