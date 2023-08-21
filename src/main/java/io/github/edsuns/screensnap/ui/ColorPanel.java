@@ -2,6 +2,8 @@ package io.github.edsuns.screensnap.ui;
 
 import com.sun.jna.platform.win32.GDI32;
 import com.sun.jna.platform.win32.GDI32Util;
+import com.sun.jna.platform.win32.User32;
+import com.sun.jna.platform.win32.WinUser;
 import io.github.edsuns.screensnap.util.Util;
 
 import javax.swing.*;
@@ -48,14 +50,18 @@ public class ColorPanel extends JPanel {
     }
 
     public void updateColor(Robot robot, int x, int y) {
-        //TODO:拾取位置不对
-        Color color = robot.getPixelColor(x, y);
-        pointLabel.setText("(" + x + "," + y + ")");
+        int vX = User32.INSTANCE.GetSystemMetrics(WinUser.SM_XVIRTUALSCREEN);
+        int vY = User32.INSTANCE.GetSystemMetrics(WinUser.SM_YVIRTUALSCREEN);
+        int pX = x + vX;
+        int pY = y + vY;
+
+        Color color = robot.getPixelColor(pX, pY);
+        pointLabel.setText("(" + pX + "," + pY + ")");
         colorLabel.setBackground(color);
         colorTextLabel.setText(Util.getColorText(color, Util.ColorMode.HTML));
         // 截取鼠标区域图像并绘制放大镜
         // pointImage = robot.createScreenCapture(new Rectangle(x - 5, y - 5, 11, 11));
-        CustomGDI32Util customGDI32Util = new CustomGDI32Util(new Rectangle(x-5,y-5,11,11));
+        CustomGDI32Util customGDI32Util = new CustomGDI32Util(new Rectangle(pX-5,pY - 5,11,11));
         pointImage = customGDI32Util.getScreenshot();
         repaint();
     }
