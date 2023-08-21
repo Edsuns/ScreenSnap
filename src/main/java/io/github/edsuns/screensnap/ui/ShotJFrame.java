@@ -193,7 +193,8 @@ public class ShotJFrame extends FullScreenJFrame {
         int x = mousePoint.x;
         int y = mousePoint.y;
         if (mPickColorListener != null) {
-            mPickColorListener.onColorPicked(new Color(MyGDI32.INSTANCE.GetPixel(null,x,y)));
+            mPickColorListener.onColorPicked(robot.getPixelColor(x, y));
+            System.out.println("Picked x:" + x +",y:" + y);
         }
         setVisible(false);
         System.out.println("Point x: " + x + ", y: " + y);
