@@ -101,8 +101,8 @@ public class ShotJFrame extends FullScreenJFrame {
                     int minY = Math.min(yStart, yEnd);
                     recX = minX;
                     recY = minY;
-                    recW = Math.max(1, maxX - minX);
-                    recH = Math.max(1, maxY - minY);
+                    recW = Math.max(1, maxX - minX + 1);
+                    recH = Math.max(1, maxY - minY + 1);
                     shotLabel.drawRectangle(recX, recY, recW, recH);
                 }
             }
