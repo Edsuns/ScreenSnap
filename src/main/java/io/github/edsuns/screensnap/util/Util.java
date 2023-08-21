@@ -1,6 +1,10 @@
 package io.github.edsuns.screensnap.util;
 
+import com.sun.jna.Native;
 import com.sun.jna.platform.win32.User32;
+import com.sun.jna.platform.win32.Win32Exception;
+import com.sun.jna.platform.win32.WinDef;
+import com.sun.jna.platform.win32.WinUser;
 import io.github.edsuns.screensnap.ui.MyGDI32;
 import io.github.edsuns.screensnap.widget.ImageTransferable;
 
@@ -8,7 +12,9 @@ import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Edsuns@qq.com on 2020-05-26
@@ -68,10 +74,41 @@ public final class Util {
 
 
     public static Color getColorFromScreenPixel(int x, int y) {
-        int color = MyGDI32.INSTANCE.GetPixel(User32.INSTANCE.GetDC(null), x, y);
-        int red = color & 0X0000ff;
-        int green = (color & 0x00ff00) >> 8;
-        int blue = (color & 0xff0000) >> 16;
-        return new Color(red, green, blue);
+        WinDef.HDC hdcTarget = User32.INSTANCE.GetDC(null);
+        if (hdcTarget == null) {
+            throw new Win32Exception(Native.getLastError());
+        }
+        try {
+            int color = MyGDI32.INSTANCE.GetPixel(hdcTarget, x, y);
+            int red = color & 0X0000ff;
+            int green = (color & 0x00ff00) >> 8;
+            int blue = (color & 0xff0000) >> 16;
+            return new Color(red, green, blue);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (hdcTarget != null) {
+                if (0 == User32.INSTANCE.ReleaseDC(null, hdcTarget)) {
+                    throw new IllegalStateException("Device context did not release properly.");
+                }
+            }
+        }
+
+    }
+
+
+    public static List<WinUser.RECT> getAllScreenRectangles() {
+        List<WinUser.RECT> screenRectangles = new ArrayList<>();
+
+        User32.INSTANCE.EnumDisplayMonitors(null, null, (hMonitor, hdc, rect, lparam) -> {
+            WinUser.MONITORINFO monitorinfo = new WinUser.MONITORINFO();
+            WinDef.BOOL bool = User32.INSTANCE.GetMonitorInfo(hMonitor, monitorinfo);
+            if (bool.booleanValue()) {
+                screenRectangles.add(monitorinfo.rcMonitor);
+            }
+            return 1;
+        }, new WinDef.LPARAM(0));
+
+        return screenRectangles;
     }
 }
