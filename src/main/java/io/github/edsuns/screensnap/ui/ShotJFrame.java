@@ -1,8 +1,9 @@
 package io.github.edsuns.screensnap.ui;
 
 import com.sun.jna.platform.win32.User32;
+import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinUser;
-import io.github.edsuns.screensnap.util.FrameUtil;
+import io.github.edsuns.screensnap.util.Util;
 import io.github.edsuns.screensnap.widget.FullScreenJFrame;
 import io.github.edsuns.screensnap.widget.ShotImageLabel;
 
@@ -19,7 +20,6 @@ import java.awt.image.BufferedImage;
  * Created by Edsuns@qq.com on 2020-05-26
  */
 public class ShotJFrame extends FullScreenJFrame {
-    private Robot robot;
     private final ColorPanel colorPanel;
     private final ShotImageLabel shotLabel;
 
@@ -29,18 +29,14 @@ public class ShotJFrame extends FullScreenJFrame {
     boolean pressed;
 
     public ShotJFrame() {
-        // 初始化robot
-        try {
-            robot = new Robot();
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }
+
+        // 添加按键监听
         initKeyboardListener();
 
         colorPanel = new ColorPanel();
         add(colorPanel);
 
-        // 初始化显示截图的Label
+        // 初始化显示截图的 Label
         shotLabel = new ShotImageLabel();
         add(shotLabel);
 
@@ -128,7 +124,7 @@ public class ShotJFrame extends FullScreenJFrame {
      */
     private void initKeyboardListener() {
         AWTEventListener listener = event -> {
-            // 过滤出KeyEvent
+            // 过滤出 KeyEvent
             if (event.getClass() != KeyEvent.class) return;
             KeyEvent key = (KeyEvent) event;
 
@@ -138,16 +134,20 @@ public class ShotJFrame extends FullScreenJFrame {
                 int y = mousePoint.y;
                 switch (key.getKeyCode()) {
                     case KeyEvent.VK_UP:
-                        robot.mouseMove(x, y - 1);
+                        // robot.mouseMove(x, y - 1);
+                        moveCursor(0, -1);
                         break;
                     case KeyEvent.VK_DOWN:
-                        robot.mouseMove(x, y + 1);
+                        // robot.mouseMove(x, y + 1);
+                        moveCursor(0, 1);
                         break;
                     case KeyEvent.VK_LEFT:
-                        robot.mouseMove(x - 1, y);
+                        // robot.mouseMove(x - 1, y);
+                        moveCursor(-1, 0);
                         break;
                     case KeyEvent.VK_RIGHT:
-                        robot.mouseMove(x + 1, y);
+                        // robot.mouseMove(x + 1, y);
+                        moveCursor(1, 0);
                         break;
                     case KeyEvent.VK_ENTER:
                     case KeyEvent.VK_SPACE:
@@ -157,6 +157,15 @@ public class ShotJFrame extends FullScreenJFrame {
             }
         };
         Toolkit.getDefaultToolkit().addAWTEventListener(listener, AWTEvent.KEY_EVENT_MASK);
+    }
+
+    private static void moveCursor(int dx, int dy) {
+        User32 user32 = User32.INSTANCE;
+        WinDef.POINT point = new WinDef.POINT();
+        user32.GetCursorPos(point);
+        int newX = point.x + dx;
+        int newY = point.y + dy;
+        user32.SetCursorPos(newX, newY);
     }
 
     public void refreshColorPanel(final int mouseX, final int mouseY) {
@@ -185,27 +194,29 @@ public class ShotJFrame extends FullScreenJFrame {
                 break;
         }
         colorPanel.setLocation(panelX, panelY);
-        colorPanel.updateColor(robot, mouseX, mouseY);
+        colorPanel.updateColor(mouseX, mouseY);
     }
 
-    public void pickColor() {
+    private void pickColor() {
         Point mousePoint = MouseInfo.getPointerInfo().getLocation();
         int x = mousePoint.x;
         int y = mousePoint.y;
         if (mPickColorListener != null) {
-            mPickColorListener.onColorPicked(robot.getPixelColor(x, y));
-            System.out.println("Picked x:" + x +",y:" + y);
+            Color color = Util.getColorFromScreenPixel(x, y);
+            mPickColorListener.onColorPicked(color);
+            System.out.println("Picked x:" + x + ",y:" + y);
         }
         setVisible(false);
         System.out.println("Point x: " + x + ", y: " + y);
     }
 
+
     /**
-     * 显示Frame和截图
+     * 显示 Frame 和截图
      */
     public void startShot() {
         if (isVisible()) return;
-        // Windows自带的Console能在print处暂停程序运行, 导致界面卡住. 提前print, 要暂停也是在全屏前暂停
+        // Windows 自带的 Console 能在 print 处暂停程序运行, 导致界面卡住. 提前 print, 要暂停也是在全屏前暂停
         System.out.println("Start Screenshot.");
 
         Point mousePoint = MouseInfo.getPointerInfo().getLocation();
@@ -214,8 +225,8 @@ public class ShotJFrame extends FullScreenJFrame {
         // shotImage = robot.createScreenCapture(
         //         new Rectangle(FrameUtil.getScreenWidth(), FrameUtil.getScreenHeight()));
         CustomGDI32Util customGDI32Util = new CustomGDI32Util(getFullVirtualScreenRect());
-        shotImage =  customGDI32Util.getScreenshot();
-        // shotImage = robot.createScreenCapture( new Rectangle( -1920,0,1920,1080));
+        shotImage = customGDI32Util.getScreenshot();
+        // shotImage = robot.createScreenCapture(new Rectangle( -1920,0,1920,1080));
         shotLabel.setIcon(new ImageIcon(shotImage));
         setVisible(true);
     }

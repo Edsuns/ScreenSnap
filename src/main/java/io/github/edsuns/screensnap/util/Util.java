@@ -1,5 +1,7 @@
 package io.github.edsuns.screensnap.util;
 
+import com.sun.jna.platform.win32.User32;
+import io.github.edsuns.screensnap.ui.MyGDI32;
 import io.github.edsuns.screensnap.widget.ImageTransferable;
 
 import java.awt.*;
@@ -21,7 +23,7 @@ public final class Util {
      *
      * @param c    源颜色
      * @param mode 颜色类型
-     * @return 符合mode的颜色字符串
+     * @return 符合 mode 的颜色字符串
      */
     public static String getColorText(final Color c, ColorMode mode) {
         if (c == null) {
@@ -62,5 +64,14 @@ public final class Util {
     public static String getCurrentTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HHmmss");
         return dateFormat.format(new Date());
+    }
+
+
+    public static Color getColorFromScreenPixel(int x, int y) {
+        int color = MyGDI32.INSTANCE.GetPixel(User32.INSTANCE.GetDC(null), x, y);
+        int red = color & 0X0000ff;
+        int green = (color & 0x00ff00) >> 8;
+        int blue = (color & 0xff0000) >> 16;
+        return new Color(red, green, blue);
     }
 }
