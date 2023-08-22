@@ -14,6 +14,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 /**
  * 全屏的屏幕取样界面
@@ -251,10 +252,28 @@ public class ShotJFrame extends FullScreenJFrame {
     private static final int TOP = 0b1101;
     private static final int BOTTOM = 0b1110;
 
-    private int getPositionInScreen(final int x, final int y) {
+   /* private int getPositionInScreen(final int x, final int y) {
         int leftOrRight = x < ColorPanel.Width ? LEFT : RIGHT;
         int topOrBottom = y < ColorPanel.Height + ColorPanel.Margin ? TOP : BOTTOM;
         return leftOrRight & topOrBottom;
+    }*/
+
+    private int getPositionInScreen(final int x, final int y) {
+        List<WinDef.RECT> allScreenRectangles = Util.getAllScreenRectangles();
+        int vX = User32.INSTANCE.GetSystemMetrics(WinUser.SM_XVIRTUALSCREEN);
+        int vY = User32.INSTANCE.GetSystemMetrics(WinUser.SM_YVIRTUALSCREEN);
+        int pX = vX + x;
+        int pY = vY + y;
+        for (int i = 0; i < allScreenRectangles.size(); i++) {
+            WinDef.RECT rect = allScreenRectangles.get(i);
+            if (rect.toRectangle().contains(pX,pY)) {
+                int leftOrRight = pX <= rect.left + ColorPanel.Width + ColorPanel.Margin ? LEFT : RIGHT;
+                int topOrBottom = pY <= rect.top + ColorPanel.Height + ColorPanel.Margin ? TOP : BOTTOM;
+                return leftOrRight & topOrBottom;
+            }
+        }
+        System.out.println("默认屏幕右下角，x：" + x + "y:" + y + "" + allScreenRectangles);
+        return LEFT & TOP;
     }
 
     private PickColorListener mPickColorListener;
