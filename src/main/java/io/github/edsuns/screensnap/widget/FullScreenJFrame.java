@@ -11,11 +11,11 @@ import java.awt.event.WindowEvent;
 /**
  * Created by Edsuns@qq.com on 2020-05-25
  */
-public class FullScreenJFrame extends JFrame {
+public class FullScreenJFrame extends JWindow {
 
     public FullScreenJFrame() {
-        setResizable(false);
-        setUndecorated(true);
+        // setResizable(false);
+        // setUndecorated(true);
         setAlwaysOnTop(true);
         // 不显示任务栏图标
         setType(Type.UTILITY);
@@ -32,12 +32,11 @@ public class FullScreenJFrame extends JFrame {
         if (b) {
             // 必须在setVisible这里执行setFullScreenWindow和setExtendedState
             // 兼容Linux
-            GraphicsEnvironment localGraphics = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            localGraphics.getDefaultScreenDevice().setFullScreenWindow(this);
+            // GraphicsEnvironment localGraphics = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            // localGraphics.getDefaultScreenDevice().setFullScreenWindow(this);
             // localGraphics.getScreenDevices()[1].setFullScreenWindow(this);
             // 兼容Windows
-            setExtendedState(JFrame.MAXIMIZED_BOTH);
-
+            // setExtendedState(JFrame.MAXIMIZED_BOTH);
             if (System.getProperty("os.name").startsWith("Windows")){
                 int x = User32.INSTANCE.GetSystemMetrics(WinUser.SM_XVIRTUALSCREEN);
                 int y = User32.INSTANCE.GetSystemMetrics(WinUser.SM_YVIRTUALSCREEN);
