@@ -20,10 +20,10 @@ dependencies {
 //    testCompile group: 'junit', name: 'junit', version: '4.12'
 
     // For GlobalHotKey
-    compile "com.github.tulskiy:jkeymaster:1.2"
-    compile "org.slf4j:slf4j-api:1.7.30"
-    compile "org.slf4j:slf4j-nop:1.7.30"
+    implementation("com.github.tulskiy:jkeymaster:1.3")
+    implementation("org.slf4j:slf4j-api:2.0.7")
+    implementation("org.slf4j:slf4j-nop:2.0.7")
 
     // QRCode parser
-    compile "com.google.zxing:javase:3.4.0"
+    implementation("com.google.zxing:javase:3.5.2")
 }
