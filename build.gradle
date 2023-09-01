@@ -5,7 +5,7 @@ plugins {
 group 'io.github.edsuns.screensnap'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
+sourceCompatibility = 9
 
 // Avoid encoding issue
 tasks.withType(JavaCompile) {
