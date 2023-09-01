@@ -27,3 +27,13 @@ dependencies {
     // QRCode parser
     implementation("com.google.zxing:javase:3.5.2")
 }
+
+compileJava{
+    options.compilerArgs.add( "--add-exports=java.desktop/sun.awt=ALL-UNNAMED")
+    options.compilerArgs.add("--add-exports=java.desktop/java.awt.peer=ALL-UNNAMED")
+}
+
+compileTestJava{
+    options.compilerArgs.add( "--add-exports=java.desktop/sun.awt=ALL-UNNAMED")
+    options.compilerArgs.add("--add-exports=java.desktop/java.awt.peer=ALL-UNNAMED")
+}

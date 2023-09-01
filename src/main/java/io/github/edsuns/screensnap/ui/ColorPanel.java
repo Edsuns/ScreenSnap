@@ -45,13 +45,16 @@ public class ColorPanel extends JPanel {
         add(colorTextLabel);
     }
 
-    public void updateColor(Robot robot, int x, int y) {
-        Color color = robot.getPixelColor(x, y);
-        pointLabel.setText("(" + x + "," + y + ")");
+    public void updateColor(int x, int y) {
+        Rectangle fullRect = Util.getFullVirtualScreenRectangle();
+        int pX = fullRect.x + x;
+        int pY = fullRect.y + y;
+        Color color = Util.getColorFromScreenPixel(pX, pY);
+        pointLabel.setText("(" + pX + "," + pY + ")");
         colorLabel.setBackground(color);
         colorTextLabel.setText(Util.getColorText(color, Util.ColorMode.HTML));
         // 截取鼠标区域图像并绘制放大镜
-        pointImage = robot.createScreenCapture(new Rectangle(x - 5, y - 5, 11, 11));
+        pointImage = Util.screenshot(new Rectangle(pX - 5, pY - 5, 11, 11));
         repaint();
     }
 
