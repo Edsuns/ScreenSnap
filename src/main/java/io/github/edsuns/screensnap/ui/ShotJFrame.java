@@ -1,7 +1,5 @@
 package io.github.edsuns.screensnap.ui;
 
-import com.sun.jna.platform.win32.User32;
-import com.sun.jna.platform.win32.WinUser;
 import io.github.edsuns.screensnap.util.Util;
 import io.github.edsuns.screensnap.widget.FullScreenJFrame;
 import io.github.edsuns.screensnap.widget.ShotImageLabel;

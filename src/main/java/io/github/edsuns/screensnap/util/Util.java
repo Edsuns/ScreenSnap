@@ -1,8 +1,5 @@
 package io.github.edsuns.screensnap.util;
 
-import com.sun.jna.platform.win32.User32;
-import com.sun.jna.platform.win32.WinUser;
-import io.github.edsuns.screensnap.widget.FullScreenJFrame;
 import io.github.edsuns.screensnap.widget.ImageTransferable;
 import sun.awt.ComponentFactory;
 
