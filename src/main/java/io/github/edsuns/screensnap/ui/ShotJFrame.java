@@ -1,6 +1,6 @@
 package io.github.edsuns.screensnap.ui;
 
-import io.github.edsuns.screensnap.util.FrameUtil;
+import io.github.edsuns.screensnap.util.Util;
 import io.github.edsuns.screensnap.widget.FullScreenJFrame;
 import io.github.edsuns.screensnap.widget.ShotImageLabel;
 
@@ -11,13 +11,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 /**
  * 全屏的屏幕取样界面
  * Created by Edsuns@qq.com on 2020-05-26
  */
 public class ShotJFrame extends FullScreenJFrame {
-    private Robot robot;
     private final ColorPanel colorPanel;
     private final ShotImageLabel shotLabel;
 
@@ -27,12 +27,6 @@ public class ShotJFrame extends FullScreenJFrame {
     boolean pressed;
 
     public ShotJFrame() {
-        // 初始化robot
-        try {
-            robot = new Robot();
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }
         initKeyboardListener();
 
         colorPanel = new ColorPanel();
@@ -103,8 +97,8 @@ public class ShotJFrame extends FullScreenJFrame {
                     int minY = Math.min(yStart, yEnd);
                     recX = minX;
                     recY = minY;
-                    recW = Math.max(1, maxX - minX);
-                    recH = Math.max(1, maxY - minY);
+                    recW = Math.max(1, maxX - minX + 1);
+                    recH = Math.max(1, maxY - minY + 1);
                     shotLabel.drawRectangle(recX, recY, recW, recH);
                 }
             }
@@ -136,16 +130,16 @@ public class ShotJFrame extends FullScreenJFrame {
                 int y = mousePoint.y;
                 switch (key.getKeyCode()) {
                     case KeyEvent.VK_UP:
-                        robot.mouseMove(x, y - 1);
+                        Util.mouseMove(x, y - 1);
                         break;
                     case KeyEvent.VK_DOWN:
-                        robot.mouseMove(x, y + 1);
+                        Util.mouseMove(x, y + 1);
                         break;
                     case KeyEvent.VK_LEFT:
-                        robot.mouseMove(x - 1, y);
+                        Util.mouseMove(x - 1, y);
                         break;
                     case KeyEvent.VK_RIGHT:
-                        robot.mouseMove(x + 1, y);
+                        Util.mouseMove(x + 1, y);
                         break;
                     case KeyEvent.VK_ENTER:
                     case KeyEvent.VK_SPACE:
@@ -182,7 +176,7 @@ public class ShotJFrame extends FullScreenJFrame {
                 break;
         }
         colorPanel.setLocation(panelX, panelY);
-        colorPanel.updateColor(robot, mouseX, mouseY);
+        colorPanel.updateColor( mouseX, mouseY);
     }
 
     public void pickColor() {
@@ -190,10 +184,10 @@ public class ShotJFrame extends FullScreenJFrame {
         int x = mousePoint.x;
         int y = mousePoint.y;
         if (mPickColorListener != null) {
-            mPickColorListener.onColorPicked(robot.getPixelColor(x, y));
+            mPickColorListener.onColorPicked(Util.getColorFromScreenPixel(x, y));
         }
         setVisible(false);
-        System.out.println("Point x: " + x + ", y: " + y);
+        // System.out.println("Point x: " + x + ", y: " + y);
     }
 
     /**
@@ -207,8 +201,7 @@ public class ShotJFrame extends FullScreenJFrame {
         Point mousePoint = MouseInfo.getPointerInfo().getLocation();
         refreshColorPanel(mousePoint.x, mousePoint.y);
 
-        shotImage = robot.createScreenCapture(
-                new Rectangle(FrameUtil.getScreenWidth(), FrameUtil.getScreenHeight()));
+        shotImage = Util.multiDisplayScreenshot();
         shotLabel.setIcon(new ImageIcon(shotImage));
         setVisible(true);
     }
@@ -223,10 +216,28 @@ public class ShotJFrame extends FullScreenJFrame {
     private static final int TOP = 0b1101;
     private static final int BOTTOM = 0b1110;
 
-    private int getPositionInScreen(final int x, final int y) {
+   /* private int getPositionInScreen(final int x, final int y) {
         int leftOrRight = x < ColorPanel.Width ? LEFT : RIGHT;
         int topOrBottom = y < ColorPanel.Height + ColorPanel.Margin ? TOP : BOTTOM;
         return leftOrRight & topOrBottom;
+    }*/
+
+    private int getPositionInScreen(final int x, final int y) {
+        List<Rectangle> allRects = Util.getAllScreenRectangles();
+        Rectangle fullRect = allRects.stream().reduce(Rectangle::union).get();
+        int vX = fullRect.x;
+        int vY = fullRect.y;
+        int pX = vX + x;
+        int pY = vY + y;
+        for (int i = 0; i < allRects.size(); i++) {
+           Rectangle rect = allRects.get(i);
+            if (rect.contains(pX,pY)) {
+                int leftOrRight = pX <= rect.x + ColorPanel.Width + ColorPanel.Margin ? LEFT : RIGHT;
+                int topOrBottom = pY <= rect.y + ColorPanel.Height + ColorPanel.Margin ? TOP : BOTTOM;
+                return leftOrRight & topOrBottom;
+            }
+        }
+        return LEFT & TOP;
     }
 
     private PickColorListener mPickColorListener;

@@ -1,5 +1,7 @@
 package io.github.edsuns.screensnap.widget;
 
+import io.github.edsuns.screensnap.util.Util;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -8,11 +10,11 @@ import java.awt.event.WindowEvent;
 /**
  * Created by Edsuns@qq.com on 2020-05-25
  */
-public class FullScreenJFrame extends JFrame {
+public class FullScreenJFrame extends JWindow {
 
     public FullScreenJFrame() {
-        setResizable(false);
-        setUndecorated(true);
+        // setResizable(false);
+        // setUndecorated(true);
         setAlwaysOnTop(true);
         // 不显示任务栏图标
         setType(Type.UTILITY);
@@ -31,8 +33,9 @@ public class FullScreenJFrame extends JFrame {
             // 兼容Linux
             GraphicsEnvironment localGraphics = GraphicsEnvironment.getLocalGraphicsEnvironment();
             localGraphics.getDefaultScreenDevice().setFullScreenWindow(this);
+            Util.setFullScreenWindow(this);
             // 兼容Windows
-            setExtendedState(JFrame.MAXIMIZED_BOTH);
+            // setExtendedState(JFrame.MAXIMIZED_BOTH);
         }
         super.setVisible(b);
     }
